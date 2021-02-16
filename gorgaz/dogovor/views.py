@@ -1,3 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.utils.timezone import datetime, timedelta
+from .models import Dogovor
 
-# Create your views here.
+
+def main(request):
+   return render(request, 'dogovor/index.html')
