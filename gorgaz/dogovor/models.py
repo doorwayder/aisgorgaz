@@ -14,7 +14,7 @@ class Dogovor(models.Model):
     address_city = models.CharField(max_length=100, blank=True, verbose_name='Населенный пункт')
     address_street = models.CharField(max_length=200, blank=True, verbose_name='Улица')
     address_house = models.CharField(max_length=50, blank=True, verbose_name='Дом')
-    address_kv = models.IntegerField(blank=True, verbose_name='Квартира')
+    address_kv = models.CharField(max_length=10, blank=True, verbose_name='Квартира')
     equip = models.CharField(max_length=200, blank=True, verbose_name='Оборудование')
     sum = models.IntegerField(blank=True, verbose_name='Сумма')
     discount = models.IntegerField(blank=True, verbose_name='Скидка')
