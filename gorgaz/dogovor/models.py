@@ -21,6 +21,8 @@ class Dogovor(models.Model):
     amount = models.IntegerField(blank=True, verbose_name='Итого')
     comment = models.CharField(max_length=500, blank=True, verbose_name='Примечание')
     id_old = models.IntegerField(verbose_name='Old Id')
+    # Действует / Расторгнут
+    active = models.BooleanField(verbose_name='Действующий')
 
     def __str__(self):
         return self.name
@@ -28,3 +30,15 @@ class Dogovor(models.Model):
     class Meta:
         verbose_name = 'Договор'
         verbose_name_plural = 'Договора'
+
+
+class Payment(models.Model):
+    dogovor_id = models.ForeignKey(Dogovor, on_delete=models.CASCADE)
+    pay_type = models.BooleanField(verbose_name='Наличные')
+    date = models.DateField(blank=False, verbose_name='Дата оплаты')
+    amount = models.IntegerField(blank=False, verbose_name='Сумма')
+    pay_place = models.CharField(max_length=10, blank=True, verbose_name='Место оплаты')
+
+    class Meta:
+        verbose_name = 'Оплата'
+        verbose_name_plural = 'Оплаты'

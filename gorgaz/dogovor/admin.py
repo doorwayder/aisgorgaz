@@ -1,5 +1,9 @@
 from django.contrib import admin
-from .models import Dogovor
+from .models import Dogovor, Payment
+
+
+class PaymentsInline(admin.TabularInline):
+    model = Payment
 
 
 class DogovorAdmin(admin.ModelAdmin):
@@ -7,6 +11,7 @@ class DogovorAdmin(admin.ModelAdmin):
     list_display_links = ('number', 'name', )
     list_filter = ('address_city',)
     search_fields = ['name', 'address_city', 'number', 'tel1', 'tel2', 'tel3']
+    inlines = [PaymentsInline, ]
 
 
 admin.site.register(Dogovor, DogovorAdmin)
