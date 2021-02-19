@@ -33,11 +33,14 @@ class Dogovor(models.Model):
 
 
 class Payment(models.Model):
+    PLACE_CHOICES = [('В офисе', 'В офисе'), ('обходчику', 'обходчику'), ('на р/счет', 'на р/счет')]
     dogovor_id = models.ForeignKey(Dogovor, on_delete=models.CASCADE)
     pay_type = models.BooleanField(verbose_name='Наличные')
     date = models.DateField(blank=False, verbose_name='Дата оплаты')
     amount = models.IntegerField(blank=False, verbose_name='Сумма')
-    pay_place = models.CharField(max_length=10, blank=True, verbose_name='Место оплаты')
+    pay_place = models.CharField(max_length=10, blank=True, verbose_name='Место оплаты', choices=PLACE_CHOICES,
+                                 default='В офисе')
+    comment = models.CharField(max_length=500, blank=True, verbose_name='Примечание', null=True)
 
     class Meta:
         verbose_name = 'Оплата'

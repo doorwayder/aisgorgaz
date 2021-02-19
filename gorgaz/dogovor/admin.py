@@ -4,6 +4,8 @@ from .models import Dogovor, Payment
 
 class PaymentsInline(admin.TabularInline):
     model = Payment
+    extra = 0
+    min_num = 1
 
 
 class DogovorAdmin(admin.ModelAdmin):
@@ -14,4 +16,17 @@ class DogovorAdmin(admin.ModelAdmin):
     inlines = [PaymentsInline, ]
 
 
+class PaymentAdmin(admin.ModelAdmin):
+    list_display = ('date', 'get_name', 'pay_type', 'amount', 'pay_place', 'comment', )
+    list_display_links = ('date', 'pay_type', 'amount', 'pay_place', 'comment', )
+    list_filter = ('date', 'pay_type', 'pay_place', )
+    search_fields = ['date']
+
+    def get_name(self, obj):
+        return obj.dogovor_id.name
+    get_name.admin_order_field = 'dogovor_id'
+    get_name.short_description = 'Ф.И.О. (по договору)'
+
+
 admin.site.register(Dogovor, DogovorAdmin)
+admin.site.register(Payment, PaymentAdmin)
