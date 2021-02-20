@@ -75,3 +75,15 @@ body {
   text-transform: uppercase;
 }
 
+.doglink:link {
+  text-decoration: none;
+  color: #333333;
+}
+
+.dogtr:hover {
+  background: #eeeeee;
+}
+
+th {
+  background: #eeeeee;
+}

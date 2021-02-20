@@ -121,4 +121,6 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'gorgaz/static')
 ]
 
-
+ABSOLUTE_URL_OVERRIDES = {
+    'dogovor.dogovor': lambda o: "/dogovor/%s/" % o.pk,
+}

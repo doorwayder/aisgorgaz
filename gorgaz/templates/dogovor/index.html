@@ -3,7 +3,7 @@
 
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 flex-fill">
     <div class="table-responsive mt-4">
-        <table class="table table-striped table-sm">
+        <table class="table table-sm">
             <thead>
                 <tr>
                     <th>№ договора</th>
@@ -17,9 +17,9 @@
 
             {% if dogovors %}
                 {% for item in dogovors %}
-                <tr>
-                    <td>{{ item.number }}</td>
-                    <td>{{ item.name }}</td>
+                <tr class="dogtr">
+                    <td><a class="doglink" href='{{ item.get_absolute_url }}'>{{ item.number }}</a></td>
+                    <td><a class="doglink"  href='{{ item.get_absolute_url }}'>{{ item.name }}</a></td>
                     <td>{{ item.date }}</td>
                     <td>{{ item.address_city }}</td>
                     <td>{{ item.end_date }}</td>
