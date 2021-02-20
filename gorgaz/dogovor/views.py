@@ -1,14 +1,13 @@
 from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render, redirect
-from django.utils.timezone import datetime, timedelta
-from .models import Dogovor
+from .models import Dogovor, Payment
+from .forms import SearchForm
 from .converter import *
 
 
 def main(request):
     dogovor_data = Dogovor.objects.filter(end_date__isnull=False).order_by('-date')[:30]
-    print(dogovor_data)
 
     data = {
         'title': 'Последние договора',
@@ -59,3 +58,15 @@ def user_login(request):
 def user_logout(request):
     logout(request)
     return redirect('login')
+
+
+def dogovor_search(request):
+    form = SearchForm()
+    query = None
+    results = []
+    if 'query' in request.GET:
+        form = SearchForm(request.GET)
+        if form.is_valid():
+            query = form.cleaned_data['query']
+            results = Dogovor.objects.annotate(search=SearchVector('name', 'number'),).filter(search=query)
+    return render(request, 'dogovor/search.html', {'form': form, 'query': query, 'results': results})
