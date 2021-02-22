@@ -1,6 +1,6 @@
 {% extends 'dogovor/base.html' %}
+{% load static %}
 {% block content %}
-
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 flex-fill">
     <div class="table-responsive mt-4">
         <table class="table table-sm">
@@ -17,12 +17,12 @@
 
             {% if dogovors %}
                 {% for item in dogovors %}
-                <tr class="dogtr">
-                    <td><a class="doglink" href='{{ item.get_absolute_url }}'>{{ item.number }}</a></td>
-                    <td><a class="doglink"  href='{{ item.get_absolute_url }}'>{{ item.name }}</a></td>
-                    <td>{{ item.date }}</td>
-                    <td>{{ item.address_city }}</td>
-                    <td>{{ item.end_date }}</td>
+                <tr class="dogtr" data-id="{{ item.id }}">
+                    <td data-id="{{ item.id }}"><a class="doglink" href='{{ item.get_absolute_url }}'>{{ item.number }}</a></td>
+                    <td data-id="{{ item.id }}"><a class="doglink"  href='{{ item.get_absolute_url }}'>{{ item.name }}</a></td>
+                    <td data-id="{{ item.id }}">{{ item.date }}</td>
+                    <td data-id="{{ item.id }}">{{ item.address_city }}</td>
+                    <td data-id="{{ item.id }}">{{ item.end_date }}</td>
                 </tr>
                 {% endfor %}
             {% endif %}
@@ -31,5 +31,6 @@
         </table>
     </div>
 </main>
-
 {% endblock %}
+
+{% block jsblock %}<script src="{% static 'js/main.js' %}"></script> {% endblock %}
