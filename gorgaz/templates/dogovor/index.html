@@ -18,8 +18,8 @@
             {% if dogovors %}
                 {% for item in dogovors %}
                 <tr class="dogtr" data-id="{{ item.id }}">
-                    <td data-id="{{ item.id }}"><a class="doglink" href='{{ item.get_absolute_url }}'>{{ item.number }}</a></td>
-                    <td data-id="{{ item.id }}"><a class="doglink"  href='{{ item.get_absolute_url }}'>{{ item.name }}</a></td>
+                    <td data-id="{{ item.id }}">{{ item.number }}</td>
+                    <td data-id="{{ item.id }}">{{ item.name }}</td>
                     <td data-id="{{ item.id }}">{{ item.date }}</td>
                     <td data-id="{{ item.id }}">{{ item.address_city }}</td>
                     <td data-id="{{ item.id }}">{{ item.end_date }}</td>
