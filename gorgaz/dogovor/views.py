@@ -1,15 +1,13 @@
 from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import UpdateView
 from .models import Dogovor, Payment
 from .forms import SearchForm, DogovorForm
 from .converter import *
 
 
 def main(request):
-    dogovor_data = Dogovor.objects.filter(end_date__isnull=False).order_by('-date')[:30]
+    dogovor_data = Dogovor.objects.filter(end_date__isnull=False).order_by('-date')[:100]
 
     data = {
         'title': 'Последние договора',
@@ -90,10 +88,11 @@ def dogoovor_edit(request):
 
 def dogovor_view(request, dogovor_id):
     dogovor = get_object_or_404(Dogovor, pk=dogovor_id)
-    return render(request, 'dogovor/dogovor.html', {'dogovor': dogovor})
+    payments = Payment.objects.filter(dogovor_id=dogovor_id).order_by('-date')
+    return render(request, 'dogovor/dogovor.html', {'dogovor': dogovor, 'payments': payments})
 
 
-class UpdateDogovorView(LoginRequiredMixin, UpdateView):
-    model = Dogovor
-    fields = ['name', 'number', 'date', 'end_date', 'tel1', 'tel2', 'tel3', 'fiz', 'address_city', 'address_street',
-              'address_house', 'address_kv', 'equip', 'sum', 'discount', 'amount', 'comment', 'active']
+# class UpdateDogovorView(LoginRequiredMixin, UpdateView):
+#     model = Dogovor
+#     fields = ['name', 'number', 'date', 'end_date', 'tel1', 'tel2', 'tel3', 'fiz', 'address_city', 'address_street',
+#               'address_house', 'address_kv', 'equip', 'sum', 'discount', 'amount', 'comment', 'active']

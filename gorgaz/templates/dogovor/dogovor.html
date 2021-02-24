@@ -2,6 +2,75 @@
 {% load static %}
 {% block content %}
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 flex-fill">
-    {{ form.as_table }}
+    <div class="card text-center mt-4">
+        <div class="card-header">
+            Номер договора: <strong>{{ dogovor.number }} от {{ dogovor.date }} </strong>
+            {% if dogovor.active %}
+            (действующий)
+            {% endif %}
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">{{ dogovor.name }}
+            {% if dogovor.fiz %}
+                (физлицо)
+            {% else %}
+                (юрлицо)
+            {% endif %}
+            </h5>
+            <p class="card-text"><strong>Адрес:</strong> {{ dogovor.address_city }}, {{ dogovor.address_street }},
+                д. {{ dogovor.address_house }},
+                {% if dogovor.address_kv %}
+                    кв. {{ dogovor.address_kv }},
+                {% endif %}
+                <br><strong>Тел.: </strong>{{ dogovor.tel1 }}
+                {% if dogovor.tel2 %} {{ dogovor.tel2 }}
+                {% endif %}
+                {% if dogovor.tel3 %} {{ dogovor.tel3 }}
+                {% endif %}
+            </p><hr>
+            <p class="card-text">Оборудование: {{ dogovor.equip }}<br>
+                Сумма договора: {{ dogovor.sum }} руб.<br>
+                Скидка: {{ dogovor.discount }} руб.<br>
+                Итого: <strong>{{ dogovor.amount }} руб.</strong><br>
+
+                {% if dogovor.comment %}
+                <hr> <i>Примечание: {{ dogovor.comment }}</i>
+                {%  endif %}
+                <br>
+            </p>
+            <a href="update/" class="btn btn-secondary">Редактировать</a>
+        </div>
+        <div class="card-footer text-muted">
+            Действует до: {{ dogovor.end_date }}
+        </div>
+    </div>
+
+    <div class="card text-center mt-4 mb-2">
+        <div class="card-header">
+            <strong>Оплаты по договору</strong>
+        </div>
+        <div class="card-body">
+            <p class="card-text">
+            {% if payments %}
+                {% for item in payments %}
+                    <b>{{ item.date }}</b> - {{ item.amount }} руб.
+                    {% if item.pay_type %}(наличные)
+                    {% else %}(безнал)
+                    {% endif %}
+                    - <i>{{ item.pay_place }}</i><br>
+                    {% if item.comment %}<i>Примечание:
+                    {{ item.comment }}</i>
+                    {% endif %}
+                    <br><hr>
+                {% endfor %}
+            {% else %}
+                Оплат по договору не производилось
+            {% endif %}
+            </p>
+
+            <a href="#" class="btn btn-secondary">Добавить оплату</a>
+        </div>
+    </div>
+
 </main>
 {% endblock %}

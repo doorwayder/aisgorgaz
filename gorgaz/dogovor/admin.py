@@ -5,7 +5,7 @@ from .models import Dogovor, Payment
 class PaymentsInline(admin.TabularInline):
     model = Payment
     extra = 0
-    min_num = 1
+    min_num = 0
 
 
 class DogovorAdmin(admin.ModelAdmin):
