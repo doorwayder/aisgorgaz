@@ -1,0 +1,139 @@
+{% extends 'dogovor/base.html' %}
+{% block title %} Новый договор {% endblock %}
+{% load static %}
+{% block content %}
+
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 flex-fill">
+    <div class="container-fluid mt-3 mb-2 border rounded p-4">
+        <form action="{% url 'add' %}" method="post">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-6">
+                    <div class="form-group">
+                        <input type="text" name="name" maxlength="200" id="id_name" class="form-control" placeholder="Ф.И.О.">
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="form-group">
+                        <input type="text" name="number" maxlength="15" id="id_number" class="form-control" placeholder="Номер договора">
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="form-group row">
+                        <label for="id_date" class="col-2 col-form-label">от:</label>
+                        <div class="col-10">
+                            <input type="date" name="date" id="id_date" class="form-control">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-4">
+                    <div class="form-group row">
+                        <label for="id_end_date" class="col-sm-4 col-form-label">Действует до:</label>
+                        <div class="col-sm-8">
+                            <input type="date" name="end_date" id="id_end_date" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="form-check mt-2">
+                         <input id="id_fiz" name="fiz" checked="checked" type="checkbox" class="form-check-input" onchange="fiz_change();">
+                         <label id="fiz_label" for="id_fiz" class="form-check-label">Физлицо</label>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroupPrepend2">+7</span>
+                            </div>
+                            <input type="text" name="tel1" maxlength="10" class="form-control" id="id_tel1" placeholder="Сотовый телефон" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="form-group">
+                        <input type="text" name="tel2" maxlength="15" id="id_tel2" class="form-control" placeholder="Дополнительный телефон">
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="form-group">
+                        <input type="text" name="tel3" maxlength="15" id="id_tel3" class="form-control" placeholder="Дополнительный телефон">
+                    </div>
+                </div>
+            </div>
+            <hr>
+
+            <div class="row">
+                <div class="col-4">
+                    <div class="form-group row">
+                        <label for="id_address_city" class="col-4 col-form-label">Адрес объекта:</label>
+                        <div class="col-8">
+                            <input type="text" name="address_city" maxlength="100" id="id_address_city" class="form-control" placeholder="Населенный пункт">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="form-group">
+                        <input type="text" name="address_street" maxlength="200" id="id_address_street" class="form-control" placeholder="Улица">
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="form-group">
+                        <input type="text" name="address_house" maxlength="50" id="id_address_house" class="form-control" placeholder="Дом">
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="form-group">
+                        <input type="text" name="address_kv" maxlength="10" id="id_address_kv" class="form-control" placeholder="Квартира">
+                    </div>
+                </div>
+            </div>
+            <hr>
+
+            <div class="row mb-2">
+               <div class="col-4">
+                    <div class="form-group">
+                        <input type="text" name="equip" maxlength="200" id="id_equip" class="form-control" placeholder="Оборудование">
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="form-group">
+                        <input type="number" name="sum" id="id_sum" class="form-control" placeholder="Стоимость">
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="form-group">
+                        <input type="number" name="discount" id="id_discount" value="0" class="form-control" placeholder="Скидка">
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="form-group">
+                        <input type="number" name="amount" id="id_amount" class="form-control" placeholder="Итоговая сумма">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-2">
+                <div class="col-6">
+                    <div class="form-group">
+                        <textarea name="comment" maxlength="500" id="id_comment" class="form-control" rows="4" placeholder="Примечание"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <button type="submit" class="btn btn-secondary">Создать</button>
+                    <button type="reset" class="btn btn-outline-secondary">Очистить</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    {{ form.as_table }}
+</main>
+{% endblock %}
+
+{% block jsblock %}<script src="{% static 'js/main.js' %}"></script> {% endblock %}

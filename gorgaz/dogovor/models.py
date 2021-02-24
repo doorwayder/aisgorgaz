@@ -20,9 +20,9 @@ class Dogovor(models.Model):
     discount = models.IntegerField(blank=True, verbose_name='Скидка')
     amount = models.IntegerField(blank=True, verbose_name='Итого')
     comment = models.CharField(max_length=500, blank=True, verbose_name='Примечание')
-    id_old = models.IntegerField(verbose_name='Old Id')
+    id_old = models.IntegerField(null=True, verbose_name='Old Id')
     # Действует / Расторгнут
-    active = models.BooleanField(verbose_name='Действующий')
+    active = models.BooleanField(default=True, verbose_name='Действующий')
 
     def __str__(self):
         return self.name

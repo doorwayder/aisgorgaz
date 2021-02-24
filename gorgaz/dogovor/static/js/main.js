@@ -12,3 +12,7 @@ $(document).ready(function () {
     });
 });
 
+function fiz_change() {
+    if (document.getElementById("id_fiz").checked) $("#fiz_label").text("Физлицо");
+    else $("#fiz_label").text("Юрлицо");
+}

@@ -92,6 +92,20 @@ def dogovor_view(request, dogovor_id):
     return render(request, 'dogovor/dogovor.html', {'dogovor': dogovor, 'payments': payments})
 
 
+def dogovor_add(request):
+    if request.method == 'POST':
+        form = DogovorForm(request.POST)
+        if form.is_valid():
+            Dogovor.objects.create(**form.cleaned_data)
+    else:
+        form = DogovorForm()
+    data = {
+        'title': 'Новый договор',
+        'form': form,
+    }
+    return render(request, 'dogovor/add.html', data)
+
+
 # class UpdateDogovorView(LoginRequiredMixin, UpdateView):
 #     model = Dogovor
 #     fields = ['name', 'number', 'date', 'end_date', 'tel1', 'tel2', 'tel3', 'fiz', 'address_city', 'address_street',
