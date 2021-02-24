@@ -8,17 +8,17 @@
         <form action="{% url 'add' %}" method="post">
             {% csrf_token %}
             <div class="row">
-                <div class="col-6">
+                <div class="col-5">
                     <div class="form-group">
                         <input type="text" name="name" maxlength="200" id="id_name" class="form-control" placeholder="Ф.И.О.">
                     </div>
                 </div>
-                <div class="col-4">
+                <div class="col-3">
                     <div class="form-group">
                         <input type="text" name="number" maxlength="15" id="id_number" class="form-control" placeholder="Номер договора">
                     </div>
                 </div>
-                <div class="col-2">
+                <div class="col-4">
                     <div class="form-group row">
                         <label for="id_date" class="col-2 col-form-label">от:</label>
                         <div class="col-10">
@@ -37,13 +37,13 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-2">
+                <div class="col-1">
                     <div class="form-check mt-2">
                          <input id="id_fiz" name="fiz" checked="checked" type="checkbox" class="form-check-input" onchange="fiz_change();">
                          <label id="fiz_label" for="id_fiz" class="form-check-label">Физлицо</label>
                     </div>
                 </div>
-                <div class="col-2">
+                <div class="col-3">
                     <div class="form-group">
                         <div class="input-group">
                             <div class="input-group-prepend">
@@ -55,12 +55,12 @@
                 </div>
                 <div class="col-2">
                     <div class="form-group">
-                        <input type="text" name="tel2" maxlength="15" id="id_tel2" class="form-control" placeholder="Дополнительный телефон">
+                        <input type="text" name="tel2" maxlength="15" id="id_tel2" class="form-control" placeholder="Доп. телефон">
                     </div>
                 </div>
                 <div class="col-2">
                     <div class="form-group">
-                        <input type="text" name="tel3" maxlength="15" id="id_tel3" class="form-control" placeholder="Дополнительный телефон">
+                        <input type="text" name="tel3" maxlength="15" id="id_tel3" class="form-control" placeholder="Доп. телефон">
                     </div>
                 </div>
             </div>
@@ -132,7 +132,6 @@
             </div>
         </form>
     </div>
-    {{ form.as_table }}
 </main>
 {% endblock %}
 

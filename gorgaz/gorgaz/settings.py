@@ -10,7 +10,7 @@ SECRET_KEY = 'nmiur2)7ds^njj3q0+5f@dn(tkw)%g5)ves#!51t6wc6xdt2iv'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'dogovor',
@@ -53,16 +53,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'gorgaz.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/3.1/ref/settings/#databases
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
 
 DATABASES = {
     'default': {
