@@ -1,5 +1,6 @@
 from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm
+from django.views.generic.edit import UpdateView
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Dogovor, Payment
 from .forms import SearchForm, DogovorForm
@@ -72,20 +73,6 @@ def dogovor_search(request):
     return render(request, 'dogovor/search.html', {'form': form, 'query': query, 'results': results})
 
 
-def dogoovor_edit(request):
-    if request.method == 'POST':
-        form = DogovorForm(request.POST)
-        if form.is_valid():
-            pass
-    else:
-        form = DogovorForm()
-    data = {
-        'title': 'Договор',
-        'form': form,
-    }
-    return render(request, 'dogovor/dogovor.html', data)
-
-
 def dogovor_view(request, dogovor_id):
     dogovor = get_object_or_404(Dogovor, pk=dogovor_id)
     payments = Payment.objects.filter(dogovor_id=dogovor_id).order_by('-date')
@@ -106,7 +93,16 @@ def dogovor_add(request):
     return render(request, 'dogovor/add.html', data)
 
 
-# class UpdateDogovorView(LoginRequiredMixin, UpdateView):
-#     model = Dogovor
-#     fields = ['name', 'number', 'date', 'end_date', 'tel1', 'tel2', 'tel3', 'fiz', 'address_city', 'address_street',
-#               'address_house', 'address_kv', 'equip', 'sum', 'discount', 'amount', 'comment', 'active']
+def dogovor_update(request, dogovor_id):
+    dogovor = Dogovor.objects.get(pk=dogovor_id)
+    if request.method == 'POST':
+        form = DogovorForm(request.POST, instance=dogovor)
+        if form.is_valid():
+            form.save()
+            return redirect('main')
+    form = DogovorForm(instance=dogovor)
+    data = {
+        'form': form,
+        'dogovor_id': dogovor_id,
+    }
+    return render(request, 'dogovor/update.html', data)
