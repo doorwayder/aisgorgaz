@@ -40,8 +40,8 @@
                 </div>
                 <div class="col-1">
                     <div class="form-check mt-2">
-                         <input id="id_fiz" name="fiz" checked="checked" type="checkbox" value="{{ fomr.fiz.value }}" class="form-check-input" onchange="fiz_change();">
-                         <label id="fiz_label" for="id_fiz" class="form-check-label">Физлицо</label>
+                         <input id="id_fiz" name="fiz" type="checkbox" {% if form.fiz.value %} checked {% endif %} class="form-check-input" onchange="fiz_change();">
+                         <label id="fiz_label" for="id_fiz" class="form-check-label">{% if form.fiz.value %} Физлицо {% else %} Юрлицо {% endif %}</label>
                     </div>
                 </div>
                 <div class="col-3">
@@ -121,6 +121,12 @@
                 <div class="col-6">
                     <div class="form-group">
                         <textarea name="comment" maxlength="500" id="id_comment" class="form-control" rows="4" placeholder="Примечание">{{ form.comment.value }}</textarea>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="form-check mt-2">
+                         <input id="id_active" name="active" type="checkbox" {% if form.active.value %} checked {% endif %} class="form-check-input" onchange="active_change();">
+                         <label id="active_label" for="id_active" class="form-check-label">{% if form.active.value %} Действующий {% else %} Расторгнут {% endif %}</label>
                     </div>
                 </div>
             </div>
