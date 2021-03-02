@@ -2,74 +2,145 @@
 {% load static %}
 {% block content %}
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 flex-fill">
-    <div class="card text-center mt-4">
-        <div class="card-header">
-            Номер договора: <strong>{{ dogovor.number }} от {{ dogovor.date }} </strong>
-            {% if dogovor.active %}
-            (действующий)
-            {% endif %}
-        </div>
-        <div class="card-body">
-            <h5 class="card-title">{{ dogovor.name }}
-            {% if dogovor.fiz %}
-                (физлицо)
-            {% else %}
-                (юрлицо)
-            {% endif %}
-            </h5>
-            <p class="card-text"><strong>Адрес:</strong> {{ dogovor.address_city }}, {{ dogovor.address_street }},
-                д. {{ dogovor.address_house }},
-                {% if dogovor.address_kv %}
-                    кв. {{ dogovor.address_kv }},
-                {% endif %}
-                <br><strong>Тел.: </strong>{{ dogovor.tel1 }}
-                {% if dogovor.tel2 %} {{ dogovor.tel2 }}
-                {% endif %}
-                {% if dogovor.tel3 %} {{ dogovor.tel3 }}
-                {% endif %}
-            </p><hr>
-            <p class="card-text">Оборудование: {{ dogovor.equip }}<br>
-                Сумма договора: {{ dogovor.sum }} руб.<br>
-                Скидка: {{ dogovor.discount }} руб.<br>
-                Итого: <strong>{{ dogovor.amount }} руб.</strong><br>
-
-                {% if dogovor.comment %}
-                <hr> <i>Примечание: {{ dogovor.comment }}</i>
-                {%  endif %}
-                <br>
-            </p>
-            <a href="update/" class="btn btn-secondary">Редактировать</a>
-        </div>
-        <div class="card-footer text-muted">
-            Действует до: {{ dogovor.end_date }}
-        </div>
+    <div class="table-responsive mt-4">
+        <table class="table table-sm table-striped">
+            <tbody>
+                <tr>
+                    <td>
+                        <b>
+                            Договор № {{ dogovor.number }}
+                        </b>
+                        {% if dogovor.active %}
+                        (действующий)
+                        {% else %}
+                        (расторгнут)
+                        {% endif %}
+                    </td>
+                    <td>
+                        <b>
+                            {{ dogovor.name }}
+                        </b>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Статус
+                    </td>
+                    <td>
+                        {% if dogovor.fiz %}Физическое лицо
+                        {% else %}Юридическое лицо
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td>Адрес:</td>
+                    <td>{{ dogovor.address_city }}, {{ dogovor.address_street }}, д. {{ dogovor.address_house }},
+                        {% if dogovor.address_kv %}
+                            кв. {{ dogovor.address_kv }},
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td>Телефон</td>
+                    <td>
+                        {{ dogovor.tel1 }}
+                        {% if dogovor.tel2 %} <br> {{ dogovor.tel2 }} {% endif %}
+                        {% if dogovor.tel3 %} <br> {{ dogovor.tel3 }} {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Оборудование
+                    </td>
+                    <td>
+                        {{ dogovor.equip }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Сумма договора
+                    </td>
+                    <td>
+                        {{ dogovor.sum }} руб.
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Скидка
+                    </td>
+                    <td>
+                        {{ dogovor.discount }} руб.
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        К оплате
+                    </td>
+                    <td>
+                        {{ dogovor.amount }} руб.
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Примечание:
+                    </td>
+                    <td>
+                        {{ dogovor.comment }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Действует до
+                    </td>
+                    <td>
+                        {{ dogovor.end_date }}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <a href="update/" class="btn btn-secondary btn-sm btn-block">Редактировать</a>
     </div>
 
-    <div class="card text-center mt-4 mb-2">
-        <div class="card-header">
-            <strong>Оплаты по договору</strong>
-        </div>
-        <div class="card-body">
-            <p class="card-text">
-            {% if payments %}
+    <div class="table-responsive mt-4">
+        <table class="table table-sm table-striped">
+            <tbody>
+                <tr>
+                    <td colspan="5" class="text-center">
+                        <b>ОПЛАТЫ ПО ДОГОВОРУ</b>
+                    </td>
+                </tr>
+                {% if payments %}
                 {% for item in payments %}
-                    <b>{{ item.date }}</b> - {{ item.amount }} руб.
-                    {% if item.pay_type %}(наличные)
-                    {% else %}(безнал)
-                    {% endif %}
-                    - <i>{{ item.pay_place }}</i><br>
-                    {% if item.comment %}<i>Примечание:
-                    {{ item.comment }}</i>
-                    {% endif %}
-                    <br><hr>
-                {% endfor %}
+                <tr>
+                    <td>
+                        <b>{{ item.date }}</b>
+                    </td>
+                    <td>
+                        {{ item.amount }} руб.
+                    </td>
+                    <td>
+                        {% if item.pay_type %}НАЛИЧНЫЕ
+                        {% else %}БЕЗНАЛ
+                        {% endif %}
+                    </td>
+                    <td>
+                        {{ item.pay_place }}
+                    </td>
+                    <td>
+                        {% if item.comment %} <i>{{ item.comment }}</i> {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
             {% else %}
-                Оплат по договору не производилось
+                <tr>
+                    <td colspan="5" class="text-center">
+                        <b>Оплат по договору не производилось</b>
+                    </td>
+                </tr>
             {% endif %}
-            </p>
-            <a href="#" class="btn btn-secondary">Добавить оплату</a>
-        </div>
+            </tbody>
+        </table>
+        <a href="#" class="btn btn-secondary btn-sm btn-block">Добавить оплату</a>
     </div>
-
 </main>
 {% endblock %}

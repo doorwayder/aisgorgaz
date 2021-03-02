@@ -17,7 +17,7 @@
     </form>
     {% if dogovors %}
     <div class="table-responsive mt-4">
-        <table class="table table-striped table-sm">
+        <table class="table table-sm">
             <thead>
                 <tr>
                     <th>№ договора</th>
@@ -29,7 +29,7 @@
             </thead>
             <tbody>
             {% for item in dogovors %}
-            <tr>
+            <tr class="dogtr" data-id="{{ item.id }}">
                 <td data-id="{{ item.id }}">{{ item.number }}</td>
                 <td data-id="{{ item.id }}">{{ item.name }}</td>
                 <td data-id="{{ item.id }}">{{ item.date }}</td>
@@ -48,3 +48,5 @@
 </main>
 
 {% endblock %}
+
+{% block jsblock %}<script src="{% static 'js/main.js' %}"></script> {% endblock %}

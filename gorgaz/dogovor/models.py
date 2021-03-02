@@ -33,7 +33,7 @@ class Dogovor(models.Model):
 
 
 class Payment(models.Model):
-    PLACE_CHOICES = [('В офисе', 'В офисе'), ('обходчику', 'обходчику'), ('на р/счет', 'на р/счет')]
+    PLACE_CHOICES = [('в офисе', 'в офисе'), ('обходчику', 'обходчику'), ('на р/счет', 'на р/счет')]
     dogovor_id = models.ForeignKey(Dogovor, on_delete=models.CASCADE)
     pay_type = models.BooleanField(verbose_name='Наличные')
     date = models.DateField(blank=False, verbose_name='Дата оплаты')

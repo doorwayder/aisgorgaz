@@ -7,7 +7,7 @@ $(document).ready(function () {
         tr_dogovor.addEventListener('click', function (e) {
             e.preventDefault();
             let dog_id = e.target.getAttribute("data-id");
-            document.location.href = `dogovor/${dog_id}`;
+            document.location.href = `/dogovor/${dog_id}`;
         });
     });
 });
