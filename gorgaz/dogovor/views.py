@@ -110,5 +110,15 @@ def dogovor_search(request):
         'dogovors': dogovor_data,
         'query': query,
     }
-
     return render(request, 'dogovor/search.html', data)
+
+
+def dogovor_search_address(request):
+    dogovor_data = []
+    query = ''
+    data = {
+        'title': 'Результат поиска',
+        'dogovors': dogovor_data,
+        'query': query,
+    }
+    return render(request, 'dogovor/search_address.html', data)
