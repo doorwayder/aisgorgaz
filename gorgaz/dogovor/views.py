@@ -1,6 +1,7 @@
 from django.contrib.auth import login, logout
 from django.db.models import Q
 from django.contrib.auth.forms import AuthenticationForm
+from dal import autocomplete
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Dogovor, Payment
 from .forms import DogovorForm
@@ -114,11 +115,19 @@ def dogovor_search(request):
 
 
 def dogovor_search_address(request):
-    dogovor_data = []
-    query = ''
+    address_city = Dogovor.objects.values('address_city').distinct().order_by('address_city')
+    address_street = Dogovor.objects.values('address_street').distinct().order_by('address_street')
+    if request.method == 'POST':
+        city = request.POST['address_city']
+        street = request.POST['address_street']
+        dogovor_data = Dogovor.objects.filter(Q(address_city=city))
+    else:
+        dogovor_data = []
     data = {
         'title': 'Результат поиска',
+        'cities': address_city,
+        'streets': address_street,
         'dogovors': dogovor_data,
-        'query': query,
     }
     return render(request, 'dogovor/search_address.html', data)
+

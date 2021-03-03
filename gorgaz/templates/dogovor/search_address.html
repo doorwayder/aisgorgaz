@@ -4,19 +4,59 @@
 {% block content %}
 
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 flex-fill">
-    <form action="{% url 'search' %}" method="post">
+    <div class="mt-3">
+        Выберите населенный пункт
+    </div>
+    <form action="{% url 'search_address' %}" method="post">
     {% csrf_token %}
         <div class="form-group mt-3">
-            <div class="input-group">
-                <input class="form-control" placeholder="Введите запрос" type="text" name="query" required value="{{ query }}">
-                <span class="input-group-btn">
-                    <button type="submit" class="btn btn-secondary">Поиск</button>
-                </span>
-            </div>
+            <select id="id_address_city" class="selectpicker" name="address_city" data-live-search="true">
+                    {% for item in cities %}
+                        <option value="{{ item.address_city }}">{{ item.address_city }}</option>
+                    {% endfor %}
+            </select>
+            <select id="id_address_street" class="selectpicker" name="address_street" data-live-search="true">
+                    {% for item in streets %}
+                        <option value="{{ item.address_street }}">{{ item.address_street }}</option>
+                    {% endfor %}
+            </select>
+            <button type="submit" class="btn btn-secondary">Поиск</button>
         </div>
     </form>
 
+    {% if dogovors %}
+    <b>Найдено:</b> {{ dogovors | length }} дог.
+    <div class="table-responsive mt-4">
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th>№ договора</th>
+                    <th>Ф.И.О.</th>
+                    <th>Дата заключения</th>
+                    <th>Населенный пункт</th>
+                    <th>Дата окончания</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for item in dogovors %}
+            <tr class="dogtr" data-id="{{ item.id }}">
+                <td data-id="{{ item.id }}">{{ item.number }}</td>
+                <td data-id="{{ item.id }}">{{ item.name }}</td>
+                <td data-id="{{ item.id }}">{{ item.date }}</td>
+                <td data-id="{{ item.id }}">{{ item.address_city }}</td>
+                <td data-id="{{ item.id }}">{{ item.end_date }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
 </main>
 
 {% endblock %}
-{% block jsblock %}<script src="{% static 'js/main.js' %}"></script> {% endblock %}
+{% block jsblock %}
+<script src="{% static 'js/main.js' %}"></script>
+<script src="{% static 'js/bootstrap-select.min.js' %}"></script>
+{% endblock %}
+
+
