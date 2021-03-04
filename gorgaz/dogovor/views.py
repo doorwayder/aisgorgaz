@@ -1,11 +1,13 @@
 from django.contrib.auth import login, logout
 from django.db.models import Q
 from django.contrib.auth.forms import AuthenticationForm
-from dal import autocomplete
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Dogovor, Payment
 from .forms import DogovorForm
 from .converter import *
+import simplejson
+
 
 
 def main(request):
@@ -130,4 +132,15 @@ def dogovor_search_address(request):
         'dogovors': dogovor_data,
     }
     return render(request, 'dogovor/search_address.html', data)
+
+
+def city_autocomplete(request):
+    q = request.GET['q']
+    qs = Dogovor.objects.values('address_city').distinct().order_by('address_city')
+    qs = qs.filter(address_city__startswith=q)
+    data = []
+    for item in qs:
+        data.append(item['address_city'])
+
+    return JsonResponse(data, safe=False)
 

@@ -1,5 +1,4 @@
 from django.db import models
-from dal import autocomplete
 from django.contrib.auth.models import User
 
 

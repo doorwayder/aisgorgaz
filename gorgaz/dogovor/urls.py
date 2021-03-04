@@ -1,7 +1,8 @@
-from django.urls import path
+from django.urls import path, re_path
 from . import views
 
 urlpatterns = [
+    path('city-autocomplete/', views.city_autocomplete, name='city-autocomplete'),
     path('', views.main, name='main'),
     path('dogovor/<int:dogovor_id>/', views.dogovor_view, name='dogovor'),
     path('dogovor/<int:dogovor_id>/update/', views.dogovor_update, name='update'),
