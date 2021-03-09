@@ -6,8 +6,6 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Dogovor, Payment
 from .forms import DogovorForm
 from .converter import *
-import simplejson
-
 
 
 def main(request):
@@ -122,7 +120,7 @@ def dogovor_search_address(request):
     if request.method == 'POST':
         city = request.POST['address_city']
         street = request.POST['address_street']
-        dogovor_data = Dogovor.objects.filter(Q(address_city=city))
+        dogovor_data = Dogovor.objects.filter(Q(address_city=city) & Q(address_street=street))
     else:
         dogovor_data = []
     data = {
@@ -135,12 +133,15 @@ def dogovor_search_address(request):
 
 
 def city_autocomplete(request):
-    q = request.GET['q']
     qs = Dogovor.objects.values('address_city').distinct().order_by('address_city')
-    qs = qs.filter(address_city__startswith=q)
     data = []
     for item in qs:
         data.append(item['address_city'])
-
     return JsonResponse(data, safe=False)
 
+def street_autocomplete(request):
+    qs = Dogovor.objects.values('address_street').distinct().order_by('address_street')
+    data = []
+    for item in qs:
+        data.append(item['address_street'])
+    return JsonResponse(data, safe=False)

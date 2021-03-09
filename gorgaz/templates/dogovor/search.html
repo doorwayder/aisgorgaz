@@ -15,36 +15,9 @@
             </div>
         </div>
     </form>
-    {% if dogovors %}
-    <div class="table-responsive mt-4">
-        <table class="table table-sm">
-            <thead>
-                <tr>
-                    <th>№ договора</th>
-                    <th>Ф.И.О.</th>
-                    <th>Дата заключения</th>
-                    <th>Населенный пункт</th>
-                    <th>Дата окончания</th>
-                </tr>
-            </thead>
-            <tbody>
-            {% for item in dogovors %}
-            <tr class="dogtr" data-id="{{ item.id }}">
-                <td data-id="{{ item.id }}">{{ item.number }}</td>
-                <td data-id="{{ item.id }}">{{ item.name }}</td>
-                <td data-id="{{ item.id }}">{{ item.date }}</td>
-                <td data-id="{{ item.id }}">{{ item.address_city }}</td>
-                <td data-id="{{ item.id }}">{{ item.end_date }}</td>
-            </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
-    {% else %}
-        {% if query %}
-            Не найдено ни одного договора
-        {% endif %}
-    {% endif %}
+
+    {% include 'inc/_dogovors.html' %}
+
 </main>
 
 {% endblock %}
