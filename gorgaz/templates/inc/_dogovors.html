@@ -25,7 +25,7 @@
         </table>
     </div>
     {% else %}
-        {% if query %}
+        {% if query or city or street %}
             Не найдено ни одного договора
         {% endif %}
 {% endif %}

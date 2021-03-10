@@ -5,19 +5,23 @@
 
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 flex-fill">
     <div class="mt-3">
-        Выберите населенный пункт
+        {% if not city %}
+            {{ message }}
+        {% else %}
+            Параметры поиска
+        {% endif %}
     </div>
     <form action="{% url 'search_address' %}" method="post">
     {% csrf_token %}
         <div class="form-group mt-3">
             <select id="id_address_city" class="selectpicker" name="address_city" data-live-search="true">
                     {% for item in cities %}
-                        <option value="{{ item.address_city }}">{{ item.address_city }}</option>
+                        <option value="{{ item.address_city }}" {% ifequal item.address_city city %}selected{% endifequal %}>{{ item.address_city }}</option>
                     {% endfor %}
             </select>
             <select id="id_address_street" class="selectpicker" name="address_street" data-live-search="true">
                     {% for item in streets %}
-                        <option value="{{ item.address_street }}">{{ item.address_street }}</option>
+                        <option value="{{ item.address_street }}" {% ifequal item.address_street street %}selected{% endifequal %}>{{ item.address_street }}</option>
                     {% endfor %}
             </select>
             <button type="submit" class="btn btn-secondary">Поиск</button>

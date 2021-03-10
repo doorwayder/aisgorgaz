@@ -120,14 +120,30 @@ def dogovor_search_address(request):
     if request.method == 'POST':
         city = request.POST['address_city']
         street = request.POST['address_street']
-        dogovor_data = Dogovor.objects.filter(Q(address_city=city) & Q(address_street=street))
+        error_message = ''
+        if city and street:
+            dogovor_data = Dogovor.objects.filter(Q(address_city=city) & Q(address_street=street))
+        elif city:
+            dogovor_data = Dogovor.objects.filter(address_city=city)
+        elif street:
+            dogovor_data = []
+            error_message = 'Выберите населенный пункт'
+        else:
+            dogovor_data = []
+            error_message = 'Задайте параметры поиска'
     else:
         dogovor_data = []
+        city = ''
+        street = ''
+        error_message = 'Параметры поиска'
     data = {
         'title': 'Результат поиска',
         'cities': address_city,
         'streets': address_street,
+        'city': city,
+        'street': street,
         'dogovors': dogovor_data,
+        'message': error_message,
     }
     return render(request, 'dogovor/search_address.html', data)
 
