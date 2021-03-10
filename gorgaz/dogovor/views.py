@@ -149,7 +149,7 @@ def dogovor_search_address(request):
 
 
 def city_autocomplete(request):
-    q = request.GET['q']
+    q = request.GET['term']
     qs = Dogovor.objects.values('address_city').distinct().order_by('address_city')
     data = []
     if q:
@@ -159,7 +159,7 @@ def city_autocomplete(request):
     return JsonResponse(data, safe=False)
 
 def street_autocomplete(request):
-    q = request.GET['q']
+    q = request.GET['term']
     qs = Dogovor.objects.values('address_street').distinct().order_by('address_street')
     data = []
     if q:
