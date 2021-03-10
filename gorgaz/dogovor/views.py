@@ -149,15 +149,21 @@ def dogovor_search_address(request):
 
 
 def city_autocomplete(request):
+    q = request.GET['q']
     qs = Dogovor.objects.values('address_city').distinct().order_by('address_city')
     data = []
-    for item in qs:
-        data.append(item['address_city'])
+    if q:
+        qs = qs.filter(address_city__istartswith=q)
+        for item in qs:
+            data.append(item['address_city'])
     return JsonResponse(data, safe=False)
 
 def street_autocomplete(request):
+    q = request.GET['q']
     qs = Dogovor.objects.values('address_street').distinct().order_by('address_street')
     data = []
-    for item in qs:
-        data.append(item['address_street'])
+    if q:
+        qs = qs.filter(address_street__istartswith=q)
+        for item in qs:
+            data.append(item['address_street'])
     return JsonResponse(data, safe=False)

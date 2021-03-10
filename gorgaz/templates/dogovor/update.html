@@ -72,13 +72,13 @@
                     <div class="form-group row">
                         <label for="id_address_city" class="col-4 col-form-label">Адрес объекта:</label>
                         <div class="col-8">
-                            <input type="text" name="address_city" maxlength="100" id="id_address_city" value="{{ form.address_city.value }}" class="form-control" placeholder="Населенный пункт">
+                            <input type="text" name="address_city" autocomplete="off" maxlength="100" id="id_address_city" value="{{ form.address_city.value }}" class="form-control" placeholder="Населенный пункт">
                         </div>
                     </div>
                 </div>
                 <div class="col-4">
                     <div class="form-group">
-                        <input type="text" name="address_street" maxlength="200" id="id_address_street" value="{{ form.address_street.value }}" class="form-control" placeholder="Улица">
+                        <input type="text" name="address_street" autocomplete="off" maxlength="200" id="id_address_street" value="{{ form.address_street.value }}" class="form-control" placeholder="Улица">
                     </div>
                 </div>
                 <div class="col-2">
@@ -140,12 +140,8 @@
         </form>
     </div>
 </main>
-
-
-
 {% endblock %}
 
 {% block jsblock %}
 <script src="{% static 'js/main.js' %}"></script>
-<script src="{% static 'js/autocomplete.js' %}"></script>
 {% endblock %}

@@ -1,9 +1,6 @@
 {% extends 'dogovor/base.html' %}
 {% block title %} Новый договор {% endblock %}
 {% load static %}
-{% block css %}
-<link href="{% static '/css/autocomplete.css' %}" rel="stylesheet">
-{% endblock %}
 {% block content %}
 
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 flex-fill">
@@ -140,5 +137,4 @@
 
 {% block jsblock %}
 <script src="{% static 'js/main.js' %}"></script>
-<script src="{% static 'js/autocomplete.js' %}"></script>
 {% endblock %}
