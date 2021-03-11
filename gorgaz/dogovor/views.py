@@ -4,7 +4,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Dogovor, Payment
-from .forms import DogovorForm
+from .forms import DogovorForm, PaymentForm
 from .converter import *
 
 
@@ -158,6 +158,7 @@ def city_autocomplete(request):
             data.append(item['address_city'])
     return JsonResponse(data, safe=False)
 
+
 def street_autocomplete(request):
     q = request.GET['term']
     qs = Dogovor.objects.values('address_street').distinct().order_by('address_street')
@@ -167,3 +168,30 @@ def street_autocomplete(request):
         for item in qs:
             data.append(item['address_street'])
     return JsonResponse(data, safe=False)
+
+# TODO in progress (в случае удачного добавления платежа, редиректить на страницу договора с указанным номером)
+def dogovor_newpay(request, dogovor_id):
+    if request.method == 'POST':
+        form = PaymentForm(request.POST)
+    else:
+        form = PaymentForm()
+    data = {
+        'title': 'Новый платеж',
+        'form': form,
+        'dogovor_id': dogovor_id,
+    }
+    return render(request, 'dogovor/newpay.html', data)
+
+
+# TODO in progress
+def dogovor_updatepay(request, payment_id):
+    if request.method == 'POST':
+        form = PaymentForm(request.POST)
+    else:
+        form = PaymentForm()
+    data = {
+        'title': 'Редактировать платеж',
+        'form': form,
+        'dogovor_id': payment_id,
+    }
+    return render(request, 'dogovor/updatepay.html', data)

@@ -9,3 +9,7 @@ class DogovorForm(forms.ModelForm):
                   'address_house', 'address_kv', 'equip', 'sum', 'discount', 'amount', 'comment', 'active')
 
 
+class PaymentForm(forms.ModelForm):
+    class Meta:
+        model = Payment
+        fields = '__all__'
