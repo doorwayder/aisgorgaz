@@ -171,6 +171,7 @@ def street_autocomplete(request):
 
 # TODO in progress (в случае удачного добавления платежа, редиректить на страницу договора с указанным номером)
 def dogovor_newpay(request, dogovor_id):
+    qs = Dogovor.objects.get(pk=dogovor_id)
     if request.method == 'POST':
         form = PaymentForm(request.POST)
     else:
@@ -178,7 +179,7 @@ def dogovor_newpay(request, dogovor_id):
     data = {
         'title': 'Новый платеж',
         'form': form,
-        'dogovor_id': dogovor_id,
+        'dogovor': qs,
     }
     return render(request, 'dogovor/newpay.html', data)
 
