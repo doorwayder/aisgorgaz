@@ -189,7 +189,6 @@ def dogovor_newpay(request, dogovor_id):
     return render(request, 'dogovor/newpay.html', data)
 
 
-# TODO in progress
 def dogovor_updatepay(request, payment_id):
     payment = get_object_or_404(Payment, pk=payment_id)
     dogovor = payment.dogovor_id

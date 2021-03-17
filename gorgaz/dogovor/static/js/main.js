@@ -15,6 +15,7 @@ $(document).ready(function () {
         $("#cities option").filter(function() {
             $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
             });
+            console.log('data', data)
         });
 
     $( "#id_address_city" ).autocomplete( {

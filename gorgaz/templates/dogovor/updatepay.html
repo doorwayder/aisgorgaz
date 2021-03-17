@@ -44,7 +44,7 @@
             <div class="row mb-2">
                 <div class="col-6">
                     <div class="form-group">
-                        <textarea name="comment" maxlength="500" id="id_comment" class="form-control" rows="4" placeholder="Примечание">{{ form.comment.value }}</textarea>
+                        <textarea name="comment" maxlength="500" id="id_comment" class="form-control" rows="4" placeholder="Примечание">{% if form.comment.value %}{{ form.comment.value }}{% endif %}</textarea>
                     </div>
                 </div>
             </div>
@@ -55,7 +55,7 @@
             <div class="row">
                 <div class="col-12">
                     <button type="submit" class="btn btn-secondary">Изменить платеж</button>
-                    <button type="reset" class="btn btn-outline-secondary">Очистить</button>
+                    <button class="btn btn-outline-secondary" onclick="history.back()">Отмена</button>
                 </div>
             </div>
         </form>
