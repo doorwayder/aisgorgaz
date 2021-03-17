@@ -34,27 +34,20 @@ function fiz_change() {
     else $("#fiz_label").text("Юрлицо");
 }
 
+
 function active_change() {
     if (document.getElementById("id_active").checked) $("#active_label").text("Действующий");
     else $("#active_label").text("Расторгнут");
 }
 
-//function get_cities() {
-//    let url = '/city-autocomplete/?q=' + $("#id_address_city").val().toLowerCase();
-//    fetch(url).then(function(response) {
-//        response.json().then(function(data) {
-//            console.log('data', data)
-//            return data;
-//        });
-//    });
-//}
-//
-//function get_streets() {
-//    let url = '/street-autocomplete/?q=' + $("#id_address_street").val().toLowerCase();
-//    fetch(url).then(function(response) {
-//        response.json().then(function(data) {
-//            return data;
-//        });
-//    });
-//}
 
+function pay_type_change() {
+    if (document.getElementById("id_pay_type").checked) $("#pay_type_label").text("Наличные");
+    else $("#pay_type_label").text("Безнал");
+}
+
+function delete_payment(payment_id) {
+    if (confirm('Вы действительно хотите удалить платеж?')) {
+        document.location.href = `/delpay/${payment_id}`;
+    }
+}

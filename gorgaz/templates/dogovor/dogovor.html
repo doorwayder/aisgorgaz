@@ -105,7 +105,7 @@
         <table class="table table-sm table-striped">
             <tbody>
                 <tr>
-                    <td colspan="5" class="text-center">
+                    <td colspan="6" class="text-center">
                         <b>ОПЛАТЫ ПО ДОГОВОРУ</b>
                     </td>
                 </tr>
@@ -129,6 +129,14 @@
                     <td>
                         {% if item.comment %} <i>{{ item.comment }}</i> {% endif %}
                     </td>
+                    <td>
+                        <a href="/updatepay/{{ item.id }}" style="text-decoration: none;">
+                            <img src="{% static 'images/edit.png' %}" width="18px">
+                        </a>
+                        <a href="#" style="text-decoration: none;" onclick="delete_payment({{ item.id }});">
+                            <img src="{% static 'images/del.png' %}" width="18px">
+                        </a>
+                    </td>
                 </tr>
             {% endfor %}
             {% else %}
@@ -144,3 +152,5 @@
     </div>
 </main>
 {% endblock %}
+
+{% block jsblock %}<script src="{% static 'js/main.js' %}"></script> {% endblock %}

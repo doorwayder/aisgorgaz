@@ -64,7 +64,7 @@ def user_logout(request):
 
 def dogovor_view(request, dogovor_id):
     dogovor = get_object_or_404(Dogovor, pk=dogovor_id)
-    payments = Payment.objects.filter(dogovor_id=dogovor_id).order_by('-date')
+    payments = Payment.objects.filter(dogovor_id=dogovor_id).order_by('date')
     return render(request, 'dogovor/dogovor.html', {'dogovor': dogovor, 'payments': payments})
 
 
@@ -169,11 +169,16 @@ def street_autocomplete(request):
             data.append(item['address_street'])
     return JsonResponse(data, safe=False)
 
-# TODO in progress (в случае удачного добавления платежа, редиректить на страницу договора с указанным номером)
+
 def dogovor_newpay(request, dogovor_id):
     qs = Dogovor.objects.get(pk=dogovor_id)
     if request.method == 'POST':
         form = PaymentForm(request.POST)
+        if form.is_valid():
+            Payment.objects.create(**form.cleaned_data)
+            return redirect('dogovor', dogovor_id=dogovor_id)
+        else:
+            print('invalid form', form)
     else:
         form = PaymentForm()
     data = {
@@ -186,13 +191,34 @@ def dogovor_newpay(request, dogovor_id):
 
 # TODO in progress
 def dogovor_updatepay(request, payment_id):
+    payment = get_object_or_404(Payment, pk=payment_id)
+    dogovor = payment.dogovor_id
     if request.method == 'POST':
-        form = PaymentForm(request.POST)
-    else:
-        form = PaymentForm()
+        form = PaymentForm(request.POST, instance=payment)
+        if form.is_valid():
+            form.save()
+            return redirect('dogovor', dogovor_id=dogovor.id)
+    form = PaymentForm(instance=payment)
     data = {
-        'title': 'Редактировать платеж',
         'form': form,
-        'dogovor_id': payment_id,
+        'dogovor': dogovor,
+        'payment_id': payment_id,
     }
     return render(request, 'dogovor/updatepay.html', data)
+
+
+def payment_delete(request, payment_id):
+    instance = get_object_or_404(Payment, pk=payment_id)
+    dogovor_id = instance.dogovor_id.id
+    instance.delete()
+    return redirect('dogovor', dogovor_id=dogovor_id)
+
+
+def payments(request):
+    data = Payment.objects.all().order_by('-date')[:100]
+
+    data = {
+        'title': 'Последние платежи',
+        'payments': data,
+    }
+    return render(request, 'dogovor/payments.html', data)

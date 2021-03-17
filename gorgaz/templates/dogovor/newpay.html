@@ -6,18 +6,40 @@
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 flex-fill">
     <div class="container-fluid mt-3 mb-2 border rounded p-3">
         Новая оплата по договору № {{ dogovor.number }} от {{ dogovor.date }} ({{ dogovor.name }})
+        <br><hr>
         <form action="{% url 'newpay' dogovor.id %}" method="post">
             {% csrf_token %}
-            <input hidden name="dogovor_id" id="id_dogovor_id" value="{{ dogovor_id }}">
-            <input type="checkbox" name="pay_type" id="id_pay_type">
-            <label for="id_date">Дата оплаты:</label> <input type="text" name="date" required id="id_date">
-            <label for="id_amount">Сумма:</label> <input type="number" name="amount" value="{{ dogovor.amount }}" required id="id_amount">
-            <label for="id_pay_place">Место оплаты:</label>
-            <select name="pay_place" id="id_pay_place">
-                <option value="в офисе" selected>в офисе</option>
-                <option value="обходчику">обходчику</option>
-                <option value="на р/счет">на р/счет</option>
-            </select>
+            <div class="row mt-4 mb-2">
+                <div class="col-5">
+                    <div class="form-group row">
+                        <label for="id_date" class="col-3 col-form-label">Дата оплаты:</label>
+                        <div class="col-9">
+                            <input type="date" name="date" id="id_date" class="form-control" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-5">
+                    <div class="form-group">
+                        <select name="pay_place" id="id_pay_place" class="form-control">
+                            <option value="в офисе" selected>в офисе</option>
+                            <option value="обходчику">обходчику</option>
+                            <option value="на р/счет">на р/счет</option>
+                       </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-5">
+                    <input type="number" name="amount" class='form-control' value="{{ dogovor.amount }}" required id="id_amount" placeholder="Сумма к оплате" required>
+                </div>
+                <div class="col-5">
+                    <div class="form-check mt-2">
+                         <input id="id_pay_type" name="pay_type" checked="checked" type="checkbox" class="form-check-input" onchange="pay_type_change();">
+                         <label id="pay_type_label" for="id_pay_type" class="form-check-label">Наличные</label>
+                    </div>
+                </div>
+            </div>
 
             <div class="row mb-2">
                 <div class="col-6">
@@ -26,6 +48,8 @@
                     </div>
                 </div>
             </div>
+
+            <input hidden name="dogovor_id" id="id_dogovor_id" value="{{ dogovor.id }}">
 
             <div class="row">
                 <div class="col-12">
