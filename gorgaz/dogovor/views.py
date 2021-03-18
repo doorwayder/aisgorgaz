@@ -1,5 +1,5 @@
 from django.contrib.auth import login, logout
-from django.db.models import Q
+from django.db.models import Q, Sum
 from django.contrib.auth.forms import AuthenticationForm
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
@@ -9,7 +9,7 @@ from .converter import *
 
 
 def main(request):
-    dogovor_data = Dogovor.objects.filter(end_date__isnull=False).order_by('-date')[:100]
+    dogovor_data = Dogovor.objects.filter(end_date__isnull=False).order_by('-date')[:50]
 
     data = {
         'title': 'Последние договора',
@@ -102,7 +102,7 @@ def dogovor_search(request):
         query = request.POST['query'].strip()
         dogovor_data = Dogovor.objects.filter(Q(name__contains=query) | Q(number__contains=query) |
                                               Q(tel1__contains=query) | Q(tel2__contains=query) |
-                                              Q(tel3__contains=query)).order_by('-date')[:50]
+                                              Q(tel3__contains=query)).order_by('-date')
     else:
         dogovor_data = []
         query = ''
@@ -170,6 +170,17 @@ def street_autocomplete(request):
     return JsonResponse(data, safe=False)
 
 
+def name_autocomplete(request):
+    q = request.GET['term']
+    qs = Dogovor.objects.values('name').distinct().order_by('name')
+    data = []
+    if q:
+        qs = qs.filter(name__istartswith=q)
+        for item in qs:
+            data.append(item['name'])
+    return JsonResponse(data, safe=False)
+
+
 def dogovor_newpay(request, dogovor_id):
     qs = Dogovor.objects.get(pk=dogovor_id)
     if request.method == 'POST':
@@ -215,9 +226,70 @@ def payment_delete(request, payment_id):
 
 def payments(request):
     data = Payment.objects.all().order_by('-date')[:100]
-
+    summa = data.aggregate(Sum('amount'))['amount__sum']
     data = {
         'title': 'Последние платежи',
         'payments': data,
+        'summa': summa,
     }
     return render(request, 'dogovor/payments.html', data)
+
+
+def payments_by_date(request):
+    if request.method == 'POST':
+        start_date = request.POST['start_date']
+        end_date = request.POST['end_date']
+        if end_date:
+            data = Payment.objects.filter(date__range=(start_date, end_date)).order_by('-date')
+        else:
+            data = Payment.objects.filter(date__gte=start_date).order_by('-date')
+        summa = data.aggregate(Sum('amount'))['amount__sum']
+    else:
+        data = []
+        start_date = ''
+        end_date = ''
+        summa = 0
+    data = {
+        'title': 'Результат поиска',
+        'payments': data,
+        'start_date': start_date,
+        'end_date': end_date,
+        'summa': summa,
+    }
+    return render(request, 'dogovor/datepayments.html', data)
+
+
+def payments_by_name(request):
+    if request.method == 'POST':
+        name = request.POST['name'].strip()
+        data = Payment.objects.filter(dogovor_id__name__contains=name).order_by('-date')[:500]
+        summa = data.aggregate(Sum('amount'))['amount__sum']
+    else:
+        data = []
+        name = ''
+        summa = 0
+    data = {
+        'title': 'Результат поиска',
+        'payments': data,
+        'name': name,
+        'summa': summa,
+    }
+    return render(request, 'dogovor/namepayments.html', data)
+
+
+def payments_by_number(request):
+    if request.method == 'POST':
+        number = request.POST['number'].strip()
+        data = Payment.objects.filter(dogovor_id__number__contains=number).order_by('-date')[:500]
+        summa = data.aggregate(Sum('amount'))['amount__sum']
+    else:
+        data = []
+        number = ''
+        summa = 0
+    data = {
+        'title': 'Результат поиска',
+        'payments': data,
+        'number': number,
+        'summa': summa,
+    }
+    return render(request, 'dogovor/numpayments.html', data)

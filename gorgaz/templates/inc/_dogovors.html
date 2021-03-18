@@ -1,5 +1,7 @@
 {% if dogovors %}
-    <b>Найдено:</b> {{ dogovors | length }} дог.
+    {% if query or city or street %}
+        <b>Найдено:</b> {{ dogovors | length }} дог.
+    {% endif %}
     <div class="table-responsive mt-4">
         <table class="table table-sm">
             <thead>
@@ -13,7 +15,7 @@
             </thead>
             <tbody>
             {% for item in dogovors %}
-            <tr class="dogtr" data-id="{{ item.id }}">
+            <tr class="dogtr {% if not item.active %}redbg{% endif %}" data-id="{{ item.id }}">
                 <td data-id="{{ item.id }}">{{ item.number }}</td>
                 <td data-id="{{ item.id }}">{{ item.name }}</td>
                 <td data-id="{{ item.id }}">{{ item.date }}</td>

@@ -1,0 +1,22 @@
+{% extends 'dogovor/base.html' %}
+{% load static %}
+{% block content %}
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 flex-fill">
+    <form action="{% url 'numpayments' %}" method="post">
+    {% csrf_token %}
+        <div class="form-group mt-3">
+            <div class="input-group">
+                <input class="form-control" placeholder="Введите номер договора" type="text" name="number" id="id_search_number" required value="{{ number }}" autocomplete="off">
+                <span class="input-group-btn">
+                    <button type="submit" class="btn btn-secondary">Поиск</button>
+                </span>
+            </div>
+        </div>
+    </form>
+
+    {% include 'inc/_payments.html' %}
+
+</main>
+{% endblock %}
+
+{% block jsblock %}<script src="{% static 'js/main.js' %}"></script>{% endblock %}

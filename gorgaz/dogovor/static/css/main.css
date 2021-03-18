@@ -87,3 +87,11 @@ body {
 th {
   background: #eeeeee;
 }
+
+.darkbg {
+  background: #f9f9f9
+}
+
+.redbg {
+  background: #ffcccc
+}

@@ -27,6 +27,12 @@ $(document).ready(function () {
             source: "/street-autocomplete/",
             delay: 100,
         });
+
+    $( "#id_search_name" ).autocomplete( {
+            source: "/name-autocomplete/",
+            delay: 100,
+            minLength: 3,
+        });
 });
 
 

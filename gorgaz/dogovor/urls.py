@@ -4,8 +4,12 @@ from . import views
 urlpatterns = [
     path('', views.main, name='main'),
     path('payments/', views.payments, name='payments'),
+    path('datepayments/', views.payments_by_date, name='datepayments'),
+    path('namepayments/', views.payments_by_name, name='namepayments'),
+    path('numpayments/', views.payments_by_number, name='numpayments'),
     path('city-autocomplete/', views.city_autocomplete, name='city-autocomplete'),
     path('street-autocomplete/', views.street_autocomplete, name='street-autocomplete'),
+    path('name-autocomplete/', views.name_autocomplete, name='name-autocomplete'),
     path('dogovor/<int:dogovor_id>/', views.dogovor_view, name='dogovor'),
     path('dogovor/<int:dogovor_id>/update/', views.dogovor_update, name='update'),
     path('add/', views.dogovor_add, name='add'),

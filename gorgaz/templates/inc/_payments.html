@@ -1,6 +1,6 @@
 {% if payments %}
     <div class="mt-2">
-        <b>Найдено:</b> {{ payments | length }} плат. <b>На сумму:</b> ...
+        <b>Найдено:</b> {{ payments | length }} платежей(а) <b>На сумму: {{ summa }} руб.</b>
     </div>
     <div class="table-responsive mt-4">
         <table class="table table-sm">
@@ -18,7 +18,7 @@
             <tbody>
             {% if payments %}
                 {% for item in payments %}
-                <tr class="paytr" data-id="{{ item.id }}">
+                <tr class="paytr {% if not item.pay_type %}darkbg{% endif %}" data-id="{{ item.id }}">
                     <td data-id="{{ item.id }}">{{ item.date }}</td>
                     <td data-id="{{ item.id }}">{{ item.dogovor_id.number }}</td>
                     <td data-id="{{ item.id }}">{{ item.dogovor_id.name }}</td>
@@ -33,5 +33,5 @@
         </table>
     </div>
 {% else %}
-            Не найдено ни одного платежа
+    {% if query or name or start_date or end_date or number %}Не найдено ни одного платежа{% endif %}
 {% endif %}

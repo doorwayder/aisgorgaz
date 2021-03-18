@@ -2,34 +2,9 @@
 {% load static %}
 {% block content %}
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 flex-fill">
-    <div class="table-responsive mt-4">
-        <table class="table table-sm">
-            <thead>
-                <tr>
-                    <th>№ договора</th>
-                    <th>Ф.И.О.</th>
-                    <th>Дата заключения</th>
-                    <th>Населенный пункт</th>
-                    <th>Дата окончания</th>
-                </tr>
-            </thead>
-            <tbody>
 
-            {% if dogovors %}
-                {% for item in dogovors %}
-                <tr class="dogtr" data-id="{{ item.id }}">
-                    <td data-id="{{ item.id }}">{{ item.number }}</td>
-                    <td data-id="{{ item.id }}">{{ item.name }}</td>
-                    <td data-id="{{ item.id }}">{{ item.date }}</td>
-                    <td data-id="{{ item.id }}">{{ item.address_city }}</td>
-                    <td data-id="{{ item.id }}">{{ item.end_date }}</td>
-                </tr>
-                {% endfor %}
-            {% endif %}
+    {% include 'inc/_dogovors.html' %}
 
-            </tbody>
-        </table>
-    </div>
 </main>
 {% endblock %}
 
