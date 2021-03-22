@@ -9,6 +9,7 @@ USER = 'root'
 PASSWORD = 'root'
 DB = 'arzgaz_imp'
 
+
 def to_utf8(string: str):
     return string.encode('cp850').decode('cp1251')
 
@@ -16,25 +17,50 @@ def to_utf8(string: str):
 def is_phone_incorrect(phone: str):
     if phone == '':
         return 0
-    elif len(phone) < 10:
+    elif re.search('[а-я]', phone):
         return 1
-    elif len(phone) > 11:
+    elif len(phone) < 10:
         return 2
+    elif re.search(',', phone) or re.search(', ', phone) or re.search('; ', phone):
+        if not parse_phones(phone):
+            return 3
+        else:
+            return False
+    elif len(phone) > 12:
+        return 4
     else:
         return False
+
+
+def get_correct_phone(phone):
+    if not parse_phones(phone):
+        if len(phone) == 10 and re.search('^9', phone):
+            return phone
+        elif len(phone) == 11 and re.search('^89', phone):
+            return phone[1:]
+        elif len(phone) == 12 and re.search('^\+79', phone):
+            return phone[2:]
+    else:
+        for item in parse_phones(phone):
+            if len(item) == 10 and re.search('^9', item):
+                return item
+            elif len(item) == 11 and re.search('^89', item):
+                return item[1:]
+            elif len(item) == 12 and re.search('^\+79', item):
+                return item[2:]
 
 
 def parse_phones(phone):
     phones1 = phone.split(', ')
     phones2 = phone.split(',')
-    phones3 = phone.split()
+    phones3 = phone.split('; ')
     if len(phones1) > 1:
         return phones1
     if len(phones2) > 1:
         return phones2
     if len(phones3) > 1:
         return phones3
-    return phone
+    return False
 
 
 """CONVERT MAIN BAZA (34586)"""
@@ -44,9 +70,10 @@ def conver_baza(table):
     count = 0
     for row in table:
         if True:
+            Tel3 = ''
             if row['Fam'] is not None:
                 Fam = to_utf8(row['Fam'])
-                #print(Fam)
+                # print(Fam)
             else:
                 Fam = ''
             if row['Oborud'] is not None:
@@ -99,17 +126,21 @@ def conver_baza(table):
 
             try:
                 with connection.cursor() as cursor:
-                    #print(Tel)
-                    if is_phone_incorrect(Tel):
-                        if re.search('[а-я]', Tel):
+                    # print(Tel)
+                    if not is_phone_incorrect(Tel):
+                        Tel1 = get_correct_phone(Tel)
+                        if Tel1:
                             count += 1
-                            print(count, re.search('[а-я]', Tel), Tel)
-                        #print(count, parse_phones(Tel))
-                        #print(count, Tel)
+                            if parse_phones(Tel):
+                                Tel3 = Tel
+                            print(count, Tel1, Tel3)
+                    else:
+                        Tel3 = Tel
+                        print('=====================', Tel3)
 
-                    #sql = 'INSERT INTO dogovor_dogovor(name, number, date, end_date, ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)'
-                    #cursor.execute(sql, (Rab, Vibr, Datdog, Nom, Fam, Tel, Fl, Idold, Codg, Codu, Dom, Kv, Oborud, Sum0, Skid, Sum1, Sumpr, Datrab, Period, Datsrok, Coment))
-                    #connection.commit()
+                    # sql = 'INSERT INTO dogovor_dogovor(name, number, date, end_date, ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)'
+                    # cursor.execute(sql, (Rab, Vibr, Datdog, Nom, Fam, Tel, Fl, Idold, Codg, Codu, Dom, Kv, Oborud, Sum0, Skid, Sum1, Sumpr, Datrab, Period, Datsrok, Coment))
+                    # connection.commit()
             except Exception as e:
                 print(e)
 
@@ -119,6 +150,5 @@ filename = path = os.path.join('db', table_name)
 
 print(colored('[Converting started]', 'green'))
 conver_baza(Table(filename))
-
 
 # 163 - empty Phones

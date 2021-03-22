@@ -43,9 +43,9 @@
                 <tr>
                     <td>Телефон</td>
                     <td>
-                        {{ dogovor.tel1 }}
-                        {% if dogovor.tel2 %} <br> {{ dogovor.tel2 }} {% endif %}
-                        {% if dogovor.tel3 %} <br> {{ dogovor.tel3 }} {% endif %}
+                        {% if dogovor.tel1 %}{{ dogovor.tel1 }}<br>{% endif %}
+                        {% if dogovor.tel2 %}{{ dogovor.tel2 }}<br>{% endif %}
+                        {% if dogovor.tel3 %}{{ dogovor.tel3 }}{% endif %}
                     </td>
                 </tr>
                 <tr>
