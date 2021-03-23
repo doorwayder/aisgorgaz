@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from datetime import datetime, timedelta
 
 
 class Dogovor(models.Model):
@@ -26,6 +26,16 @@ class Dogovor(models.Model):
 
     def __str__(self):
         return self.name
+
+    def is_expired(self):
+        if self.end_date is None:
+            return False
+        else:
+            end = datetime.now().date() + timedelta(days=60)
+            if self.end_date <= end:
+                return True
+            else:
+                return False
 
     class Meta:
         verbose_name = 'Договор'
