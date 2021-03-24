@@ -56,7 +56,7 @@ WSGI_APPLICATION = 'gorgaz.wsgi.application'
 
 DATABASES = {
     'default': {
-        'NAME': 'arzgaz',
+        'NAME': 'arzgaz_imp',
         'ENGINE': 'django.db.backends.mysql',
         'USER': 'root',
         'PASSWORD': 'root',

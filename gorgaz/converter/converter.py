@@ -2,6 +2,7 @@ import pymysql.cursors
 from pypxlib import *
 from termcolor import colored
 import re
+from converter_lib import *
 
 HOSTNAME = 'localhost'
 PORT = 3306
@@ -64,7 +65,7 @@ def parse_phones(phone):
 
 
 """CONVERT MAIN BAZA (34586)"""
-def conver_baza(table):
+def convert_baza(table):
     connection = pymysql.connect(host=HOSTNAME, port=PORT, user=USER, password=PASSWORD,
                                  db=DB, charset='utf8', cursorclass=pymysql.cursors.DictCursor)
     count = 0
@@ -133,22 +134,30 @@ def conver_baza(table):
                             count += 1
                             if parse_phones(Tel):
                                 Tel3 = Tel
-                            print(count, Tel1, Tel3)
+                            print(count, Fam)
+                        else:
+                            Tel1= ''
                     else:
                         Tel3 = Tel
-                        print('=====================', Tel3)
+                        Tel1 = ''
 
-                    # sql = 'INSERT INTO dogovor_dogovor(name, number, date, end_date, ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)'
-                    # cursor.execute(sql, (Rab, Vibr, Datdog, Nom, Fam, Tel, Fl, Idold, Codg, Codu, Dom, Kv, Oborud, Sum0, Skid, Sum1, Sumpr, Datrab, Period, Datsrok, Coment))
-                    # connection.commit()
+                    sql = 'INSERT INTO dogovor_dogovor (name, number, date, end_date, tel1, tel3, fiz, address_city, ' \
+                          'address_street, address_house, address_kv, equip, sum, discount, amount, comment, id_old, ' \
+                          'active) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)'
+                    cursor.execute(sql, (Fam, Nom, Datdog, Datsrok, Tel1, Tel3, Fl, getg(Codg), getu(Codg, Codu), Dom,
+                                         Kv, Oborud, Sum0, Skid, Sum1, Coment, Idold, Rab))
+                    connection.commit()
             except Exception as e:
                 print(e)
+
+
+def convert_payments(table):
+    pass
 
 
 table_name = 'baza.DB'
 filename = path = os.path.join('db', table_name)
 
 print(colored('[Converting started]', 'green'))
-conver_baza(Table(filename))
+#convert_baza(Table(filename))
 
-# 163 - empty Phones

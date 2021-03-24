@@ -6,16 +6,29 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Dogovor, Payment
 from .forms import DogovorForm, PaymentForm
 from .converter import *
+from datetime import datetime, timedelta
+from .param import *
 
 
 def main(request):
-    dogovor_data = Dogovor.objects.filter(end_date__isnull=False).order_by('-date')[:50]
+    end = datetime.now().date() + timedelta(days=EXPIRED_DAYS)
+    dogovor_data = Dogovor.objects.filter(Q(end_date__lte=end) & Q(active=True)).order_by('-date')
 
     data = {
         'title': 'Последние договора',
         'dogovors': dogovor_data,
     }
     return render(request, 'dogovor/index.html', data)
+
+
+def dogovor_inactive(request):
+    dogovor_data = Dogovor.objects.filter(active=False).order_by('-date')
+
+    data = {
+        'title': 'Расторгнутые договора',
+        'dogovors': dogovor_data,
+    }
+    return render(request, 'dogovor/inactive.html', data)
 
 
 def convert(request):

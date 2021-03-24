@@ -1,6 +1,6 @@
 from django.db import models
 from datetime import datetime, timedelta
-
+from .param import *
 
 class Dogovor(models.Model):
     name = models.CharField(max_length=200, blank=True, verbose_name='ФИО')
@@ -31,7 +31,7 @@ class Dogovor(models.Model):
         if self.end_date is None:
             return False
         else:
-            end = datetime.now().date() + timedelta(days=60)
+            end = datetime.now().date() + timedelta(days=EXPIRED_DAYS)
             if self.end_date <= end:
                 return True
             else:
