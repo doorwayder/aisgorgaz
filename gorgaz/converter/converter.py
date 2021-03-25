@@ -64,6 +64,20 @@ def parse_phones(phone):
     return False
 
 
+def get_id_by_oldid(oldid):
+    connection = pymysql.connect(host=HOSTNAME, port=PORT, user=USER, password=PASSWORD,
+                                 db=DB, charset='utf8', cursorclass=pymysql.cursors.DictCursor)
+    try:
+        with connection.cursor() as cursor:
+            sql = f'SELECT id FROM dogovor_dogovor WHERE id_old={oldid}'
+            cursor.execute(sql)
+    finally:
+        connection.close()
+        if cursor.rowcount > 0:
+            return cursor.fetchone()['id']
+        return False
+
+
 """CONVERT MAIN BAZA (34586)"""
 def convert_baza(table):
     connection = pymysql.connect(host=HOSTNAME, port=PORT, user=USER, password=PASSWORD,
@@ -152,12 +166,50 @@ def convert_baza(table):
 
 
 def convert_payments(table):
-    pass
+    connection = pymysql.connect(host=HOSTNAME, port=PORT, user=USER, password=PASSWORD,
+                                 db=DB, charset='utf8', cursorclass=pymysql.cursors.DictCursor)
+    count = 0
+    errors = 0
+    for row in table:
+        Idold = row['Id']
+        if row['Fio'] is not None:
+            Fio = to_utf8(row['Fio'])
+            #print(Fio)
+        else:
+            Fio = ''
+        if row['Datrab'] is not None:
+            Datrab = row['Datrab']
+        else:
+            datrab = ''
+        if row['Sumo'] is not None:
+            Sumo = row['Sumo']
+        else:
+            Sumo = 0
+
+        try:
+            with connection.cursor() as cursor:
+                sql = 'INSERT INTO dogovor_payment (pay_type, date, amount, pay_place, dogovor_id_id, comment) ' \
+                      'VALUES (%s, %s, %s, %s, %s, %s)'
+                did = get_id_by_oldid(Idold)
+                if did:
+                    count += 1
+                    cursor.execute(sql, (1, Datrab, Sumo, '', did, Fio))
+                    connection.commit()
+                else:
+                    errors += 1
+                    print('error: id=', did)
+
+                print(count, '===', Idold, Fio, Datrab, Sumo)
+        except Exception as e:
+            print(e)
+        print('errors: ', errors)
 
 
-table_name = 'baza.DB'
+table_name = 'period.DB'
 filename = path = os.path.join('db', table_name)
 
 print(colored('[Converting started]', 'green'))
 #convert_baza(Table(filename))
+
+convert_payments(Table(filename))
 

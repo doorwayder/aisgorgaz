@@ -24,6 +24,14 @@
                 </tr>
                 <tr>
                     <td>
+                        Дата заключения
+                    </td>
+                    <td>
+                        {{ dogovor.date }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
                         Статус
                     </td>
                     <td>
@@ -93,7 +101,7 @@
                         Действует до
                     </td>
                     <td>
-                        {{ dogovor.end_date }}
+                        {% if dogovor.end_date %} {{ dogovor.end_date }} {% else %} - {% endif %}
                     </td>
                 </tr>
             </tbody>

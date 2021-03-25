@@ -101,7 +101,7 @@ def dogovor_update(request, dogovor_id):
         form = DogovorForm(request.POST, instance=dogovor)
         if form.is_valid():
             form.save()
-            return redirect('main')
+            return redirect('dogovor', dogovor_id=dogovor.id)
     form = DogovorForm(instance=dogovor)
     data = {
         'form': form,
@@ -135,9 +135,9 @@ def dogovor_search_address(request):
         street = request.POST['address_street']
         error_message = ''
         if city and street:
-            dogovor_data = Dogovor.objects.filter(Q(address_city=city) & Q(address_street=street))
+            dogovor_data = Dogovor.objects.filter(Q(address_city=city) & Q(address_street=street) & Q(active=True))
         elif city:
-            dogovor_data = Dogovor.objects.filter(address_city=city)
+            dogovor_data = Dogovor.objects.filter(Q(address_city=city) & Q(active=True))
         elif street:
             dogovor_data = []
             error_message = 'Выберите населенный пункт'
@@ -202,7 +202,7 @@ def dogovor_newpay(request, dogovor_id):
             Payment.objects.create(**form.cleaned_data)
             return redirect('dogovor', dogovor_id=dogovor_id)
         else:
-            print('invalid form', form)
+            print('invalid form')
     else:
         form = PaymentForm()
     data = {
@@ -221,6 +221,8 @@ def dogovor_updatepay(request, payment_id):
         if form.is_valid():
             form.save()
             return redirect('dogovor', dogovor_id=dogovor.id)
+        else:
+            print('form error', form)
     form = PaymentForm(instance=payment)
     data = {
         'form': form,
