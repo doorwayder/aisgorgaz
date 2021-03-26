@@ -110,7 +110,7 @@ def convert_baza(table):
                 Tel = to_utf8(row['Tel'])
             else:
                 Tel = ''
-            Idold = row['Id']
+            Idold = row['Id'] + 100000
             Codg = row['Codg']
             Codu = row['Codu']
             if row['Dom'] is not None:
@@ -171,7 +171,7 @@ def convert_payments(table):
     count = 0
     errors = 0
     for row in table:
-        Idold = row['Id']
+        Idold = row['Id'] + 100000  # 100000 - для Севастопольской
         if row['Fio'] is not None:
             Fio = to_utf8(row['Fio'])
             #print(Fio)
@@ -206,7 +206,7 @@ def convert_payments(table):
 
 
 table_name = 'period.DB'
-filename = path = os.path.join('db', table_name)
+filename = path = os.path.join('db\\sev', table_name)
 
 print(colored('[Converting started]', 'green'))
 #convert_baza(Table(filename))

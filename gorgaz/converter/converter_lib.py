@@ -1,8 +1,9 @@
 import pymysql.cursors
 
+DATABASE = 'gorgaz_sev'
 
 def converter():
-    connection = pymysql.connect(host='localhost', port=3306, user='root', password='root', db='gorgaz',
+    connection = pymysql.connect(host='localhost', port=3306, user='root', password='root', db=DATABASE,
                                  charset='utf8', cursorclass=pymysql.cursors.DictCursor)
 
     try:
@@ -20,7 +21,7 @@ def converter():
 
 
 def getu(codg, codu):
-    connection = pymysql.connect(host='localhost', port=3306, user='root', password='root', db='gorgaz',
+    connection = pymysql.connect(host='localhost', port=3306, user='root', password='root', db=DATABASE,
                                  charset='utf8', cursorclass=pymysql.cursors.DictCursor)
     try:
         with connection.cursor() as cursor:
@@ -35,7 +36,7 @@ def getu(codg, codu):
 
 
 def getg(codg):
-    connection = pymysql.connect(host='localhost', port=3306, user='root', password='root', db='gorgaz',
+    connection = pymysql.connect(host='localhost', port=3306, user='root', password='root', db=DATABASE,
                                  charset='utf8', cursorclass=pymysql.cursors.DictCursor)
     try:
         with connection.cursor() as cursor:
