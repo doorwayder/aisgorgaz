@@ -2,6 +2,7 @@ from django.db import models
 from datetime import datetime, timedelta
 from .param import *
 
+
 class Dogovor(models.Model):
     name = models.CharField(max_length=200, blank=True, verbose_name='ФИО')
     number = models.CharField(max_length=15, blank=True, verbose_name='Номер договора')
@@ -55,3 +56,17 @@ class Payment(models.Model):
     class Meta:
         verbose_name = 'Оплата'
         verbose_name_plural = 'Оплаты'
+
+
+class Notification(models.Model):
+    TYPE_CHOICES = [('SMS', 'SMS'), ('Viber', 'Viber'), ('Telegram', 'Telegram')]
+    dogovor_id = models.ForeignKey(Dogovor, on_delete=models.CASCADE)
+    tel = models.CharField(max_length=10, blank=True, verbose_name='Телефон')
+    notify_type = models.CharField(max_length=10, blank=False, verbose_name='Тип уведомления', choices=TYPE_CHOICES,
+                                   default='SMS')
+    time = models.DateTimeField(null=True, verbose_name='Даза отправки уведомления')
+    success = models.BooleanField(default=False, verbose_name='Успешно')
+
+    class Meta:
+        verbose_name = 'Уведомление'
+        verbose_name_plural = 'Уведомления'
