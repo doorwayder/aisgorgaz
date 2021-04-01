@@ -84,6 +84,10 @@ body {
   background: #eeeeee;
 }
 
+.notify:hover {
+  background: #eeeeee;
+}
+
 th {
   background: #eeeeee;
 }
@@ -99,3 +103,8 @@ th {
 .yellowbg {
   background: #fffacd
 }
+
+.greenbg {
+  background: #aaffaa
+}
+

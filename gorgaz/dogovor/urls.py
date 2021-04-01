@@ -19,6 +19,7 @@ urlpatterns = [
     path('delpay/<int:payment_id>/', views.payment_delete, name='delpay'),
     path('search/', views.dogovor_search, name='search'),
     path('address/', views.dogovor_search_address, name='search_address'),
+    path('phones/', views.notifications, name='phones'),
     path('login/', views.user_login, name='login'),
     path('logout/', views.user_logout, name='logout'),
     #path('convert/', views.convert),

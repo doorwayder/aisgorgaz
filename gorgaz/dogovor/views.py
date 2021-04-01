@@ -3,7 +3,7 @@ from django.db.models import Q, Sum
 from django.contrib.auth.forms import AuthenticationForm
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Dogovor, Payment
+from .models import Dogovor, Payment, Notification
 from .forms import DogovorForm, PaymentForm
 from .converter import *
 from datetime import datetime, timedelta
@@ -240,11 +240,11 @@ def payment_delete(request, payment_id):
 
 
 def payments(request):
-    data = Payment.objects.all().order_by('-date')[:100]
-    summa = data.aggregate(Sum('amount'))['amount__sum']
+    payments_data = Payment.objects.all().order_by('-date')[:100]
+    summa = payments_data.aggregate(Sum('amount'))['amount__sum']
     data = {
         'title': 'Последние платежи',
-        'payments': data,
+        'payments': payments_data,
         'summa': summa,
     }
     return render(request, 'dogovor/payments.html', data)
@@ -255,18 +255,18 @@ def payments_by_date(request):
         start_date = request.POST['start_date']
         end_date = request.POST['end_date']
         if end_date:
-            data = Payment.objects.filter(date__range=(start_date, end_date)).order_by('-date')
+            payments_data = Payment.objects.filter(date__range=(start_date, end_date)).order_by('-date')
         else:
-            data = Payment.objects.filter(date__gte=start_date).order_by('-date')
-        summa = data.aggregate(Sum('amount'))['amount__sum']
+            payments_data = Payment.objects.filter(date__gte=start_date).order_by('-date')
+        summa = payments_data.aggregate(Sum('amount'))['amount__sum']
     else:
-        data = []
+        payments_data = []
         start_date = ''
         end_date = ''
         summa = 0
     data = {
         'title': 'Результат поиска',
-        'payments': data,
+        'payments': payments_data,
         'start_date': start_date,
         'end_date': end_date,
         'summa': summa,
@@ -277,15 +277,15 @@ def payments_by_date(request):
 def payments_by_name(request):
     if request.method == 'POST':
         name = request.POST['name'].strip()
-        data = Payment.objects.filter(dogovor_id__name__contains=name).order_by('-date')[:500]
-        summa = data.aggregate(Sum('amount'))['amount__sum']
+        payments_data = Payment.objects.filter(dogovor_id__name__contains=name).order_by('-date')[:500]
+        summa = payments_data.aggregate(Sum('amount'))['amount__sum']
     else:
-        data = []
+        payments_data = []
         name = ''
         summa = 0
     data = {
         'title': 'Результат поиска',
-        'payments': data,
+        'payments': payments_data,
         'name': name,
         'summa': summa,
     }
@@ -295,16 +295,26 @@ def payments_by_name(request):
 def payments_by_number(request):
     if request.method == 'POST':
         number = request.POST['number'].strip()
-        data = Payment.objects.filter(dogovor_id__number__contains=number).order_by('-date')[:500]
-        summa = data.aggregate(Sum('amount'))['amount__sum']
+        payments_data = Payment.objects.filter(dogovor_id__number__contains=number).order_by('-date')[:500]
+        summa = payments_data.aggregate(Sum('amount'))['amount__sum']
     else:
-        data = []
+        payments_data = []
         number = ''
         summa = 0
     data = {
         'title': 'Результат поиска',
-        'payments': data,
+        'payments': payments_data,
         'number': number,
         'summa': summa,
     }
     return render(request, 'dogovor/numpayments.html', data)
+
+
+def notifications(request):
+    today = datetime.today().date()
+    notification_data = Notification.objects.filter(create_time__date=today).order_by('-create_time')
+    data = {
+        'title': 'Номера телефонов для уведомлений',
+        'notifications': notification_data,
+    }
+    return render(request, 'dogovor/phones.html', data)

@@ -64,7 +64,8 @@ class Notification(models.Model):
     tel = models.CharField(max_length=10, blank=True, verbose_name='Телефон')
     notify_type = models.CharField(max_length=10, blank=False, verbose_name='Тип уведомления', choices=TYPE_CHOICES,
                                    default='SMS')
-    time = models.DateTimeField(null=True, verbose_name='Даза отправки уведомления')
+    create_time = models.DateTimeField(auto_now_add=True, null=False, blank=False, verbose_name='Время создания уведомления')
+    send_time = models.DateTimeField(null=True, blank=True, verbose_name='Время отправки уведомления')
     success = models.BooleanField(default=False, verbose_name='Успешно')
 
     class Meta:

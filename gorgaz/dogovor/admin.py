@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Dogovor, Payment
+from .models import Dogovor, Payment, Notification
 
 
 class PaymentsInline(admin.TabularInline):
@@ -30,3 +30,4 @@ class PaymentAdmin(admin.ModelAdmin):
 
 admin.site.register(Dogovor, DogovorAdmin)
 admin.site.register(Payment, PaymentAdmin)
+admin.site.register(Notification)
