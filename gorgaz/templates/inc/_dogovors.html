@@ -1,30 +1,38 @@
 {% if dogovors %}
-    {% if query or city or street %}
-        <b>Найдено:</b> {{ dogovors | length }} дог.
+    {% if query or city or street or name %}
+    <b>Найдено:</b> {{ dogovors | length }} дог.
     {% endif %}
     <div class="table-responsive mt-4">
-        <table class="table table-sm">
+        <table class="table table-sm dogtable">
             <thead>
                 <tr>
                     <th>№ договора</th>
                     <th>Ф.И.О.</th>
-                    <th>Дата заключения</th>
-                    <th>Населенный пункт</th>
-                    <th>Дата окончания</th>
+                    <th>Адрес</th>
+                    <th>Действует до</th>
+                    <th>Контакты</th>
                 </tr>
             </thead>
             <tbody>
             {% for item in dogovors %}
             <tr class="dogtr {% if not item.active %}redbg{% endif %} {% if item.active and item.is_expired %}yellowbg{% endif %}" data-id="{{ item.id }}">
-                <td data-id="{{ item.id }}">{{ item.number }}</td>
-                <td data-id="{{ item.id }}">{{ item.name | truncatechars:70}}</td>
-                <td data-id="{{ item.id }}">{{ item.date }}</td>
-                <td data-id="{{ item.id }}">{{ item.address_city }}</td>
+                <td data-id="{{ item.id }}">{{ item.number }} от {{ item.date | date:"d.m.Y"}}</td>
+                <td data-id="{{ item.id }}">{{ item.name | truncatechars:50}}</td>
+                <td data-id="{{ item.id }}">{{ item.address_city }}, {{ item.address_street }},
+                    д. {{ item.address_house }}{% if item.address_kv %}, кв. {{ item.address_kv }}{% endif %}</td>
                 <td data-id="{{ item.id }}">{% if item.end_date %}{{ item.end_date }}{% else %}-{% endif %}</td>
+                <td data-id="{{ item.id }}">{% if item.tel1 %}{{ item.tel1 }}{% endif %}{% if item.tel2 %}  {{ item.tel2 }}{% endif %}{% if item.tel3 %}  {{ item.tel3 }}{% endif %}</td>
             </tr>
             {% endfor %}
             </tbody>
         </table>
+        <form action="{% url 'addnotifications' %}" method="post">
+            {% csrf_token %}
+            {% for item in dogovors %}
+                <input type="hidden" name="dogovor_id[]" value="{{ item.id }}">
+            {% endfor %}
+            <button type="submit" class="btn btn-secondary btn-sm btn-block mb-3">Добавить в список уведомлений</button>
+        </form>
     </div>
     {% else %}
         {% if query or city or street %}

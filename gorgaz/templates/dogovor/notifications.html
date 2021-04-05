@@ -16,10 +16,13 @@
             <tbody>
             {% for item in notifications %}
             <tr data-id="{{ item.id }}" class="notify {% if item.send_time and item.success %}greenbg{% endif %} {% if item.send_time and not item.success %}redbg{% endif %}">
-                <td data-id="{{ item.id }}">{{ item.tel }}</td>
+                <td data-id="{{ item.id }}">{% if item.dogovor_id.tel1 %}{{ item.dogovor_id.tel1 }}<br>{% endif %}
+                    {% if item.dogovor_id.tel2 %}{{ item.dogovor_id.tel2 }}<br>{% endif %}
+                    {% if item.dogovor_id.tel3 %}{{ item.dogovor_id.tel3 }}{% endif %}
+                </td>
                 <td data-id="{{ item.id }}">{{ item.dogovor_id.name | truncatechars:70}}</td>
                 <td data-id="{{ item.id }}">{{ item.notify_type }}</td>
-                <td data-id="{{ item.id }}">{{ item.send_time }}</td>
+                <td data-id="{{ item.id }}">{% if item.send_time %}{{ item.send_time }}{% else %}-{% endif %}</td>
             </tr>
             {% endfor %}
             </tbody>

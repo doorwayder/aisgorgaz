@@ -27,6 +27,7 @@ def dogovor_inactive(request):
     data = {
         'title': 'Расторгнутые договора',
         'dogovors': dogovor_data,
+        'query': 'Расторгнутые',
     }
     return render(request, 'dogovor/inactive.html', data)
 
@@ -127,17 +128,39 @@ def dogovor_search(request):
     return render(request, 'dogovor/search.html', data)
 
 
+def dogovor_search_name(request):
+    if request.method == 'POST':
+        name = request.POST['name'].strip()
+        dogovor_data = Dogovor.objects.filter(name__contains=name).order_by('-date')[:500]
+    else:
+        dogovor_data = []
+        name = ''
+
+    data = {
+        'title': 'Результат поиска',
+        'dogovors': dogovor_data,
+        'name': name,
+    }
+    return render(request, 'dogovor/name.html', data)
+
+
 def dogovor_search_address(request):
+    end = datetime.now().date() + timedelta(days=EXPIRED_DAYS)
     address_city = Dogovor.objects.values('address_city').distinct().order_by('address_city')
     address_street = Dogovor.objects.values('address_street').distinct().order_by('address_street')
     if request.method == 'POST':
         city = request.POST['address_city']
         street = request.POST['address_street']
+        expiring = request.POST.get('expiring')
         error_message = ''
         if city and street:
             dogovor_data = Dogovor.objects.filter(Q(address_city=city) & Q(address_street=street) & Q(active=True))
+            if expiring:
+                dogovor_data = dogovor_data.filter(end_date__lte=end)
         elif city:
             dogovor_data = Dogovor.objects.filter(Q(address_city=city) & Q(active=True))
+            if expiring:
+                dogovor_data = dogovor_data.filter(end_date__lte=end)
         elif street:
             dogovor_data = []
             error_message = 'Выберите населенный пункт'
@@ -317,4 +340,13 @@ def notifications(request):
         'title': 'Номера телефонов для уведомлений',
         'notifications': notification_data,
     }
-    return render(request, 'dogovor/phones.html', data)
+    return render(request, 'dogovor/notifications.html', data)
+
+
+def add_notifications(request):
+    if request.method == 'POST':
+        dogovors = request.POST.getlist('dogovor_id[]')
+        for item in dogovors:
+            dogovor = Dogovor.objects.get(id=item)
+            Notification.objects.create(dogovor_id=dogovor, notify_type='Call')
+    return redirect('notifications')

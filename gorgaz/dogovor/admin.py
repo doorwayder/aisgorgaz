@@ -28,6 +28,16 @@ class PaymentAdmin(admin.ModelAdmin):
     get_name.short_description = 'Ф.И.О. (по договору)'
 
 
+class NotificationAdmin(admin.ModelAdmin):
+    list_display = ('dogovor_id', 'create_time', 'send_time', 'success', )
+    list_display_links = ('dogovor_id', )
+    list_filter = ('create_time',)
+
+    def get_name(self, obj):
+        return obj.dogovor_id.name
+    get_name.short_description = 'Ф.И.О. (по договору)'
+
+
 admin.site.register(Dogovor, DogovorAdmin)
 admin.site.register(Payment, PaymentAdmin)
-admin.site.register(Notification)
+admin.site.register(Notification, NotificationAdmin)

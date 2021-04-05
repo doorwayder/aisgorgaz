@@ -18,7 +18,7 @@ class Dogovor(models.Model):
     address_kv = models.CharField(max_length=10, blank=True, verbose_name='Квартира')
     equip = models.CharField(max_length=200, blank=True, verbose_name='Оборудование')
     sum = models.IntegerField(blank=True, verbose_name='Сумма')
-    discount = models.IntegerField(blank=True, verbose_name='Скидка')
+    discount = models.IntegerField(blank=True, verbose_name='Скидка', default=0)
     amount = models.IntegerField(blank=True, verbose_name='Итого')
     comment = models.CharField(max_length=500, blank=True, verbose_name='Примечание')
     id_old = models.IntegerField(null=True, verbose_name='Old Id')
@@ -59,14 +59,16 @@ class Payment(models.Model):
 
 
 class Notification(models.Model):
-    TYPE_CHOICES = [('SMS', 'SMS'), ('Viber', 'Viber'), ('Telegram', 'Telegram')]
+    TYPE_CHOICES = [('SMS', 'SMS'), ('Viber', 'Viber'), ('Telegram', 'Telegram'), ('Call', 'Call')]
     dogovor_id = models.ForeignKey(Dogovor, on_delete=models.CASCADE)
-    tel = models.CharField(max_length=10, blank=True, verbose_name='Телефон')
     notify_type = models.CharField(max_length=10, blank=False, verbose_name='Тип уведомления', choices=TYPE_CHOICES,
                                    default='SMS')
     create_time = models.DateTimeField(auto_now_add=True, null=False, blank=False, verbose_name='Время создания уведомления')
     send_time = models.DateTimeField(null=True, blank=True, verbose_name='Время отправки уведомления')
     success = models.BooleanField(default=False, verbose_name='Успешно')
+
+    def __str__(self):
+        return self.dogovor_id.name
 
     class Meta:
         verbose_name = 'Уведомление'

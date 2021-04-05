@@ -26,6 +26,10 @@
             </select>
             <button type="submit" class="btn btn-secondary">Поиск</button>
         </div>
+        <div class="ml-4">
+            <input id="id_expiring" name="expiring" checked="checked" type="checkbox" class="form-check-input">
+            <label id="expiring_label" for="id_expiring" class="form-check-label">Срок договора истекает</label>
+        </div>
     </form>
 
     {% include 'inc/_dogovors.html' %}
