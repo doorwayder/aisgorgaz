@@ -3,9 +3,71 @@
 {% block content %}
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 flex-fill">
 
-    {% include 'inc/_dogovors.html' %}
+    <div class="row row-cols-1 row-cols-md-3 mb-3 text-center mt-4">
+      <div class="col">
+        <div class="card mb-4 rounded-3 shadow-sm">
+          <div class="card-header py-3">
+            <h4 class="my-0 fw-normal">Действующие договора</h4>
+          </div>
+          <div class="card-body">
+            <h1 class="card-title pricing-card-title">{{ active_count }}<small class="text-muted fw-light">/{{ count }}</small></h1>
+            <ul class="list-unstyled mt-3 mb-4">
+              <li>Количество действующих договоров</li>
+              <li>от общего количества</li>
+            </ul>
+            <a type="button" class="w-100 btn btn-lg btn-outline-secondary" href="/search/">Поиск договоров</a>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card mb-4 rounded-3 shadow-sm">
+          <div class="card-header py-3">
+            <h4 class="my-0 fw-normal">Заканчивается срок</h4>
+          </div>
+          <div class="card-body">
+            <h1 class="card-title pricing-card-title">{{ expiring_count }}<small class="text-muted fw-light">/{{ active_count }}</small></h1>
+            <ul class="list-unstyled mt-3 mb-4">
+              <li>Количество договоров, срок действия которых заканчивается через 60 дней</li>
+            </ul>
+            <a type="button" class="w-100 btn btn-lg btn-outline-secondary" href="/address/">Поиск по адресу</a>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card mb-4 rounded-3 shadow-sm">
+          <div class="card-header py-3">
+            <h4 class="my-0 fw-normal">Просроченные</h4>
+          </div>
+          <div class="card-body">
+            <h1 class="card-title pricing-card-title">{{ expired_count }}<small class="text-muted fw-light">/{{ active_count }}</small></h1>
+            <ul class="list-unstyled mt-3 mb-4">
+              <li>Количество договоро, срок действия</li>
+              <li>которых истек</li>
+            </ul>
+            <button type="button" class="w-100 btn btn-lg btn-outline-secondary">Список просроченных</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row row-cols-1 row-cols-md-3 mb-3 text-center mt-4">
+      <div class="col">
+        <div class="card mb-4 rounded-3 shadow-sm">
+          <div class="card-header py-3">
+            <h4 class="my-0 fw-normal">Платежи в текущем году</h4>
+          </div>
+          <div class="card-body">
+            <div class="chart">
+              <canvas id="chart-bars" class="chart-canvas"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
 </main>
 {% endblock %}
 
-{% block jsblock %}<script src="{% static 'js/main.js' %}"></script> {% endblock %}
+{% block jsblock %}
+<script src="{% static 'js/main.js' %}"></script>
+<script src="{% static 'js/chart.min.js' %}"></script>
+{% endblock %}

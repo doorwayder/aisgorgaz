@@ -12,11 +12,17 @@ from .param import *
 
 def main(request):
     end = datetime.now().date() + timedelta(days=EXPIRED_DAYS)
-    dogovor_data = Dogovor.objects.filter(Q(end_date__lte=end) & Q(active=True)).order_by('-date')
+    dogovor_count = Dogovor.objects.all().count()
+    dogovor_active_count = Dogovor.objects.filter(active=True).count()
+    dogovor_expiring_count = Dogovor.objects.filter(Q(end_date__lte=end) & Q(active=True)).count()
+    dogovor_expired_count = Dogovor.objects.filter(Q(end_date__lte=datetime.now().date()) & Q(active=True)).count()
 
     data = {
-        'title': 'Последние договора',
-        'dogovors': dogovor_data,
+        'title': 'Dashboard',
+        'count': dogovor_count,
+        'active_count': dogovor_active_count,
+        'expiring_count': dogovor_expiring_count,
+        'expired_count': dogovor_expired_count,
     }
     return render(request, 'dogovor/index.html', data)
 
