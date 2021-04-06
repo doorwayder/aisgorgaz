@@ -1,8 +1,9 @@
 from django.contrib.auth import login, logout
 from django.db.models import Q, Sum
 from django.contrib.auth.forms import AuthenticationForm
-from django.http import HttpResponse, JsonResponse
+from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
+from django.core.paginator import Paginator
 from .models import Dogovor, Payment, Notification
 from .forms import DogovorForm, PaymentForm
 from .converter import *
@@ -15,7 +16,40 @@ def main(request):
     dogovor_count = Dogovor.objects.all().count()
     dogovor_active_count = Dogovor.objects.filter(active=True).count()
     dogovor_expiring_count = Dogovor.objects.filter(Q(end_date__lte=end) & Q(active=True)).count()
-    dogovor_expired_count = Dogovor.objects.filter(Q(end_date__lte=datetime.now().date()) & Q(active=True)).count()
+    dogovor_expired_count = Dogovor.objects.filter(Q(end_date__lt=datetime.now().date()) & Q(active=True)).count()
+
+    year_begin = datetime.today().strftime("%Y-01-01")
+    payments_year = Payment.objects.filter(date__gte=year_begin)
+    payments_year_count = payments_year.count()
+    amount_year = payments_year.aggregate(Sum('amount'))['amount__sum']
+
+    year = str(datetime.today().year)
+    #year = '2020'
+
+    periods = [(year + '-01-01', year + '-01-31'),
+               (year + '-02-01', year + '-02-28'),
+               (year + '-03-01', year + '-03-31'),
+               (year + '-04-01', year + '-04-30'),
+               (year + '-05-01', year + '-05-31'),
+               (year + '-06-01', year + '-06-30'),
+               (year + '-07-01', year + '-07-31'),
+               (year + '-08-01', year + '-08-31'),
+               (year + '-09-01', year + '-09-30'),
+               (year + '-10-01', year + '-10-31'),
+               (year + '-11-01', year + '-11-30'),
+               (year + '-12-01', year + '-12-31'),
+               ]
+
+    payments_count_month = []
+    payments_amount_month = []
+    for month in range(12):
+        pmts = Payment.objects.filter(date__range=periods[month])
+        if pmts:
+            payments_count_month.append(pmts.count())
+            payments_amount_month.append(pmts.aggregate(Sum('amount'))['amount__sum'])
+        else:
+            payments_count_month.append(0)
+            payments_amount_month.append(0)
 
     data = {
         'title': 'Dashboard',
@@ -23,17 +57,42 @@ def main(request):
         'active_count': dogovor_active_count,
         'expiring_count': dogovor_expiring_count,
         'expired_count': dogovor_expired_count,
+        'payments': payments_year_count,
+        'payments_count_month': payments_count_month,
+        'payments_amount_month': payments_amount_month,
+        'amount': amount_year,
     }
     return render(request, 'dogovor/index.html', data)
 
 
 def dogovor_inactive(request):
     dogovor_data = Dogovor.objects.filter(active=False).order_by('-date')
+    count = dogovor_data.count()
+    paginator = Paginator(dogovor_data, 50)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
 
     data = {
         'title': 'Расторгнутые договора',
-        'dogovors': dogovor_data,
+        'dogovors': page_obj,
+        'count': count,
         'query': 'Расторгнутые',
+    }
+    return render(request, 'dogovor/inactive.html', data)
+
+
+def dogovor_expired(request):
+    dogovor_data = Dogovor.objects.filter(Q(end_date__lt=datetime.now().date()) & Q(active=True)).order_by('-end_date')
+    count = dogovor_data.count()
+    paginator = Paginator(dogovor_data, 50)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    data = {
+        'title': 'Договора с просроченным сроком',
+        'dogovors': page_obj,
+        'count': count,
+        'query': 'Просроченные',
     }
     return render(request, 'dogovor/inactive.html', data)
 
@@ -126,6 +185,7 @@ def dogovor_search(request):
     else:
         dogovor_data = []
         query = ''
+
     data = {
         'title': 'Результат поиска',
         'dogovors': dogovor_data,
@@ -137,7 +197,7 @@ def dogovor_search(request):
 def dogovor_search_name(request):
     if request.method == 'POST':
         name = request.POST['name'].strip()
-        dogovor_data = Dogovor.objects.filter(name__contains=name).order_by('-date')[:500]
+        dogovor_data = Dogovor.objects.filter(name__contains=name).order_by('-date')
     else:
         dogovor_data = []
         name = ''

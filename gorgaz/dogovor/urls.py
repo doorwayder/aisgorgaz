@@ -5,6 +5,7 @@ urlpatterns = [
     path('', views.main, name='main'),
     path('payments/', views.payments, name='payments'),
     path('inactive/', views.dogovor_inactive, name='inactive'),
+    path('expired/', views.dogovor_expired, name='expired'),
     path('datepayments/', views.payments_by_date, name='datepayments'),
     path('namepayments/', views.payments_by_name, name='namepayments'),
     path('numpayments/', views.payments_by_number, name='numpayments'),

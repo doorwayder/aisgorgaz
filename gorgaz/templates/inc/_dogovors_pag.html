@@ -1,6 +1,6 @@
 {% if dogovors %}
     {% if query or city or street or name %}
-    <b>Найдено:</b> {{ dogovors | length }} дог.
+    <b>Найдено:</b> {{ count }} дог.
     {% endif %}
     <div class="table-responsive mt-4">
         <table class="table table-sm dogtable">
@@ -26,14 +26,21 @@
             {% endfor %}
             </tbody>
         </table>
-    </div>
-        <form action="{% url 'addnotifications' %}" method="post">
-            {% csrf_token %}
-            {% for item in dogovors %}
-                <input type="hidden" name="dogovor_id[]" value="{{ item.id }}">
-            {% endfor %}
-            <button type="submit" class="btn btn-secondary btn-sm btn-block mb-3">Добавить в список уведомлений</button>
-        </form>
+        <div class="text-center">
+            <span class="step-links">
+                {% if dogovors.has_previous %}
+                    <a href="?page=1">1</a>
+                    <a href="?page={{ dogovors.previous_page_number }}"><<</a>
+                    {% endif %}
+                    <span class="current">
+                        Страница {{ dogovors.number }} из {{ dogovors.paginator.num_pages }}
+                    </span>
+                    {% if dogovors.has_next %}
+                    <a href="?page={{ dogovors.next_page_number }}">>></a>
+                    <a href="?page={{ dogovors.paginator.num_pages }}">{{ dogovors.paginator.num_pages }}</a>
+                {% endif %}
+            </span>
+        </div>
     </div>
     {% else %}
         {% if query or city or street %}

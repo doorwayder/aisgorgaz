@@ -44,7 +44,7 @@
               <li>Количество договоро, срок действия</li>
               <li>которых истек</li>
             </ul>
-            <button type="button" class="w-100 btn btn-lg btn-outline-secondary">Список просроченных</button>
+            <a type="button" class="w-100 btn btn-lg btn-outline-secondary" href="/expired/">Список просроченных</a>
           </div>
         </div>
       </div>
@@ -57,8 +57,11 @@
           </div>
           <div class="card-body">
             <div class="chart">
-              <canvas id="chart-bars" class="chart-canvas"></canvas>
+              <canvas id="paymentsChart" class="chart-canvas" height="60"></canvas>
             </div>
+          </div>
+          <div class="card-footer">
+            В текущем году {{ payments }} платежей на сумму {{ amount }} руб.
           </div>
         </div>
       </div>
@@ -70,4 +73,39 @@
 {% block jsblock %}
 <script src="{% static 'js/main.js' %}"></script>
 <script src="{% static 'js/chart.min.js' %}"></script>
+<script>
+var ctx = document.getElementById('paymentsChart').getContext('2d');
+var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
+        datasets: [{
+            label: 'Количество платежей',
+            data: [{{ payments_count_month.0 }}, {{ payments_count_month.1 }}, {{ payments_count_month.2 }}, {{ payments_count_month.3 }},
+            {{ payments_count_month.4 }}, {{ payments_count_month.5 }}, {{ payments_count_month.6 }}, {{ payments_count_month.7 }}, {{ payments_count_month.8 }},
+            {{ payments_count_month.9 }}, {{ payments_count_month.10 }}, {{ payments_count_month.11 }}],
+            borderColor: [
+                'rgba(180, 180, 180, 1)'
+            ],
+            borderWidth: 2,
+            yAxisID: 'idCount'
+        },
+        {
+            label: 'Сумма платежей',
+            data: [{{ payments_amount_month.0 }}, {{ payments_amount_month.1 }}, {{ payments_amount_month.2 }}, {{ payments_amount_month.3 }},
+            {{ payments_amount_month.4 }}, {{ payments_amount_month.5 }}, {{ payments_amount_month.6 }}, {{ payments_amount_month.7 }}, {{ payments_amount_month.8 }},
+            {{ payments_amount_month.9 }}, {{ payments_amount_month.10 }}, {{ payments_amount_month.11 }}],
+            backgroundColor: [
+                'rgba(180, 255, 180, 0.6)'
+            ],
+            borderColor: [
+                'rgba(180, 220, 180, 1)'
+            ],
+            borderWidth: 2,
+            yAxisID: 'idAmount'
+        },
+        ]
+    },
+});
+</script>
 {% endblock %}
