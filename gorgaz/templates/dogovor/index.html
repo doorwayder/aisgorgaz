@@ -3,7 +3,7 @@
 {% block content %}
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 flex-fill">
 
-    <div class="row row-cols-1 row-cols-md-3 mb-3 text-center mt-4">
+    <div class="row row-cols-1 row-cols-md-3 mb-2 text-center mt-4">
       <div class="col">
         <div class="card mb-4 rounded-3 shadow-sm">
           <div class="card-header py-3">
@@ -27,7 +27,7 @@
           <div class="card-body">
             <h1 class="card-title pricing-card-title">{{ expiring_count }}<small class="text-muted fw-light">/{{ active_count }}</small></h1>
             <ul class="list-unstyled mt-3 mb-4">
-              <li>Договора, которые заканчиваются через 60 дней</li>
+              <li>Заканчиваются через 60 дней</li>
               <li>(Населенных пунктов: {{ cities_expiring }})</li>
             </ul>
             <a type="button" class="w-100 btn btn-lg btn-outline-secondary" href="/address/">Поиск по адресу</a>
@@ -50,7 +50,7 @@
         </div>
       </div>
     </div>
-    <div class="row row-cols-1 row-cols-md-3 mb-3 text-center mt-4">
+    <div class="row row-cols-1 row-cols-md-3 mb-2 text-center">
       <div class="col">
         <div class="card mb-4 rounded-3 shadow-sm">
           <div class="card-header py-3">
