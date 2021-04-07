@@ -1,0 +1,51 @@
+{% extends 'dogovor/base.html' %}
+{% load static %}
+{% block css %}<link rel="stylesheet" href="{% static '/css/jquery.datatables.min.css' %}">{% endblock %}
+{% block content %}
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 flex-fill">
+    <div class="row row-cols-1 row-cols-md-3 mb-3 text-center mt-4">
+          <div class="col">
+            <div class="card mb-4 rounded-3 shadow-sm">
+              <div class="card-header py-3">
+                <h5 class="my-0 fw-normal">Статистика по населенным пунктам</h5>
+              </div>
+              <div class="card-body">
+                <table id="cityTable" class="display">
+                    <thead>
+                        <tr>
+                            <th>Населенный пункт</th>
+                            <th>Количество договоров</th>
+                            <th>Заканчивается срок</th>
+                            <th>Срок договора истек</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for item, value in active.items %}
+                        <tr>
+                            <td>{{ item }}</td>
+                            <td>{{ value.0 }}</td>
+                            <td>{{ value.1 }}</td>
+                            <td>{{ value.2 }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <a type="button" class="w-100 btn btn-sm btn-outline-secondary mt-1" href="/address/">Поиск договоров по адресу</a>
+              </div>
+            </div>
+          </div>
+    </div>
+</main>
+{% endblock %}
+
+{% block jsblock %}
+<script src="{% static 'js/main.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery.dataTables.min.js' %}"></script>
+<script>
+    $(document).ready(function() {
+    $('#cityTable').DataTable( {
+        "order": [[ 1, "desc" ]]
+    } );
+} );
+</script>
+{% endblock %}

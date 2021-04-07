@@ -22,18 +22,30 @@ class Dogovor(models.Model):
     amount = models.IntegerField(blank=True, verbose_name='Итого')
     comment = models.CharField(max_length=500, blank=True, verbose_name='Примечание')
     id_old = models.IntegerField(null=True, verbose_name='Old Id')
-    # Действует / Расторгнут
-    active = models.BooleanField(default=True, verbose_name='Действующий')
+    active = models.BooleanField(default=True, verbose_name='Действующий')   # Действует / Расторгнут
+    #  new fields
+    #  passport = models.CharField(max_length=10, blank=True, null=True, verbose_name='Серия и номер паспорта')
+    #  passport_adv = models.CharField(max_length=100, blank=True, null=True, verbose_name='Выдан')
 
     def __str__(self):
         return self.name
+
+    def is_expiring(self):
+        if self.end_date is None:
+            return False
+        else:
+            end = datetime.now().date() + timedelta(days=EXPIRED_DAYS)
+
+            if self.end_date <= end and self.end_date >= datetime.today().date():
+                return True
+            else:
+                return False
 
     def is_expired(self):
         if self.end_date is None:
             return False
         else:
-            end = datetime.now().date() + timedelta(days=EXPIRED_DAYS)
-            if self.end_date <= end:
+            if self.end_date < datetime.now().date():
                 return True
             else:
                 return False
@@ -44,13 +56,12 @@ class Dogovor(models.Model):
 
 
 class Payment(models.Model):
-    PLACE_CHOICES = [('в офисе', 'в офисе'), ('обходчику', 'обходчику'), ('квитанция', 'квитанция')]
+    #PLACE_CHOICES = [('в офисе', 'в офисе'), ('обходчику', 'обходчику'), ('квитанция', 'квитанция')]
     dogovor_id = models.ForeignKey(Dogovor, on_delete=models.CASCADE)
     pay_type = models.BooleanField(verbose_name='Наличные')
     date = models.DateField(blank=False, verbose_name='Дата оплаты')
     amount = models.IntegerField(blank=False, verbose_name='Сумма')
-    pay_place = models.CharField(max_length=10, blank=True, verbose_name='Место оплаты', choices=PLACE_CHOICES,
-                                 default='В офисе')
+    pay_place = models.CharField(max_length=50, blank=True, verbose_name='Место оплаты', default='В офисе')
     comment = models.CharField(max_length=500, blank=True, verbose_name='Примечание', null=True)
 
     class Meta:
@@ -73,3 +84,16 @@ class Notification(models.Model):
     class Meta:
         verbose_name = 'Уведомление'
         verbose_name_plural = 'Уведомления'
+
+
+class Worker(models.Model):
+    name = models.CharField(max_length=100, blank=True, verbose_name='ФИО')
+    func = models.CharField(max_length=100, blank=True, verbose_name='Должность')
+    description = models.CharField(max_length=500, blank=True, null=True, verbose_name='Описание')
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'Работник'
+        verbose_name_plural = 'Работники'

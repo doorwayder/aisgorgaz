@@ -12,8 +12,8 @@
           <div class="card-body">
             <h1 class="card-title pricing-card-title">{{ active_count }}<small class="text-muted fw-light">/{{ count }}</small></h1>
             <ul class="list-unstyled mt-3 mb-4">
-              <li>Количество действующих договоров</li>
-              <li>от общего количества</li>
+              <li>Действующие договора</li>
+              <li>(Населенных пунктов: {{ cities_active }})</li>
             </ul>
             <a type="button" class="w-100 btn btn-lg btn-outline-secondary" href="/search/">Поиск договоров</a>
           </div>
@@ -27,7 +27,8 @@
           <div class="card-body">
             <h1 class="card-title pricing-card-title">{{ expiring_count }}<small class="text-muted fw-light">/{{ active_count }}</small></h1>
             <ul class="list-unstyled mt-3 mb-4">
-              <li>Количество договоров, срок действия которых заканчивается через 60 дней</li>
+              <li>Договора, которые заканчиваются через 60 дней</li>
+              <li>(Населенных пунктов: {{ cities_expiring }})</li>
             </ul>
             <a type="button" class="w-100 btn btn-lg btn-outline-secondary" href="/address/">Поиск по адресу</a>
           </div>
@@ -41,8 +42,8 @@
           <div class="card-body">
             <h1 class="card-title pricing-card-title">{{ expired_count }}<small class="text-muted fw-light">/{{ active_count }}</small></h1>
             <ul class="list-unstyled mt-3 mb-4">
-              <li>Количество договоро, срок действия</li>
-              <li>которых истек</li>
+              <li>Договора, срок действия которых истек</li>
+              <li>(Населенных пунктов: {{ cities_expired }})</li>
             </ul>
             <a type="button" class="w-100 btn btn-lg btn-outline-secondary" href="/expired/">Список просроченных</a>
           </div>

@@ -1,6 +1,8 @@
 {% if dogovors %}
     {% if query or city or street or name %}
-    <b>Найдено:</b> {{ count }} дог.
+    <div class="mt-3">
+        <b>Найдено:</b> {{ count }} дог.
+    </div>
     {% endif %}
     <div class="table-responsive mt-4">
         <table class="table table-sm dogtable">
@@ -15,7 +17,10 @@
             </thead>
             <tbody>
             {% for item in dogovors %}
-            <tr class="dogtr {% if not item.active %}redbg{% endif %} {% if item.active and item.is_expired %}yellowbg{% endif %}" data-id="{{ item.id }}">
+            <tr class="dogtr
+            {% if not item.active %}redbg{% endif %}
+            {% if item.active and item.is_expiring %}yellowbg{% endif %}
+            {% if item.active and item.is_expired %}redbg{% endif %}" data-id="{{ item.id }}">
                 <td data-id="{{ item.id }}">{{ item.number }} от {{ item.date | date:"d.m.Y"}}</td>
                 <td data-id="{{ item.id }}">{{ item.name | truncatechars:50}}</td>
                 <td data-id="{{ item.id }}">{{ item.address_city }}, {{ item.address_street }},
@@ -26,20 +31,20 @@
             {% endfor %}
             </tbody>
         </table>
-        <div class="text-center">
-            <span class="step-links">
+        <div class="paginator text-center border rounded p-1">
+            <div class="step-links">
                 {% if dogovors.has_previous %}
-                    <a href="?page=1">1</a>
-                    <a href="?page={{ dogovors.previous_page_number }}"><<</a>
+                    <a type="button" href="?page=1" class="btn btn-sm btn-outline-secondary">1</a>
+                    <a type="button" href="?page={{ dogovors.previous_page_number }}" class="btn btn-sm btn-outline-secondary"><</a>
                     {% endif %}
                     <span class="current">
-                        Страница {{ dogovors.number }} из {{ dogovors.paginator.num_pages }}
+                        Страница <b>{{ dogovors.number }}</b> из <b>{{ dogovors.paginator.num_pages }}</b>
                     </span>
                     {% if dogovors.has_next %}
-                    <a href="?page={{ dogovors.next_page_number }}">>></a>
-                    <a href="?page={{ dogovors.paginator.num_pages }}">{{ dogovors.paginator.num_pages }}</a>
+                    <a type="button" href="?page={{ dogovors.next_page_number }}" class="btn btn-sm btn-outline-secondary">></a>
+                    <a type="button" href="?page={{ dogovors.paginator.num_pages }}" class="btn btn-sm btn-outline-secondary">{{ dogovors.paginator.num_pages }}</a>
                 {% endif %}
-            </span>
+            </div>
         </div>
     </div>
     {% else %}

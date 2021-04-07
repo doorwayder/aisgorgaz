@@ -4,7 +4,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.paginator import Paginator
-from .models import Dogovor, Payment, Notification
+from .models import Dogovor, Payment, Notification, Worker
 from .forms import DogovorForm, PaymentForm
 from .converter import *
 from datetime import datetime, timedelta
@@ -14,9 +14,15 @@ from .param import *
 def main(request):
     end = datetime.now().date() + timedelta(days=EXPIRED_DAYS)
     dogovor_count = Dogovor.objects.all().count()
-    dogovor_active_count = Dogovor.objects.filter(active=True).count()
-    dogovor_expiring_count = Dogovor.objects.filter(Q(end_date__lte=end) & Q(active=True)).count()
-    dogovor_expired_count = Dogovor.objects.filter(Q(end_date__lt=datetime.now().date()) & Q(active=True)).count()
+    dogovor_active = Dogovor.objects.filter(active=True)
+    dogovor_active_count = dogovor_active.count()
+    cities_active = dogovor_active.values('address_city').distinct().count
+    dogovor_expiring = Dogovor.objects.filter(Q(end_date__lte=end) & Q(active=True))
+    cities_expiring = dogovor_expiring.values('address_city').distinct().count
+    dogovor_expiring_count = dogovor_expiring.count()
+    dogovor_expired = Dogovor.objects.filter(Q(end_date__lt=datetime.now().date()) & Q(active=True))
+    cities_expired = dogovor_expired.values('address_city').distinct().count
+    dogovor_expired_count = dogovor_expired.count()
 
     year_begin = datetime.today().strftime("%Y-01-01")
     payments_year = Payment.objects.filter(date__gte=year_begin)
@@ -60,9 +66,31 @@ def main(request):
         'payments': payments_year_count,
         'payments_count_month': payments_count_month,
         'payments_amount_month': payments_amount_month,
-        'amount': amount_year,
+        'amount': "{:,}".format(amount_year),
+        'cities_active': cities_active,
+        'cities_expiring': cities_expiring,
+        'cities_expired': cities_expired,
     }
     return render(request, 'dogovor/index.html', data)
+
+
+def cities_stats(request):
+    end = datetime.now().date() + timedelta(days=EXPIRED_DAYS)
+    today = datetime.today().date()
+    dogovor = {}
+    cities = Dogovor.objects.filter(active=True).values('address_city').distinct()
+    for city in cities:
+        active = Dogovor.objects.filter(Q(address_city=city['address_city']) & Q(active=True)).count()
+        expiring = Dogovor.objects.filter(Q(address_city=city['address_city']) & Q(end_date__lte=end)
+                                          & Q(end_date__gte=today) & Q(active=True)).count()
+        expired = Dogovor.objects.filter(Q(address_city=city['address_city']) & Q(end_date__lt=datetime.now().date())
+                                         & Q(active=True)).count()
+        dogovor[str(city['address_city'])] = (active, expiring, expired)
+
+    data = {
+        'active': dogovor,
+    }
+    return render(request, 'dogovor/cities.html', data)
 
 
 def dogovor_inactive(request):
@@ -220,11 +248,11 @@ def dogovor_search_address(request):
         expiring = request.POST.get('expiring')
         error_message = ''
         if city and street:
-            dogovor_data = Dogovor.objects.filter(Q(address_city=city) & Q(address_street=street) & Q(active=True))
+            dogovor_data = Dogovor.objects.filter(Q(address_city=city) & Q(address_street=street) & Q(active=True)).order_by('address_street')
             if expiring:
                 dogovor_data = dogovor_data.filter(end_date__lte=end)
         elif city:
-            dogovor_data = Dogovor.objects.filter(Q(address_city=city) & Q(active=True))
+            dogovor_data = Dogovor.objects.filter(Q(address_city=city) & Q(active=True)).order_by('address_street')
             if expiring:
                 dogovor_data = dogovor_data.filter(end_date__lte=end)
         elif street:
@@ -285,6 +313,7 @@ def name_autocomplete(request):
 
 def dogovor_newpay(request, dogovor_id):
     qs = Dogovor.objects.get(pk=dogovor_id)
+    workers = Worker.objects.all()
     if request.method == 'POST':
         form = PaymentForm(request.POST)
         if form.is_valid():
@@ -298,6 +327,7 @@ def dogovor_newpay(request, dogovor_id):
         'title': 'Новый платеж',
         'form': form,
         'dogovor': qs,
+        'workers': workers,
     }
     return render(request, 'dogovor/newpay.html', data)
 
@@ -305,6 +335,7 @@ def dogovor_newpay(request, dogovor_id):
 def dogovor_updatepay(request, payment_id):
     payment = get_object_or_404(Payment, pk=payment_id)
     dogovor = payment.dogovor_id
+    workers = Worker.objects.all()
     if request.method == 'POST':
         form = PaymentForm(request.POST, instance=payment)
         if form.is_valid():
@@ -317,6 +348,7 @@ def dogovor_updatepay(request, payment_id):
         'form': form,
         'dogovor': dogovor,
         'payment_id': payment_id,
+        'workers': workers,
     }
     return render(request, 'dogovor/updatepay.html', data)
 
@@ -401,7 +433,7 @@ def payments_by_number(request):
 
 def notifications(request):
     today = datetime.today().date()
-    notification_data = Notification.objects.filter(create_time__date=today).order_by('-create_time')
+    notification_data = Notification.objects.filter(create_time__date=today)
     data = {
         'title': 'Номера телефонов для уведомлений',
         'notifications': notification_data,

@@ -22,8 +22,11 @@
                     <div class="form-group">
                         <select name="pay_place" id="id_pay_place" class="form-control">
                             <option value="в офисе" {% ifequal form.pay_place.value 'в офисе' %} selected {% endifequal %}>в офисе</option>
-                            <option value="обходчику" {% ifequal form.pay_place.value 'обходчику' %} selected {% endifequal %}>обходчику</option>
                             <option value="квитанция" {% ifequal form.pay_place.value 'квитанция' %} selected {% endifequal %}>квитанция</option>
+                            <optgroup label="----------"></optgroup>
+                            {% for item in workers %}
+                                <option value="{{ item.name }}" {% ifequal form.pay_place.value item.name %} selected {% endifequal %}>{{ item.name }}</option>
+                            {% endfor %}
                        </select>
                     </div>
                 </div>
