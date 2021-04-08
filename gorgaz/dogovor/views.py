@@ -7,7 +7,7 @@ from django.core.paginator import Paginator
 from .models import Dogovor, Payment, Notification, Worker
 from .forms import DogovorForm, PaymentForm
 from .converter import *
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 from .param import *
 
 
@@ -185,7 +185,8 @@ def dogovor_add(request):
     if request.method == 'POST':
         form = DogovorForm(request.POST)
         if form.is_valid():
-            Dogovor.objects.create(**form.cleaned_data)
+            dogovor = form.save()
+            return redirect('dogovor', dogovor_id=dogovor.id)
     else:
         form = DogovorForm()
     data = {
@@ -324,6 +325,12 @@ def dogovor_newpay(request, dogovor_id):
         form = PaymentForm(request.POST)
         if form.is_valid():
             Payment.objects.create(**form.cleaned_data)
+            if qs.end_date is not None:
+                qs.end_date = date(qs.end_date.year + 1, qs.end_date.month, qs.end_date.day)
+                qs.save()
+            else:
+                qs.end_date = date(qs.date.year + 1, qs.date.month, qs.date.day)
+                qs.save()
             return redirect('dogovor', dogovor_id=dogovor_id)
         else:
             print('invalid form')

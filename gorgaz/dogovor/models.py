@@ -7,7 +7,7 @@ class Dogovor(models.Model):
     name = models.CharField(max_length=200, blank=True, verbose_name='ФИО')
     number = models.CharField(max_length=15, blank=True, verbose_name='Номер договора')
     date = models.DateField(blank=True, verbose_name='Даза заключения договора')
-    end_date = models.DateField(blank=True, verbose_name='Даза окончания договора')
+    end_date = models.DateField(blank=True, null=True, verbose_name='Даза окончания договора')
     tel1 = models.CharField(max_length=10, blank=True, verbose_name='Телефон 1')
     tel2 = models.CharField(max_length=10, blank=True, verbose_name='Телефон 2')
     tel3 = models.CharField(max_length=100, blank=True, verbose_name='Телефон 3')

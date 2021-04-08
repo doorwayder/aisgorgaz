@@ -18,7 +18,7 @@
             <tbody>
             {% for item in dogovors %}
             <tr class="dogtr
-            {% if not item.active %}redbg{% endif %}
+            {% if not item.active %}strike{% endif %}
             {% if item.active and item.is_expiring %}yellowbg{% endif %}
             {% if item.active and item.is_expired %}redbg{% endif %}" data-id="{{ item.id }}">
                 <td data-id="{{ item.id }}">{{ item.number }} от {{ item.date | date:"d.m.Y"}}</td>

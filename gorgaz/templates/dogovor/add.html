@@ -33,7 +33,7 @@
                     <div class="form-group row">
                         <label for="id_end_date" class="col-sm-4 col-form-label">Действует до:</label>
                         <div class="col-sm-8">
-                            <input type="date" name="end_date" id="id_end_date" class="form-control" required>
+                            <input type="date" name="end_date" id="id_end_date" class="form-control">
                         </div>
                     </div>
                 </div>
@@ -120,6 +120,7 @@
                 <div class="col-6">
                     <div class="form-group">
                         <textarea name="comment" maxlength="500" id="id_comment" class="form-control" rows="4" placeholder="Примечание"></textarea>
+                        <input type="hidden" name="active" id="id_active" value="on">
                     </div>
                 </div>
             </div>
