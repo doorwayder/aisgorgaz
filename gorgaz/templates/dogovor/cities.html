@@ -20,12 +20,12 @@
                         </tr>
                     </thead>
                     <tbody>
-                    {% for item, value in active.items %}
+                    {% for item in active %}
                         <tr>
-                            <td>{{ item }}</td>
-                            <td>{{ value.0 }}</td>
-                            <td>{{ value.1 }}</td>
-                            <td>{{ value.2 }}</td>
+                            <td>{{ item.address_city }}</td>
+                            <td>{% if item.active %} {{ item.active }}{% else %}0{% endif %}</td>
+                            <td>{% if item.expiring %} {{ item.expiring }}{% else %}0{% endif %}</td>
+                            <td>{% if item.expired %} {{ item.expired }}{% else %}0{% endif %}</td>
                         </tr>
                     {% endfor %}
                     </tbody>

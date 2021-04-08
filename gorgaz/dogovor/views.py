@@ -1,5 +1,5 @@
 from django.contrib.auth import login, logout
-from django.db.models import Q, Sum
+from django.db.models import Q, Sum, Count
 from django.contrib.auth.forms import AuthenticationForm
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
@@ -77,18 +77,24 @@ def main(request):
 def cities_stats(request):
     end = datetime.now().date() + timedelta(days=EXPIRED_DAYS)
     today = datetime.today().date()
-    dogovor = {}
-    cities = Dogovor.objects.filter(active=True).values('address_city').distinct()
-    for city in cities:
-        active = Dogovor.objects.filter(Q(address_city=city['address_city']) & Q(active=True)).count()
-        expiring = Dogovor.objects.filter(Q(address_city=city['address_city']) & Q(end_date__lte=end)
-                                          & Q(end_date__gte=today) & Q(active=True)).count()
-        expired = Dogovor.objects.filter(Q(address_city=city['address_city']) & Q(end_date__lt=datetime.now().date())
-                                         & Q(active=True)).count()
-        dogovor[str(city['address_city'])] = (active, expiring, expired)
+    active = Dogovor.objects.filter(active=True).values('address_city').annotate(active=Count('address_city'))
+    expiring = Dogovor.objects.filter(Q(end_date__lte=end) & Q(end_date__gte=today) & Q(active=True)).values('address_city').annotate(expiring=Count('address_city'))
+    expired = Dogovor.objects.filter(Q(end_date__lt=datetime.now().date()) & Q(active=True)).values('address_city').annotate(expired=Count('address_city'))
+
+    for item1 in active:
+        for item2 in expiring:
+            if item2['address_city'] == item1['address_city']:
+                item1['expiring'] = item2['expiring']
+
+    for item1 in active:
+        for item3 in expired:
+            if item3['address_city'] == item1['address_city']:
+                item1['expired'] = item3['expired']
 
     data = {
-        'active': dogovor,
+        'active': active,
+        'expiring': expiring,
+        'expired': expired,
     }
     return render(request, 'dogovor/cities.html', data)
 
