@@ -1,13 +1,14 @@
 from django.contrib.auth import login, logout
 from django.db.models import Q, Sum, Count
 from django.contrib.auth.forms import AuthenticationForm
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.paginator import Paginator
 from .models import Dogovor, Payment, Notification, Worker
 from .forms import DogovorForm, PaymentForm
-from .converter import *
 from datetime import datetime, timedelta, date
+import xlwt
+from .converter import *
 from .param import *
 
 
@@ -411,7 +412,7 @@ def payments_by_date(request):
 def payments_by_name(request):
     if request.method == 'POST':
         name = request.POST['name'].strip()
-        payments_data = Payment.objects.filter(dogovor_id__name__contains=name).order_by('-date')[:500]
+        payments_data = Payment.objects.filter(dogovor_id__name__contains=name).order_by('-date')
         summa = payments_data.aggregate(Sum('amount'))['amount__sum']
     else:
         payments_data = []
@@ -429,7 +430,7 @@ def payments_by_name(request):
 def payments_by_number(request):
     if request.method == 'POST':
         number = request.POST['number'].strip()
-        payments_data = Payment.objects.filter(dogovor_id__number__contains=number).order_by('-date')[:500]
+        payments_data = Payment.objects.filter(dogovor_id__number__contains=number).order_by('-date')
         summa = payments_data.aggregate(Sum('amount'))['amount__sum']
     else:
         payments_data = []
@@ -461,3 +462,37 @@ def add_notifications(request):
             dogovor = Dogovor.objects.get(id=item)
             Notification.objects.create(dogovor_id=dogovor, notify_type='Call')
     return redirect('notifications')
+
+
+def export_excel(request):
+    response = HttpResponse(content_type='application/vnd.ms-excel')
+    response['Content-Disposition'] = 'attachment;filename=dogovor.xls'
+    work_book = xlwt.Workbook(encoding='utf-8')
+    work_sheet = work_book.add_sheet(u'Список договоров')
+    style_data_row = xlwt.XFStyle()
+    style_data_row.num_format_str = 'DD.MM.YYYY'
+
+    if request.method == 'POST':
+        row = 0
+        dogovors = request.POST.getlist('dogovor_id[]')
+        for item in dogovors:
+            dogovor = Dogovor.objects.get(id=item)
+            dog = str(dogovor.number) + ' от ' + dogovor.date.strftime("%d.%m.%Y")
+            work_sheet.write(row, 0, dogovor.name, style_data_row)
+            work_sheet.write(row, 1, dog, style_data_row)
+            work_sheet.write(row, 2, dogovor.end_date, style_data_row)
+            work_sheet.write(row, 3, dogovor.tel1, style_data_row)
+            work_sheet.write(row, 4, dogovor.address_city, style_data_row)
+            work_sheet.write(row, 5, dogovor.address_street, style_data_row)
+            work_sheet.write(row, 6, dogovor.address_house, style_data_row)
+            work_sheet.write(row, 7, dogovor.address_kv, style_data_row)
+            row = row + 1
+        work_sheet.col(0).width = 15000
+        work_sheet.col(1).width = 6000
+        work_sheet.col(2).width = 3000
+        work_sheet.col(3).width = 4000
+        work_sheet.col(4).width = 5000
+        work_sheet.col(5).width = 7000
+
+        work_book.save(response)
+        return response
