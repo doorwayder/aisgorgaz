@@ -464,17 +464,93 @@ def add_notifications(request):
     return redirect('notifications')
 
 
-def export_excel(request):
+def update_notify1(request):
+    if request.method == 'GET':
+        n = request.GET['n']
+        action = request.GET['action']
+        notification = Notification.objects.get(pk=n)
+        if action != '2':
+            notification.send_time_1 = datetime.now()
+            notification.success_1 = action
+        else:
+            notification.send_time_1 = None
+            notification.success_1 = False
+        notification.save()
+    return redirect('notifications')
+
+
+def update_notify2(request):
+    if request.method == 'GET':
+        n = request.GET['n']
+        action = request.GET['action']
+        notification = Notification.objects.get(pk=n)
+        if action != '2':
+            notification.send_time_2 = datetime.now()
+            notification.success_2 = action
+        else:
+            notification.send_time_2 = None
+            notification.success_2 = False
+        notification.save()
+    return redirect('notifications')
+
+
+def dogovor_export_excel(request):
     response = HttpResponse(content_type='application/vnd.ms-excel')
     response['Content-Disposition'] = 'attachment;filename=dogovor.xls'
     work_book = xlwt.Workbook(encoding='utf-8')
     work_sheet = work_book.add_sheet(u'Список договоров')
+    borders = xlwt.Borders()
+    borders.left = xlwt.Borders.THIN
+    borders.right = xlwt.Borders.THIN
+    borders.top = xlwt.Borders.THIN
+    borders.bottom = xlwt.Borders.THIN
     style_data_row = xlwt.XFStyle()
     style_data_row.num_format_str = 'DD.MM.YYYY'
+    style_data_row.borders = borders
 
     if request.method == 'POST':
         row = 0
         dogovors = request.POST.getlist('dogovor_id[]')
+        for item in dogovors:
+            dogovor = Dogovor.objects.get(id=item)
+            dog = str(dogovor.number) + ' от ' + dogovor.date.strftime("%d.%m.%Y")
+            work_sheet.write(row, 0, dogovor.name, style_data_row)
+            work_sheet.write(row, 1, dog, style_data_row)
+            work_sheet.write(row, 2, dogovor.end_date, style_data_row)
+            work_sheet.write(row, 3, dogovor.tel1, style_data_row)
+            work_sheet.write(row, 4, dogovor.address_city, style_data_row)
+            work_sheet.write(row, 5, dogovor.address_street, style_data_row)
+            work_sheet.write(row, 6, dogovor.address_house, style_data_row)
+            work_sheet.write(row, 7, dogovor.address_kv, style_data_row)
+            row = row + 1
+        work_sheet.col(0).width = 15000
+        work_sheet.col(1).width = 6000
+        work_sheet.col(2).width = 3000
+        work_sheet.col(3).width = 4000
+        work_sheet.col(4).width = 5000
+        work_sheet.col(5).width = 7000
+
+        work_book.save(response)
+        return response
+
+
+def notification_export_excel(request):
+    response = HttpResponse(content_type='application/vnd.ms-excel')
+    response['Content-Disposition'] = 'attachment;filename=dogovor.xls'
+    work_book = xlwt.Workbook(encoding='utf-8')
+    work_sheet = work_book.add_sheet(u'Уведомления')
+    borders = xlwt.Borders()
+    borders.left = xlwt.Borders.THIN
+    borders.right = xlwt.Borders.THIN
+    borders.top = xlwt.Borders.THIN
+    borders.bottom = xlwt.Borders.THIN
+    style_data_row = xlwt.XFStyle()
+    style_data_row.num_format_str = 'DD.MM.YYYY'
+    style_data_row.borders = borders
+
+    if request.method == 'POST':
+        row = 0
+        dogovors = request.POST.getlist('notification_id[]')
         for item in dogovors:
             dogovor = Dogovor.objects.get(id=item)
             dog = str(dogovor.number) + ' от ' + dogovor.date.strftime("%d.%m.%Y")

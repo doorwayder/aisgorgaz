@@ -3,7 +3,8 @@ from . import views
 
 urlpatterns = [
     path('', views.main, name='main'),
-    path('export', views.export_excel, name='export'),
+    path('export', views.dogovor_export_excel, name='dogovor_export'),
+    path('notifyexport', views.notification_export_excel, name='notification_export'),
     path('cities/', views.cities_stats, name='cities'),
     path('payments/', views.payments, name='payments'),
     path('inactive/', views.dogovor_inactive, name='inactive'),
@@ -25,6 +26,8 @@ urlpatterns = [
     path('address/', views.dogovor_search_address, name='search_address'),
     path('notifications/', views.notifications, name='notifications'),
     path('addnotifications/', views.add_notifications, name='addnotifications'),
+    path('updatenotify1/', views.update_notify1, name='updatenotify1'),
+    path('updatenotify2/', views.update_notify2, name='updatenotify2'),
     path('login/', views.user_login, name='login'),
     path('logout/', views.user_logout, name='logout'),
     #path('convert/', views.convert),

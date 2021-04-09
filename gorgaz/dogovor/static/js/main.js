@@ -33,14 +33,32 @@ $(document).ready(function () {
             delay: 100,
             minLength: 3,
         });
-});
 
+    let contextMenu = $('.context-menu-open');
+
+    $('.context-menu').on('contextmenu', function (e) {
+        e.preventDefault();
+        contextMenu.css({top: e.clientY + 'px', left: e.clientX + 'px' });
+        let notify_id = e.target.getAttribute("data-id");
+        let notify_send = e.target.getAttribute("data-send");
+        let ok = document.getElementById("menuOk")
+        let err = document.getElementById("menuErr")
+        ok.setAttribute('data-id', notify_id);
+        err.setAttribute('data-id', notify_id);
+        ok.setAttribute('data-send', notify_send);
+        err.setAttribute('data-send', notify_send);
+        contextMenu.show();
+        });
+
+    $(document).on('click', function () {
+        contextMenu.hide();
+        });
+});
 
 function fiz_change() {
     if (document.getElementById("id_fiz").checked) $("#fiz_label").text("Физлицо");
     else $("#fiz_label").text("Юрлицо");
 }
-
 
 function active_change() {
     if (document.getElementById("id_active").checked) $("#active_label").text("Действующий");
@@ -56,5 +74,38 @@ function pay_type_change() {
 function delete_payment(payment_id) {
     if (confirm('Вы действительно хотите удалить платеж?')) {
         document.location.href = `/delpay/${payment_id}`;
+    }
+}
+
+function notifyOk() {
+    let data_id = document.getElementById("menuOk").getAttribute("data-id");
+    let data_send = document.getElementById("menuOk").getAttribute("data-send");
+    if (data_send == 1) {
+        document.location.href = `/updatenotify1?n=${data_id}&action=1`;
+    }
+    if (data_send == 2) {
+        document.location.href = `/updatenotify2?n=${data_id}&action=1`;
+    }
+}
+
+function notifyErr() {
+    let data_id = document.getElementById("menuErr").getAttribute("data-id");
+    let data_send = document.getElementById("menuErr").getAttribute("data-send");
+    if (data_send == 1) {
+        document.location.href = `/updatenotify1?n=${data_id}&action=0`;
+    }
+    if (data_send == 2) {
+        document.location.href = `/updatenotify2?n=${data_id}&action=0`;
+    }
+}
+
+function notifyDel() {
+    let data_id = document.getElementById("menuErr").getAttribute("data-id");
+    let data_send = document.getElementById("menuErr").getAttribute("data-send");
+    if (data_send == 1) {
+        document.location.href = `/updatenotify1?n=${data_id}&action=2`;
+    }
+    if (data_send == 2) {
+        document.location.href = `/updatenotify2?n=${data_id}&action=2`;
     }
 }

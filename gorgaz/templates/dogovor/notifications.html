@@ -1,5 +1,8 @@
 {% extends 'dogovor/base.html' %}
 {% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static '/css/notification.css' %}">
+{% endblock %}
 {% block content %}
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 flex-fill">
     {% if notifications %}
@@ -10,8 +13,9 @@
                     <th>Номер телефона</th>
                     <th>Ф.И.О.</th>
                     <th>Адрес</th>
-                    <th>Вид</th>
-                    <th>Время уведомления</th>
+                    <th>Уведомление 1</th>
+                    <th>Уведомление 2</th>
+<!--                    <th>Примечание</th>-->
                 </tr>
             </thead>
             <tbody>
@@ -21,16 +25,36 @@
                     {% if item.dogovor_id.tel2 %}{{ item.dogovor_id.tel2 }}<br>{% endif %}
                     {% if item.dogovor_id.tel3 %}{{ item.dogovor_id.tel3 }}{% endif %}
                 </td>
-                <td data-id="{{ item.id }}">{{ item.dogovor_id.name | truncatechars:70}}</td>
+                <td data-id="{{ item.id }}">{{ item.dogovor_id.name | truncatechars:60}}</td>
                 <td data-id="{{ item.id }}">{{ item.dogovor_id.address_city}}, {{item.dogovor_id.address_street}}, д.{{item.dogovor_id.address_house}}, кв.{{item.dogovor_id.address_kv}}</td>
-                <td data-id="{{ item.id }}">{{ item.notify_type }}</td>
-                <td data-id="{{ item.id }}">{% if item.send_time %}{{ item.send_time }}{% else %}-{% endif %}</td>
+                <td data-id="{{ item.id }}" data-send="1" class="context-menu">{% if item.send_time_1 %}{{ item.send_time_1 }}{% if item.success_1 %}
+                    <img data-id="{{ item.id }}" data-send="1" class="ml-1 mb-1" src="{% static 'images/ok.png' %}" width="15px">{% else %}
+                    <img data-id="{{ item.id }}" data-send="1" class="ml-1 mb-1"  src="{% static 'images/err.png' %}" width="15px">{% endif %}{% else %}-{% endif %}</td>
+                <td data-id="{{ item.id }}" data-send="2" class="context-menu">{% if item.send_time_2 %}{{ item.send_time_2 }}{% if item.success_2 %}
+                    <img data-id="{{ item.id }}" data-send="2" class="ml-1 mb-1"  src="{% static 'images/ok.png' %}" width="15px">{% else %}
+                    <img data-id="{{ item.id }}" data-send="2" class="ml-1 mb-1"  src="{% static 'images/err.png' %}" width="15px">{% endif %}{% else %}-{% endif %}</td>
+<!--                <td data-id="{{ item.id }}">{% if item.comment %}{{ item.comment | truncatechars:20}}{% else %}-{% endif %}</td>-->
             </tr>
             {% endfor %}
             </tbody>
         </table>
     </div>
-{% endif %}
+    <div class="context-menu-open">
+        <ul>
+            <li id="menuOk" onclick="notifyOk();"><img class="mr-1 mb-1"  src="{% static 'images/ok.png' %}" width="15px">Удачно</li>
+            <li id="menuErr" onclick="notifyErr();"><img class="mr-1 mb-1"  src="{% static 'images/err.png' %}" width="15px">Неудачно</li>
+            <li id="menuDel" onclick="notifyDel();"><img class="mr-1 mb-1"  src="{% static 'images/del.png' %}" width="15px">Очистить</li>
+        </ul>
+    </div>
+
+    <div class="m-3 text-center border rounded">
+        <a class="doglink" href="#" onclick="document.getElementById('exportForm').submit(); return false;">{{ notifications | length }} уведомлений [скачать]</a>
+        <form action="{% url 'notification_export' %}" method="post" id="exportForm">
+            {% csrf_token %}{% for item in notifications %}
+            <input type="hidden" name="notification_id[]" value="{{ item.id }}">{% endfor %}
+        </form>
+    </div>
+    {% endif %}
 </main>
 {% endblock %}
 

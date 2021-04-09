@@ -75,8 +75,11 @@ class Notification(models.Model):
     notify_type = models.CharField(max_length=10, blank=False, verbose_name='Тип уведомления', choices=TYPE_CHOICES,
                                    default='SMS')
     create_time = models.DateTimeField(auto_now_add=True, null=False, blank=False, verbose_name='Время создания уведомления')
-    send_time = models.DateTimeField(null=True, blank=True, verbose_name='Время отправки уведомления')
-    success = models.BooleanField(default=False, verbose_name='Успешно')
+    send_time_1 = models.DateTimeField(null=True, blank=True, verbose_name='Время отправки уведомления')
+    send_time_2 = models.DateTimeField(null=True, blank=True, verbose_name='Время отправки уведомления')
+    success_1 = models.BooleanField(default=False, verbose_name='Успешно')
+    success_2 = models.BooleanField(default=False, verbose_name='Успешно')
+    comment = models.CharField(max_length=500, blank=True, verbose_name='Примечание', null=True)
 
     def __str__(self):
         return self.dogovor_id.name

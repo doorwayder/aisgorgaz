@@ -29,7 +29,7 @@ class PaymentAdmin(admin.ModelAdmin):
 
 
 class NotificationAdmin(admin.ModelAdmin):
-    list_display = ('dogovor_id', 'create_time', 'send_time', 'success', )
+    list_display = ('id', 'dogovor_id', 'create_time', 'send_time_1', 'success_1', 'send_time_2', 'success_2')
     list_display_links = ('dogovor_id', )
     list_filter = ('create_time',)
 
