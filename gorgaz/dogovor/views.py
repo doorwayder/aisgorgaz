@@ -536,7 +536,7 @@ def dogovor_export_excel(request):
 
 def notification_export_excel(request):
     response = HttpResponse(content_type='application/vnd.ms-excel')
-    response['Content-Disposition'] = 'attachment;filename=dogovor.xls'
+    response['Content-Disposition'] = 'attachment;filename=notifications.xls'
     work_book = xlwt.Workbook(encoding='utf-8')
     work_sheet = work_book.add_sheet(u'Уведомления')
     borders = xlwt.Borders()

@@ -31,8 +31,8 @@
 </header>
     <div class="container-fluid">
         <div class="row flex-fill">
-            {% include 'inc/_nav.html' %}
             {% if user.is_authenticated %}
+                {% include 'inc/_nav.html' %}
                 {% block content %}{% endblock %}
             {% else %}
                 {% include 'inc/_login.html' %}
