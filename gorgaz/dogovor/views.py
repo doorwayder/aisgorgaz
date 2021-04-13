@@ -550,25 +550,37 @@ def notification_export_excel(request):
 
     if request.method == 'POST':
         row = 0
-        dogovors = request.POST.getlist('notification_id[]')
-        for item in dogovors:
-            dogovor = Dogovor.objects.get(id=item)
-            dog = str(dogovor.number) + ' от ' + dogovor.date.strftime("%d.%m.%Y")
-            work_sheet.write(row, 0, dogovor.name, style_data_row)
-            work_sheet.write(row, 1, dog, style_data_row)
-            work_sheet.write(row, 2, dogovor.end_date, style_data_row)
-            work_sheet.write(row, 3, dogovor.tel1, style_data_row)
-            work_sheet.write(row, 4, dogovor.address_city, style_data_row)
-            work_sheet.write(row, 5, dogovor.address_street, style_data_row)
-            work_sheet.write(row, 6, dogovor.address_house, style_data_row)
-            work_sheet.write(row, 7, dogovor.address_kv, style_data_row)
+        notifications= request.POST.getlist('notification_id[]')
+        for item in notifications:
+            notify = Notification.objects.get(id=item)
+            dogovor = Dogovor.objects.get(id=notify.dogovor_id.id)
+            #dog = str(dogovor.number) + ' от ' + dogovor.date.strftime("%d.%m.%Y")
+            phone = ''
+            if dogovor.tel1:
+                phone += dogovor.tel1
+            if dogovor.tel2:
+                if dogovor.tel1:
+                    phone += ', '
+                phone += dogovor.tel2
+            if dogovor.tel3:
+                if dogovor.tel1 or dogovor.tel2:
+                    phone += ', '
+                phone += dogovor.tel3
+            work_sheet.write(row, 0, phone, style_data_row)
+            work_sheet.write(row, 1, dogovor.name, style_data_row)
+            work_sheet.write(row, 2, dogovor.address_city, style_data_row)
+            work_sheet.write(row, 3, dogovor.address_street, style_data_row)
+            work_sheet.write(row, 4, dogovor.address_house, style_data_row)
+            work_sheet.write(row, 5, dogovor.address_kv, style_data_row)
+            work_sheet.write(row, 6, dogovor.end_date, style_data_row)
             row = row + 1
-        work_sheet.col(0).width = 15000
-        work_sheet.col(1).width = 6000
-        work_sheet.col(2).width = 3000
-        work_sheet.col(3).width = 4000
-        work_sheet.col(4).width = 5000
-        work_sheet.col(5).width = 7000
+        work_sheet.col(0).width = 10000
+        work_sheet.col(1).width = 15000
+        work_sheet.col(2).width = 5000
+        work_sheet.col(3).width = 6000
+        work_sheet.col(4).width = 2000
+        work_sheet.col(5).width = 2000
+        work_sheet.col(6).width = 3000
 
         work_book.save(response)
         return response
