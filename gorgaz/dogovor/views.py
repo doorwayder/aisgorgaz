@@ -4,8 +4,8 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.paginator import Paginator
-from .models import Dogovor, Payment, Notification, Worker
-from .forms import DogovorForm, PaymentForm
+from .models import Dogovor, Payment, Notification, Worker, Order
+from .forms import DogovorForm, PaymentForm, OrderForm
 from datetime import datetime, timedelta, date
 import xlwt
 from .converter import *
@@ -239,7 +239,7 @@ def dogovor_search_name(request):
         name = ''
 
     data = {
-        'title': 'Результат поиска',
+        'title': 'Поиск по фамилии',
         'dogovors': dogovor_data,
         'name': name,
     }
@@ -275,7 +275,7 @@ def dogovor_search_address(request):
         street = ''
         error_message = 'Параметры поиска'
     data = {
-        'title': 'Результат поиска',
+        'title': 'Поиск по адресу',
         'cities': address_city,
         'streets': address_street,
         'city': city,
@@ -383,6 +383,74 @@ def payments(request):
         'summa': summa,
     }
     return render(request, 'dogovor/payments.html', data)
+
+
+def dogovors(request):
+    dogovors_data = Dogovor.objects.all().order_by('-date')[:100]
+    data = {
+        'title': 'Последние договора',
+        'dogovors': dogovors_data,
+    }
+    return render(request, 'dogovor/dogovors.html', data)
+
+
+def orders(request):
+    orders_data = Order.objects.all().order_by('-date', '-pk')
+    paginator = Paginator(orders_data, 50)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    data = {
+        'title': 'Наряды на работы',
+        'orders': page_obj,
+    }
+    return render(request, 'dogovor/orders.html', data)
+
+
+def order_update(request, order_id):
+    order = get_object_or_404(Order, pk=order_id)
+    workers = Worker.objects.all()
+    if request.method == 'POST':
+        form = OrderForm(request.POST, instance=order)
+        if form.is_valid():
+            form.save()
+            return redirect('orders')
+    form = OrderForm(instance=order)
+    data = {
+        'form': form,
+        'order': order,
+        'workers': workers,
+    }
+
+    return render(request, 'dogovor/order.html', data)
+
+
+def order_add(request):
+    workers = Worker.objects.all()
+    dogovor_id = request.GET.get('d')
+    if dogovor_id:
+        dogovor = Dogovor.objects.get(pk=dogovor_id)
+    else:
+        dogovor = None
+    if request.method == 'POST':
+        form = OrderForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('orders')
+    else:
+        form = OrderForm()
+    data = {
+        'title': 'Новый наряд',
+        'form': form,
+        'dogovor': dogovor,
+        'workers': workers,
+    }
+    return render(request, 'dogovor/neworder.html', data)
+
+
+def order_delete(request, order_id):
+    instance = get_object_or_404(Order, pk=order_id)
+    instance.delete()
+    return redirect('orders')
 
 
 def payments_by_date(request):

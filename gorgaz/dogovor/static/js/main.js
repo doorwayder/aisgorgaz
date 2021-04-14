@@ -2,11 +2,20 @@
 
 $(document).ready(function () {
     let dogovor = document.querySelectorAll(".dogtr");
+    let order = document.querySelectorAll(".ordertr");
     Array.from(dogovor).forEach(function (tr_dogovor) {
         tr_dogovor.addEventListener('click', function (e) {
             e.preventDefault();
             let dog_id = e.target.getAttribute("data-id");
             document.location.href = `/dogovor/${dog_id}`;
+        });
+    });
+
+    Array.from(order).forEach(function (tr_order) {
+        tr_order.addEventListener('click', function (e) {
+            e.preventDefault();
+            let ord_id = e.target.getAttribute("data-id");
+            document.location.href = `/order/${ord_id}`;
         });
     });
 
@@ -70,6 +79,13 @@ function pay_type_change() {
     if (document.getElementById("id_pay_type").checked) $("#pay_type_label").text("Наличные");
     else $("#pay_type_label").text("Безнал");
 }
+
+
+function completed_change() {
+    if (document.getElementById("id_completed").checked) $("#completed_label").text("Выполнен");
+    else $("#completed_label").text("Не выполнен");
+}
+
 
 function delete_payment(payment_id) {
     if (confirm('Вы действительно хотите удалить платеж?')) {

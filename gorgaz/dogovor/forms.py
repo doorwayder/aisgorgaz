@@ -1,5 +1,5 @@
 from django import forms
-from .models import Dogovor, Payment
+from .models import Dogovor, Payment, Order
 
 
 class DogovorForm(forms.ModelForm):
@@ -12,4 +12,10 @@ class DogovorForm(forms.ModelForm):
 class PaymentForm(forms.ModelForm):
     class Meta:
         model = Payment
+        fields = '__all__'
+
+
+class OrderForm(forms.ModelForm):
+    class Meta:
+        model = Order
         fields = '__all__'

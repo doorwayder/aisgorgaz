@@ -1,0 +1,54 @@
+{% if orders %}
+    {% if query or address or name %}
+    <div class="mt-3">
+        <b>Найдено:</b> {{ count }} нарядов(а).
+    </div>
+    {% endif %}
+    <div class="table-responsive mt-4">
+        <table class="table table-sm dogtable">
+            <thead>
+                <tr>
+                    <th>№</th>
+                    <th>Ф.И.О.</th>
+                    <th>Адрес</th>
+                    <th>Дата</th>
+                    <th>Контакты</th>
+                    <th>Работы</th>
+                    <th>Исполнитель</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for item in orders %}
+            <tr class="ordertr {% if item.completed %}greenbg{% endif %}">
+                <td data-id="{{ item.id }}">{{ item.id }}</td>
+                <td data-id="{{ item.id }}">{{ item.name | truncatechars:50}}</td>
+                <td data-id="{{ item.id }}">{{ item.address }}</td>
+                <td data-id="{{ item.id }}">{{ item.date }}</td>
+                <td data-id="{{ item.id }}">{% if item.tel %}{{ item.tel }}{% else %}-{% endif %}</td>
+                <td data-id="{{ item.id }}">{{ item.job }}</td>
+                <td data-id="{{ item.id }}">{{ item.worker.name }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <div class="paginator text-center border rounded p-1 mb-2">
+            <div class="step-links">
+                {% if orders.has_previous %}
+                    <a type="button" href="?page=1" class="btn btn-sm btn-outline-secondary">1</a>
+                    <a type="button" href="?page={{ orders.previous_page_number }}" class="btn btn-sm btn-outline-secondary"><</a>
+                    {% endif %}
+                    <span class="current">
+                        Страница <b>{{ orders.number }}</b> из <b>{{ orders.paginator.num_pages }}</b>
+                    </span>
+                    {% if orders.has_next %}
+                    <a type="button" href="?page={{ orders.next_page_number }}" class="btn btn-sm btn-outline-secondary">></a>
+                    <a type="button" href="?page={{ orders.paginator.num_pages }}" class="btn btn-sm btn-outline-secondary">{{ orders.paginator.num_pages }}</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% else %}
+        {% if query or city or street %}
+            Не найдено ни одного наряда
+        {% endif %}
+{% endif %}

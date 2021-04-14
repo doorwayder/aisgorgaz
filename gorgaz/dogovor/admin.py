@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Dogovor, Payment, Notification, Worker
+from .models import Dogovor, Payment, Notification, Worker, Order
 
 
 class PaymentsInline(admin.TabularInline):
@@ -38,7 +38,14 @@ class NotificationAdmin(admin.ModelAdmin):
     get_name.short_description = 'Ф.И.О. (по договору)'
 
 
+class OrderAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'address', 'job', 'date', )
+    list_display_links = ('id', 'name', 'address')
+    list_filter = ('date',)
+
+
 admin.site.register(Dogovor, DogovorAdmin)
 admin.site.register(Payment, PaymentAdmin)
 admin.site.register(Notification, NotificationAdmin)
 admin.site.register(Worker)
+admin.site.register(Order, OrderAdmin)

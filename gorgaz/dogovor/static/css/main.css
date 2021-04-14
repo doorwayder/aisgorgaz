@@ -84,6 +84,10 @@ body {
   background: #eeeeee;
 }
 
+.ordertr:hover {
+  background: #eeeeee;
+}
+
 .dogtable {
   margin-bottom: 0rem !important;
 }
@@ -109,7 +113,7 @@ th {
 }
 
 .greenbg {
-  background: #aaffaa;
+  background: #eeffee;
 }
 
 .paginator {

@@ -1,0 +1,106 @@
+{% extends 'dogovor/base.html' %}
+{% block title %} Создать наряд на работы {% endblock %}
+{% load static %}
+{% block content %}
+
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 flex-fill">
+    <div class="container-fluid mt-3 mb-2 border rounded p-3">
+        Создать наряд на работы
+        {% if dogovor %}<br><b>договор № {{ dogovor.number }}</b> {% endif %}
+        <br><hr>
+        <form action="{% url 'neworder' %}" method="post">
+            {% csrf_token %}
+            <div class="row mt-4 mb-2">
+                <div class="col-5">
+                    <div class="form-group row">
+                        <div class="col-12">
+                            <input type="text" name="name" id="id_name" value="{{ dogovor.name }}" class="form-control" placeholder="Ф.И.О." required>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-group row">
+                        <div class="col-12">
+                            <input type="text" name="address" id="id_address" value="{{ dogovor.get_full_address }}" class="form-control" placeholder="Адрес" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-4 mb-2">
+                <div class="col-5">
+                    <div class="form-group row">
+                        <label for="id_date" class="col-3 col-form-label">Дата:</label>
+                        <div class="col-9">
+                            <input type="date" name="date" id="id_date" value="{{ form.date.value|date:'Y-m-d' }}" class="form-control" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-group row">
+                        <div class="col-12">
+                            <input type="text" name="tel" id="id_tel"
+                                   value="{{ dogovor.get_full_phone }}" class="form-control" placeholder="Телефон">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-5">
+                    <div class="form-group row">
+                        <label for="id_worker" class="col-2 col-form-label">Исполнитель:</label>
+                        <div class="col-10">
+                            <select name="worker" id="id_worker" class="form-control">
+                                <option value="" selected></option>
+                                {% for item in workers %}
+                                    <option value="{{ item.id }}">{{ item.name }}</option>
+                                {% endfor %}
+                           </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-5">
+                    <input type="number" name="amount" class='form-control' value="{{ form.amount.value }}" id="id_amount" placeholder="Сумма к оплате">
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-6">
+                    <div class="form-group row">
+                        <div class="col-12">
+                            <input type="text" name="job" id="id_job" value="" class="form-control" placeholder="Работы" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-5">
+                    <div class="form-check mt-2">
+                         <input id="id_completed" name="completed" type="checkbox" class="form-check-input" onchange="completed_change();">
+                         <label id="completed_label" for="id_completed" class="form-check-label">Не выполнен</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-2">
+                <div class="col-6">
+                    <div class="form-group">
+                        <textarea name="comment" maxlength="500" id="id_comment" class="form-control" rows="4" placeholder="Примечание">{% if form.comment.value %}{{ form.comment.value }}{% endif %}</textarea>
+                    </div>
+                </div>
+            </div>
+
+            <input hidden name="dogovor_id" id="id_dogovor_id" value="{{ dogovor.id }}">
+
+            <div class="row">
+                <div class="col-12">
+                    <button type="submit" class="btn btn-secondary">Сохранить</button>
+                    <a class="btn btn-outline-secondary" href="/orders/">Отмена</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</main>
+{% endblock %}
+
+{% block jsblock %}
+<script src="{% static 'js/main.js' %}"></script>
+{% endblock %}

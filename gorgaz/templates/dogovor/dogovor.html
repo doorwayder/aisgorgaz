@@ -104,9 +104,16 @@
                         {% if dogovor.end_date %} {{ dogovor.end_date }} {% else %} - {% endif %}
                     </td>
                 </tr>
+                <tr>
+                    <td>
+                        <a href="update/" class="btn btn-secondary btn-sm btn-block">Редактировать</a>
+                    </td>
+                    <td>
+                        <a href="/neworder/?d={{ dogovor.id }}" class="btn btn-secondary btn-sm btn-block">Создать наряд</a>
+                    </td>
+                </tr>
             </tbody>
         </table>
-        <a href="update/" class="btn btn-secondary btn-sm btn-block">Редактировать</a>
     </div>
 
     <div class="table-responsive mt-4">
