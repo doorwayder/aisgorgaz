@@ -1,3 +1,5 @@
+import codecs
+
 from django.contrib.auth import login, logout
 from django.db.models import Q, Sum, Count
 from django.contrib.auth.forms import AuthenticationForm
@@ -8,6 +10,10 @@ from .models import Dogovor, Payment, Notification, Worker, Order
 from .forms import DogovorForm, PaymentForm, OrderForm
 from datetime import datetime, timedelta, date
 import xlwt
+from PIL import Image, ImageDraw, ImageFont
+from io import BytesIO
+import base64
+import os
 from .converter import *
 from .param import *
 
@@ -395,7 +401,7 @@ def dogovors(request):
 
 
 def orders(request):
-    orders_data = Order.objects.all().order_by('-date', '-pk')
+    orders_data = Order.objects.all().order_by('-date', '-pk')[:1000]
     paginator = Paginator(orders_data, 50)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -451,6 +457,42 @@ def order_delete(request, order_id):
     instance = get_object_or_404(Order, pk=order_id)
     instance.delete()
     return redirect('orders')
+
+
+def order_print(request, order_id):
+    order = get_object_or_404(Order, pk=order_id)
+    im = Image.open("static/images/order.png")
+    blank = ImageDraw.Draw(im)
+    fnt1 = ImageFont.truetype("static/font/arial.ttf", 16)
+    fnt2 = ImageFont.truetype("static/font/arial.ttf", 20)
+    blank.text((240, 33), str(order.pk), font=fnt1, fill=255)
+    blank.text((170, 68), str(order.name), font=fnt2, fill=255)
+    blank.text((130, 92), str(order.address), font=fnt2, fill=255)
+    blank.text((150, 152), str(order.tel), font=fnt2, fill=255)
+    if order.worker:
+        blank.text((200, 234), str(order.worker), font=fnt2, fill=255)
+    else:
+        blank.text((200, 234), '-', font=fnt2, fill=255)
+    blank.text((730, 118), str(order.date.strftime("%d.%m.%Y")), font=fnt2, fill=255)
+    job = order.job
+    job = job.replace(',', '\n')
+    job = job.replace(';', '\n')
+    if order.job:
+        blank.text((65, 382), str(job), font=fnt2, fill=255)
+    else:
+        blank.text((65, 382), '-', font=fnt2, fill=255)
+
+
+    output = BytesIO()
+    im.save(output, "PNG")
+    image = output.getvalue()
+    contents = base64.b64encode(image).decode()
+    output.close()
+    data = {
+        'order': order,
+        'contents': contents,
+    }
+    return render(request, 'dogovor/printorder.html', data)
 
 
 def payments_by_date(request):
