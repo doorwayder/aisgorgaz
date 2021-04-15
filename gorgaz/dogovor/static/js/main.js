@@ -2,7 +2,7 @@
 
 $(document).ready(function () {
     let dogovor = document.querySelectorAll(".dogtr");
-    let order = document.querySelectorAll(".ordertr");
+    let order = document.querySelectorAll(".ordertd");
     Array.from(dogovor).forEach(function (tr_dogovor) {
         tr_dogovor.addEventListener('click', function (e) {
             e.preventDefault();
@@ -124,4 +124,15 @@ function notifyDel() {
     if (data_send == 2) {
         document.location.href = `/updatenotify2?n=${data_id}&action=2`;
     }
+}
+
+function orderDel(order) {
+    if (confirm('Удалить наряд № ' + order + "?")) {
+        document.location.href = `/delorder/${order}`;
+    }
+}
+
+function orderPrint(order) {
+    window.open(`/printorder/${order}`,'_blank')
+//    document.location.href = `/printorder/${order}`;
 }

@@ -1,3 +1,4 @@
+{% load static %}
 {% if orders %}
     {% if query or address or name %}
     <div class="mt-3">
@@ -5,28 +6,34 @@
     </div>
     {% endif %}
     <div class="table-responsive mt-4">
+        <a href="/neworder/" class="btn btn-secondary btn-sm btn-block mb-2">Создать наряд</a>
         <table class="table table-sm dogtable">
             <thead>
                 <tr>
                     <th>№</th>
+                    <th></th>
                     <th>Ф.И.О.</th>
                     <th>Адрес</th>
                     <th>Дата</th>
                     <th>Контакты</th>
                     <th>Работы</th>
                     <th>Исполнитель</th>
+                    <th><img src="{% static 'images/del.png' %}" width="15px"></th>
                 </tr>
             </thead>
             <tbody>
             {% for item in orders %}
             <tr class="ordertr {% if item.completed %}greenbg{% endif %}">
-                <td data-id="{{ item.id }}">{{ item.id }}</td>
-                <td data-id="{{ item.id }}">{{ item.name | truncatechars:50}}</td>
-                <td data-id="{{ item.id }}">{{ item.address }}</td>
-                <td data-id="{{ item.id }}">{{ item.date }}</td>
-                <td data-id="{{ item.id }}">{% if item.tel %}{{ item.tel }}{% else %}-{% endif %}</td>
-                <td data-id="{{ item.id }}">{{ item.job }}</td>
-                <td data-id="{{ item.id }}">{{ item.worker.name }}</td>
+                <td class="ordertd" data-id="{{ item.id }}">{{ item.id }}</td>
+<!--            <td><a href="#" onclick="orderPrint({{ item.id }});"><img src="{% static 'images/print.png' %}" width="15px"></a></td>-->
+                <td><a href="#" class="btn btn-outline-secondary btn-sm btn-block py-0" onclick="orderPrint({{ item.id }});">печать</a></td>
+                <td class="ordertd" data-id="{{ item.id }}">{{ item.name | truncatechars:50}}</td>
+                <td class="ordertd" data-id="{{ item.id }}">{{ item.address }}</td>
+                <td class="ordertd" data-id="{{ item.id }}">{{ item.date }}</td>
+                <td class="ordertd" data-id="{{ item.id }}">{% if item.tel %}{{ item.tel }}{% else %}-{% endif %}</td>
+                <td class="ordertd" data-id="{{ item.id }}">{{ item.job }}</td>
+                <td class="ordertd" data-id="{{ item.id }}">{{ item.worker.name }}</td>
+                <td><a href="#" onclick="orderDel({{ item.id }});"><img src="{% static 'images/del.png' %}" width="15px"></a></td>
             </tr>
             {% endfor %}
             </tbody>

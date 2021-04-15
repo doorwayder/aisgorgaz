@@ -14,14 +14,14 @@
                 <div class="col-5">
                     <div class="form-group row">
                         <div class="col-12">
-                            <input type="text" name="name" id="id_name" value="{{ dogovor.name }}" class="form-control" placeholder="Ф.И.О." required>
+                            <input type="text" name="name" id="id_name" autocomplete="off"  value="{{ dogovor.name }}" class="form-control" placeholder="Ф.И.О." required>
                         </div>
                     </div>
                 </div>
                 <div class="col-6">
                     <div class="form-group row">
                         <div class="col-12">
-                            <input type="text" name="address" id="id_address" value="{{ dogovor.get_full_address }}" class="form-control" placeholder="Адрес" required>
+                            <input type="text" name="address" id="id_address" autocomplete="off" value="{{ dogovor.get_full_address }}" class="form-control" placeholder="Адрес" required>
                         </div>
                     </div>
                 </div>
@@ -39,7 +39,7 @@
                     <div class="form-group row">
                         <div class="col-12">
                             <input type="text" name="tel" id="id_tel"
-                                   value="{{ dogovor.get_full_phone }}" class="form-control" placeholder="Телефон">
+                                   value="{{ dogovor.get_full_phone }}" autocomplete="off" class="form-control" placeholder="Телефон">
                         </div>
                     </div>
                 </div>
