@@ -121,6 +121,7 @@
                     <div class="form-group">
                         <textarea name="comment" maxlength="500" id="id_comment" class="form-control" rows="4" placeholder="Примечание"></textarea>
                         <input type="hidden" name="active" id="id_active" value="on">
+                        <input type="hidden" name="created_by" id="id_created_by" value="{{ user.pk }}">
                     </div>
                 </div>
             </div>

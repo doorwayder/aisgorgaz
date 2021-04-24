@@ -8,6 +8,7 @@
         <form action="{% url 'update' dogovor_id %}" method="post">
             {% csrf_token %}
             <input type="hidden" name="id" id="id_id" value="{{ form.id.value }}">
+            <input type="hidden" name="created_by" id="id_created_by" value="{{ user.pk }}">
             <div class="row">
                 <div class="col-5">
                     <div class="form-group">

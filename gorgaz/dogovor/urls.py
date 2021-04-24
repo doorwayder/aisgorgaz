@@ -8,6 +8,7 @@ urlpatterns = [
     path('cities/', views.cities_stats, name='cities'),
     path('dogovors/', views.dogovors, name='dogovors'),
     path('payments/', views.payments, name='payments'),
+    path('plan/', views.plan, name='plan'),
     path('orders/', views.orders, name='orders'),
     path('printorder/<int:order_id>/', views.order_print, name='printorder'),
     path('neworder/', views.order_add, name='neworder'),
@@ -23,6 +24,7 @@ urlpatterns = [
     path('name-autocomplete/', views.name_autocomplete, name='name-autocomplete'),
     path('dogovor/<int:dogovor_id>/', views.dogovor_view, name='dogovor'),
     path('dogovor/<int:dogovor_id>/update/', views.dogovor_update, name='update'),
+    path('doc/<int:dogovor_id>/', views.dogovor_doc, name='doc'),
     path('add/', views.dogovor_add, name='add'),
     path('dogovor/<int:dogovor_id>/newpay/', views.dogovor_newpay, name='newpay'),
     path('updatepay/<int:payment_id>/', views.dogovor_updatepay, name='updatepay'),
@@ -36,5 +38,4 @@ urlpatterns = [
     path('updatenotify2/', views.update_notify2, name='updatenotify2'),
     path('login/', views.user_login, name='login'),
     path('logout/', views.user_logout, name='logout'),
-    #path('convert/', views.convert),
 ]

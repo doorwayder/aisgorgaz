@@ -10,6 +10,7 @@ from .models import Dogovor, Payment, Notification, Worker, Order
 from .forms import DogovorForm, PaymentForm, OrderForm
 from datetime import datetime, timedelta, date
 import xlwt
+from docxtpl import DocxTemplate
 from PIL import Image, ImageDraw, ImageFont
 from io import BytesIO
 import base64
@@ -136,30 +137,6 @@ def dogovor_expired(request):
         'query': 'Просроченные',
     }
     return render(request, 'dogovor/inactive.html', data)
-
-
-def convert(request):
-    print('Converting...')
-    result = converter()
-    if result:
-        i = 0
-        for row in result:
-            i += 1
-            street = getu(row['Codg'], row['Codu'])
-            city = getg(row['Codg'])
-            if row['Kv'] != '':
-                kv = row['Kv']
-            else:
-                kv = None
-            #
-            # Dogovor.objects.create(name=row['Fam'], number=row['Nom'], date=row['Datdog'], end_date=row['Datsrok'],
-            #                        tel1=row['Tel'], fiz=row['Fl'], address_city=city, address_street=street,
-            #                        id_old=row['Idold'], equip=row['Oborud'], comment=row['Coment'], sum=row['Sum0'],
-            #                        discount=row['Skid'], amount=row['Sum1'], address_house=row['Dom'],
-            #                        address_kv=kv)
-            print(f'[{i}]')
-
-    return render(request, 'dogovor/index.html')
 
 
 def user_login(request):
@@ -664,7 +641,6 @@ def notification_export_excel(request):
         for item in notifications:
             notify = Notification.objects.get(id=item)
             dogovor = Dogovor.objects.get(id=notify.dogovor_id.id)
-            #dog = str(dogovor.number) + ' от ' + dogovor.date.strftime("%d.%m.%Y")
             phone = ''
             if dogovor.tel1:
                 phone += dogovor.tel1
@@ -694,3 +670,25 @@ def notification_export_excel(request):
 
         work_book.save(response)
         return response
+
+def dogovor_doc(request, dogovor_id):
+    dogovor = get_object_or_404(Dogovor, pk=dogovor_id)
+    doc = DocxTemplate('dogovor/static/doc/template.docx')
+
+    context = {
+        'number': dogovor.number,
+        'date': dogovor.date.strftime("%d.%m.%Y"),
+        'name': dogovor.name,
+        'address': dogovor.get_full_address(),
+        'phone': dogovor.get_full_phone(),
+    }
+    doc.render(context)
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+    response['Content-Disposition'] = 'attachment;filename=dogovor.docx'
+    doc.save(response)
+    return response
+
+
+def plan(request):
+    data = {}
+    return render(request, 'dogovor/plan.html', data)

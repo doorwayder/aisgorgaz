@@ -52,7 +52,11 @@
                             <select name="worker" id="id_worker" class="form-control">
                                 <option value="" {% if not form.worker.value %} selected {% endif %}></option>
                                 {% for item in workers %}
-                                    <option value="{{ item.id }}" {% ifequal form.worker.value item.id %} selected {% endifequal %}>{{ item.name }}</option>
+                                    {% if item.active %}
+                                    <option value="{{ item.id }}"
+                                    {% ifequal form.worker.value item.id %} selected {% endifequal %}>{{ item.name }}
+                                    </option>
+                                    {% endif %}
                                 {% endfor %}
                            </select>
                         </div>

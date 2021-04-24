@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 from datetime import datetime, timedelta
 from .param import *
 
@@ -23,9 +24,8 @@ class Dogovor(models.Model):
     comment = models.CharField(max_length=500, blank=True, verbose_name='Примечание')
     id_old = models.IntegerField(null=True, verbose_name='Old Id')
     active = models.BooleanField(default=True, verbose_name='Действующий')   # Действует / Расторгнут
-    #  new fields
-    #  passport = models.CharField(max_length=10, blank=True, null=True, verbose_name='Серия и номер паспорта')
-    #  passport_adv = models.CharField(max_length=100, blank=True, null=True, verbose_name='Выдан')
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
+    create_time = models.DateTimeField(auto_now=True, null=True, verbose_name='Время обновления договора')
 
     def __str__(self):
         return self.name
@@ -81,13 +81,15 @@ class Dogovor(models.Model):
 
 
 class Payment(models.Model):
-    #PLACE_CHOICES = [('в офисе', 'в офисе'), ('обходчику', 'обходчику'), ('квитанция', 'квитанция')]
     dogovor_id = models.ForeignKey(Dogovor, on_delete=models.CASCADE)
     pay_type = models.BooleanField(verbose_name='Наличные')
     date = models.DateField(blank=False, verbose_name='Дата оплаты')
     amount = models.IntegerField(blank=False, verbose_name='Сумма')
     pay_place = models.CharField(max_length=50, blank=True, verbose_name='Место оплаты', default='В офисе')
     comment = models.CharField(max_length=500, blank=True, verbose_name='Примечание', null=True)
+
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
+    create_time = models.DateTimeField(auto_now=True, null=True, verbose_name='Время обновления платежа')
 
     class Meta:
         verbose_name = 'Оплата'
@@ -118,6 +120,7 @@ class Worker(models.Model):
     name = models.CharField(max_length=100, blank=True, verbose_name='ФИО')
     func = models.CharField(max_length=100, blank=True, verbose_name='Должность')
     description = models.CharField(max_length=500, blank=True, null=True, verbose_name='Описание')
+    active = models.BooleanField(default=True, verbose_name='Работает')   # Работает / Уволился
 
     def __str__(self):
         return self.name

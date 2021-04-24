@@ -62,7 +62,8 @@
             </div>
           </div>
           <div class="card-footer">
-            В текущем году {{ payments }} платежей на сумму {{ amount }} руб.
+            В текущем году {{ payments }} платежей
+<!--            на сумму {{ amount }} руб.-->
           </div>
         </div>
       </div>
@@ -91,20 +92,20 @@ var myChart = new Chart(ctx, {
             borderWidth: 2,
             yAxisID: 'idCount'
         },
-        {
-            label: 'Сумма платежей',
-            data: [{{ payments_amount_month.0 }}, {{ payments_amount_month.1 }}, {{ payments_amount_month.2 }}, {{ payments_amount_month.3 }},
-            {{ payments_amount_month.4 }}, {{ payments_amount_month.5 }}, {{ payments_amount_month.6 }}, {{ payments_amount_month.7 }}, {{ payments_amount_month.8 }},
-            {{ payments_amount_month.9 }}, {{ payments_amount_month.10 }}, {{ payments_amount_month.11 }}],
-            backgroundColor: [
-                'rgba(180, 255, 180, 0.6)'
-            ],
-            borderColor: [
-                'rgba(180, 220, 180, 1)'
-            ],
-            borderWidth: 2,
-            yAxisID: 'idAmount'
-        },
+<!--        {-->
+<!--            label: 'Сумма платежей',-->
+<!--            data: [{{ payments_amount_month.0 }}, {{ payments_amount_month.1 }}, {{ payments_amount_month.2 }}, {{ payments_amount_month.3 }},-->
+<!--            {{ payments_amount_month.4 }}, {{ payments_amount_month.5 }}, {{ payments_amount_month.6 }}, {{ payments_amount_month.7 }}, {{ payments_amount_month.8 }},-->
+<!--            {{ payments_amount_month.9 }}, {{ payments_amount_month.10 }}, {{ payments_amount_month.11 }}],-->
+<!--            backgroundColor: [-->
+<!--                'rgba(180, 255, 180, 0.6)'-->
+<!--            ],-->
+<!--            borderColor: [-->
+<!--                'rgba(180, 220, 180, 1)'-->
+<!--            ],-->
+<!--            borderWidth: 2,-->
+<!--            yAxisID: 'idAmount'-->
+<!--        },-->
         ]
     },
 });

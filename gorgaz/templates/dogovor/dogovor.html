@@ -15,6 +15,9 @@
                         {% else %}
                         (расторгнут)
                         {% endif %}
+                        <a href="/doc/{{ dogovor.id }}" style="text-decoration: none;">
+                            <img src="{% static 'images/word.png' %}" width="20px">
+                        </a>
                     </td>
                     <td>
                         <b>
@@ -106,6 +109,13 @@
                 </tr>
                 <tr>
                     <td>
+                        <small class="text-muted">{{ dogovor.created_by }} [{{ dogovor.create_time }}]</small>
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
                         <a href="update/" class="btn btn-secondary btn-sm btn-block">Редактировать</a>
                     </td>
                     <td>
@@ -127,7 +137,7 @@
                 {% if payments %}
                 {% for item in payments %}
                 <tr>
-                    <td>
+                    <td data-toggle="tooltip" title="Создано: {{ item.created_by }} [{{ item.create_time }}]">
                         <b>{{ item.date }}</b>
                     </td>
                     <td>
@@ -163,9 +173,16 @@
             {% endif %}
             </tbody>
         </table>
-        <a href="newpay/" class="btn btn-secondary btn-sm btn-block">Добавить оплату</a>
+        <a href="newpay/" class="btn btn-secondary btn-sm btn-block mb-2">Добавить оплату</a>
     </div>
 </main>
 {% endblock %}
 
-{% block jsblock %}<script src="{% static 'js/main.js' %}"></script> {% endblock %}
+{% block jsblock %}
+<script src="{% static 'js/main.js' %}"></script>
+<script>
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
+</script>
+{% endblock %}

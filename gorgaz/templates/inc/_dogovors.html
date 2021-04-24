@@ -25,7 +25,11 @@
             {% if not item.active %}strike{% endif %}
             {% if item.active and item.is_expiring %}yellowbg{% endif %}
             {% if item.active and item.is_expired %}redbg{% endif %}" data-id="{{ item.id }}">
-                <td data-id="{{ item.id }}">{{ item.number }} от {{ item.date | date:"d.m.Y"}}</td>
+                <td data-id="{{ item.id }}">
+                    {{ item.number }} от {{ item.date | date:"d.m.Y"}}
+                    {% if item.created_by.pk == 4  %}*{% endif %}
+
+                </td>
                 <td data-id="{{ item.id }}">{{ item.name | truncatechars:50}}</td>
                 <td data-id="{{ item.id }}">{{ item.address_city }}, {{ item.address_street }},
                     д. {{ item.address_house }}{% if item.address_kv %}, кв. {{ item.address_kv }}{% endif %}</td>
