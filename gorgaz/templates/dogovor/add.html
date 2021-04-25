@@ -49,13 +49,13 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="inputGroupPrepend2">+7</span>
                             </div>
-                            <input type="text" name="tel1" autocomplete="off" maxlength="10" class="form-control" id="id_tel1" placeholder="Сотовый телефон" required>
+                            <input type="text" name="tel1" autocomplete="off" maxlength="10" class="form-control" id="id_tel1" placeholder="Сотовый телефон">
                         </div>
                     </div>
                 </div>
                 <div class="col-2">
                     <div class="form-group">
-                        <input type="text" name="tel2" autocomplete="off" maxlength="10" id="id_tel2" class="form-control" placeholder="Доп. телефон">
+                        <input type="text" name="tel2" autocomplete="off" maxlength="10" id="id_tel2" class="form-control" placeholder="Доп.сот.телефон">
                     </div>
                 </div>
                 <div class="col-2">
@@ -105,8 +105,9 @@
                     </div>
                 </div>
                 <div class="col-2">
-                    <div class="form-group">
-                        <input type="number" name="discount" id="id_discount" value="0" class="form-control" placeholder="Скидка" required>
+                    <div class="form-group row">
+                        <input type="number" name="discount" id="id_discount" value="0" class="form-control col-8" placeholder="Скидка" required>
+                        <a href="#" class="btn btn-secondary col-3" onclick="onDiscount();">20%</a>
                     </div>
                 </div>
                 <div class="col-2">

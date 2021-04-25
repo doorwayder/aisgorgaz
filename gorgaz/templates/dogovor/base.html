@@ -16,8 +16,11 @@
 
 <body>
 <header>
-     <nav class="navbar navbar-dark bg-dark">
-         <a class="navbar-brand" href="#">АРЗАМАСГОРГАЗ</a>
+     <nav class="navbar navbar-dark bg-dark d-print-none">
+         <a class="navbar-brand" href="/">АРЗАМАСГОРГАЗ</a>
+         <a class="navbar-brand ml-auto" href="{% static '/doc/manual.pdf' %}" target="_blank">
+             <img src="{% static 'images/manual.png' %}" width="25px">
+         </a>
          <ul class="navbar-nav mr-3">
              <li class="nav-item">
                  {% if user.is_authenticated %}
@@ -39,7 +42,7 @@
             {% endif %}
         </div>
     </div>
-<footer class="footer bg-dark">
+<footer class="footer bg-dark d-print-none">
     <div class="mainfooter">
         <span class="text-muted">АИС Учета договоров "АРЗАМАСГОРГАЗ" © 2021</span>
     </div>

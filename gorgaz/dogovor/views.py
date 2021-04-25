@@ -15,7 +15,6 @@ from PIL import Image, ImageDraw, ImageFont
 from io import BytesIO
 import base64
 import os
-from .converter import *
 from .param import *
 
 
@@ -230,22 +229,31 @@ def dogovor_search_name(request):
 
 
 def dogovor_search_address(request):
-    end = datetime.now().date() + timedelta(days=EXPIRED_DAYS)
+    """Поиск договоров по адресу: населенный пункт и/или улица
+
+    """
+    exp = 1
+    end1 = datetime.now().date()
+    end2 = datetime.now().date() + timedelta(days=EXPIRED_DAYS)
     address_city = Dogovor.objects.values('address_city').distinct().order_by('address_city')
     address_street = Dogovor.objects.values('address_street').distinct().order_by('address_street')
     if request.method == 'POST':
         city = request.POST['address_city']
         street = request.POST['address_street']
-        expiring = request.POST.get('expiring')
+        exp = int(request.POST.get('exp'))
         error_message = ''
         if city and street:
             dogovor_data = Dogovor.objects.filter(Q(address_city=city) & Q(address_street=street) & Q(active=True)).order_by('address_street')
-            if expiring:
-                dogovor_data = dogovor_data.filter(end_date__lte=end)
+            if exp == 1:
+                dogovor_data = dogovor_data.filter(end_date__lte=end1)
+            if exp == 2:
+                dogovor_data = dogovor_data.filter(end_date__lte=end2)
         elif city:
             dogovor_data = Dogovor.objects.filter(Q(address_city=city) & Q(active=True)).order_by('address_street')
-            if expiring:
-                dogovor_data = dogovor_data.filter(end_date__lte=end)
+            if exp == 1:
+                dogovor_data = dogovor_data.filter(end_date__lte=end1)
+            if exp == 2:
+                dogovor_data = dogovor_data.filter(end_date__lte=end2)
         elif street:
             dogovor_data = []
             error_message = 'Выберите населенный пункт'
@@ -265,6 +273,7 @@ def dogovor_search_address(request):
         'street': street,
         'dogovors': dogovor_data,
         'message': error_message,
+        'exp': exp,
     }
     return render(request, 'dogovor/search_address.html', data)
 

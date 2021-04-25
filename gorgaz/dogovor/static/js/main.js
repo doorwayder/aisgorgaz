@@ -134,5 +134,10 @@ function orderDel(order) {
 
 function orderPrint(order) {
     window.open(`/printorder/${order}`,'_blank')
-//    document.location.href = `/printorder/${order}`;
+}
+
+function onDiscount() {
+    let sum = document.getElementById("id_sum").value;
+    $('#id_discount').val(Math.ceil(sum*0.2));
+    $('#id_amount').val(sum-Math.ceil(sum*0.2));
 }
