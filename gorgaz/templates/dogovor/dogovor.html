@@ -173,6 +173,53 @@
             {% endif %}
             </tbody>
         </table>
+
+            <div class="table-responsive mt-4">
+                <table class="table table-sm table-striped">
+                    <tbody>
+                <tr>
+                    <td colspan="6" class="text-center">
+                        <b>ОПЛАТЫ ПО ДОГОВОРУ</b>
+                    </td>
+                </tr>
+            {% if orders %}
+                {% for item in orders %}
+                <tr>
+                    <td data-toggle="tooltip" title="Создано: {{ item.created_by }} [{{ item.create_time }}]">
+                        <b>{{ item.pk }}</b>
+                    </td>
+                    <td>
+                        {{ item.date }} руб.
+                    </td>
+                    <td>
+                        {{ item.job }}
+                    </td>
+                    <td>
+                        {{ item.amount }}
+                    </td>
+                    <td>
+                        {% if item.comment %} <i>{{ item.comment }}</i> {% endif %}
+                    </td>
+<!--                    <td>-->
+<!--                        <a href="/updatepay/{{ item.id }}" style="text-decoration: none;">-->
+<!--                            <img src="{% static 'images/edit.png' %}" width="18px">-->
+<!--                        </a>-->
+<!--                        <a href="#" style="text-decoration: none;" onclick="delete_payment({{ item.id }});">-->
+<!--                            <img src="{% static 'images/del.png' %}" width="18px">-->
+<!--                        </a>-->
+<!--                    </td>-->
+                </tr>
+            {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="5" class="text-center">
+                        <b>Оплат по договору не производилось</b>
+                    </td>
+                </tr>
+            {% endif %}
+
+            </tbody>
+        </table>
         <a href="newpay/" class="btn btn-secondary btn-sm btn-block mb-2">Добавить оплату</a>
     </div>
 </main>

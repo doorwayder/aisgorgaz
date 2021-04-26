@@ -144,7 +144,7 @@ class Order(models.Model):
     address = models.CharField(max_length=300, verbose_name='Адрес')
     tel = models.CharField(max_length=100, blank=True, null=True, default='', verbose_name='Телефон')
     job = models.CharField(max_length=200, null=True, verbose_name='Работы')
-    type = models.IntegerField(default=0, verbose_name='Тип наряда')  # 0-обход (ТО), 1-авария/работы (слесарь)
+    #type = models.IntegerField(default=0, verbose_name='Тип наряда')  # 0-обход (ТО), 1-авария/работы (слесарь)
     date = models.DateField(verbose_name='Дата')
     #  привязка к договору (необязательна)
     dogovor_id = models.ForeignKey(Dogovor, blank=True, null=True, on_delete=models.CASCADE)
@@ -152,6 +152,8 @@ class Order(models.Model):
     comment = models.CharField(max_length=500, blank=True, null=True, verbose_name='Примечание')
     worker = models.ForeignKey(Worker, blank=True, null=True, on_delete=models.PROTECT)
     completed = models.BooleanField(verbose_name='Выполнен')
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
+    create_time = models.DateTimeField(auto_now=True, null=True, verbose_name='Время обновления наряда')
 
     def __str__(self):
         return str(self.pk) + ' - ' + self.name

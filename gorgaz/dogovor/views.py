@@ -161,7 +161,13 @@ def user_logout(request):
 def dogovor_view(request, dogovor_id):
     dogovor = get_object_or_404(Dogovor, pk=dogovor_id)
     payments = Payment.objects.filter(dogovor_id=dogovor_id).order_by('date')
-    return render(request, 'dogovor/dogovor.html', {'dogovor': dogovor, 'payments': payments})
+    orders = Order.objects.filter(dogovor_id=dogovor_id).order_by('date')
+    data = {
+        'dogovor': dogovor,
+        'payments': payments,
+        'orders': orders,
+    }
+    return render(request, 'dogovor/dogovor.html', data)
 
 
 def dogovor_add(request):
@@ -197,9 +203,10 @@ def dogovor_update(request, dogovor_id):
 def dogovor_search(request):
     if request.method == 'POST':
         query = request.POST['query'].strip()
-        dogovor_data = Dogovor.objects.filter(Q(name__contains=query) | Q(number__contains=query) |
-                                              Q(tel1__contains=query) | Q(tel2__contains=query) |
-                                              Q(tel3__contains=query)).order_by('-date')
+        # dogovor_data = Dogovor.objects.filter(Q(name__contains=query) | Q(number__contains=query) |
+        #                                       Q(tel1__contains=query) | Q(tel2__contains=query) |
+        #                                       Q(tel3__contains=query)).order_by('-date')
+        dogovor_data = Dogovor.objects.filter(number__contains=query).order_by('number')
     else:
         dogovor_data = []
         query = ''
