@@ -213,17 +213,24 @@ def dogovor_search(request):
 
 
 def dogovor_search_name(request):
+    address_city = Dogovor.objects.values('address_city').distinct().order_by('address_city')
     if request.method == 'POST':
         name = request.POST['name'].strip()
-        dogovor_data = Dogovor.objects.filter(name__contains=name).order_by('-date')
+        city = request.POST['address_city']
+        dogovor_data = Dogovor.objects.filter(name__contains=name).order_by('address_city', 'address_street', 'address_house')
+        if city:
+            dogovor_data = dogovor_data.filter(address_city=city)
     else:
         dogovor_data = []
         name = ''
+        city = ''
 
     data = {
         'title': 'Поиск по фамилии',
         'dogovors': dogovor_data,
+        'cities': address_city,
         'name': name,
+        'city': city,
     }
     return render(request, 'dogovor/name.html', data)
 

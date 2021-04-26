@@ -7,7 +7,12 @@
     {% csrf_token %}
         <div class="form-group mt-3">
             <div class="input-group">
-                <input class="form-control" placeholder="Введите Ф.И.О." type="text" name="name" id="id_search_name" required value="{{ name }}" autocomplete="off">
+                <input class="form-control col-5" placeholder="Введите Ф.И.О." type="text" name="name" id="id_search_name" required value="{{ name }}" autocomplete="off">
+                <select id="id_address_city" class="selectpicker col-4" name="address_city" data-live-search="true">
+                    {% for item in cities %}
+                        <option value="{{ item.address_city }}" {% ifequal item.address_city city %}selected{% endifequal %}>{{ item.address_city }}</option>
+                    {% endfor %}
+                </select>
                 <span class="input-group-btn">
                     <button type="submit" class="btn btn-secondary">Поиск</button>
                 </span>
@@ -20,4 +25,7 @@
 </main>
 {% endblock %}
 
-{% block jsblock %}<script src="{% static 'js/main.js' %}"></script>{% endblock %}
+{% block jsblock %}
+<script src="{% static 'js/main.js' %}"></script>
+<script src="{% static 'js/bootstrap-select.min.js' %}"></script>
+{% endblock %}
