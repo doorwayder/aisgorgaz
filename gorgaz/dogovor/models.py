@@ -59,6 +59,15 @@ class Dogovor(models.Model):
         return address
 
 
+    def get_full_address2(self):
+        address = self.address_city + ', ' + self.address_street
+        if self.address_house:
+            address += ', д. ' + self.address_house
+        if self.address_kv:
+            address += ', кв. ' + self.address_kv
+        return address
+
+
     def get_full_phone(self):
         phone = ''
         if self.tel1:

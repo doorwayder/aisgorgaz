@@ -688,7 +688,7 @@ def dogovor_doc(request, dogovor_id):
         'number': dogovor.number,
         'date': dogovor.date.strftime("%d.%m.%Y"),
         'name': dogovor.name,
-        'address': dogovor.get_full_address(),
+        'address': dogovor.get_full_address2(),
         'phone': dogovor.get_full_phone(),
     }
     doc.render(context)
