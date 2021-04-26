@@ -25,6 +25,10 @@
 </main>
 {% endblock %}
 
+{% block print %}
+    {% include 'inc/_dogovors_print.html' %}
+{% endblock %}
+
 {% block jsblock %}
 <script src="{% static 'js/main.js' %}"></script>
 <script src="{% static 'js/bootstrap-select.min.js' %}"></script>
