@@ -13,18 +13,20 @@
     </div>
     <form action="{% url 'search_address' %}" method="post">
     {% csrf_token %}
-        <div class="form-group mt-3">
-            <select id="id_address_city" class="selectpicker" name="address_city" data-live-search="true">
+        <div class="form-group row mt-3">
+            <select id="id_address_city" class="selectpicker col-3" name="address_city" data-live-search="true">
                     {% for item in cities %}
                         <option value="{{ item.address_city }}" {% ifequal item.address_city city %}selected{% endifequal %}>{{ item.address_city }}</option>
                     {% endfor %}
             </select>
-            <select id="id_address_street" class="selectpicker" name="address_street" data-live-search="true">
+            <select id="id_address_street" class="selectpicker col-3" name="address_street" data-live-search="true">
                     {% for item in streets %}
                         <option value="{{ item.address_street }}" {% ifequal item.address_street street %}selected{% endifequal %}>{{ item.address_street }}</option>
                     {% endfor %}
             </select>
-            <button type="submit" class="btn btn-secondary">Поиск</button>
+            <input class="form-control col-1 ml-1" placeholder="Дом" type="text" name="address_house" value="{{ house }}">
+            <input class="form-control col-1 ml-1" placeholder="Кв." type="text" name="address_kv" value="{{ kv }}">
+            <button type="submit" class="btn btn-secondary ml-1">Поиск</button>
         </div>
 
 
