@@ -128,3 +128,13 @@ th {
   font-size: .8em !important;
 }
 
+.printtable {
+  border: 2px solid black;
+  font-size: .7em;
+}
+
+.printtable td {
+  border: 1px solid #a52a2a;
+  padding-left: 1px;
+  padding-right: 1px;
+}

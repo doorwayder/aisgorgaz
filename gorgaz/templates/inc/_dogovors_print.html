@@ -1,0 +1,37 @@
+        <table class="printtable">
+            <thead>
+                <tr>
+                    <td>№ договора</td>
+                    <td>Ф.И.О.</td>
+                    <td>Адрес</td>
+                    <td>Оборудование</td>
+                    <td>Действует до</td>
+                    <td>Контакты</td>
+                    <td>Сумма</td>
+                    <td>Скидка</td>
+                    <td>Итого</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </thead>
+            <tbody>
+            {% for item in dogovors %}
+            <tr>
+                <td>
+                    {{ item.number }} от {{ item.date | date:"d.m.Y"}}
+                </td>
+                <td>{{ item.name | truncatechars:50}}</td>
+                <td>{{ item.address_city }}, {{ item.address_street }},
+                    д. {{ item.address_house }}{% if item.address_kv %}, кв. {{ item.address_kv }}{% endif %}</td>
+                <td>{{ item.equip }}</td>
+                <td>{% if item.end_date %}{{ item.end_date }}{% else %}-{% endif %}</td>
+                <td>{% if item.tel1 %}{{ item.tel1 }}{% endif %}{% if item.tel2 %}  {{ item.tel2 }}{% endif %}{% if item.tel3 %}  {{ item.tel3 }}{% endif %}</td>
+                <td>{{ item.sum }}</td>
+                <td>{{ item.discount }}</td>
+                <td>{{ item.amount }}</td>
+                <td>________</td>
+                <td>________</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>

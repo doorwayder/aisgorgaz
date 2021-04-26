@@ -415,7 +415,7 @@ def dogovors(request):
 
 
 def orders(request):
-    orders_data = Order.objects.all().order_by('-date', '-pk')[:1000]
+    orders_data = Order.objects.all().order_by('-date', '-pk')
     paginator = Paginator(orders_data, 50)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)

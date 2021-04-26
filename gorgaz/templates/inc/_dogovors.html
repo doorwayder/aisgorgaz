@@ -49,9 +49,10 @@
             {% endfor %}
 <!--            <button type="submit" class="btn btn-secondary btn-sm btn-block mb-3">Добавить в список уведомлений</button>-->
         </form>
-    </div>
+
     {% else %}
         {% if query or city or street %}
             Не найдено ни одного договора
         {% endif %}
 {% endif %}
+

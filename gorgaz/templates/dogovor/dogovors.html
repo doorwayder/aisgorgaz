@@ -1,11 +1,15 @@
 {% extends 'dogovor/base.html' %}
 {% load static %}
 {% block content %}
-<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 flex-fill">
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 border">
 
     {% include 'inc/_dogovors.html' %}
 
 </main>
+{% endblock %}
+
+{% block print %}
+    {% include 'inc/_dogovors_print.html' %}
 {% endblock %}
 
 {% block jsblock %}<script src="{% static 'js/main.js' %}"></script> {% endblock %}
