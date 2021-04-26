@@ -114,19 +114,12 @@
                     <td>
                     </td>
                 </tr>
-                <tr>
-                    <td>
-                        <a href="update/" class="btn btn-secondary btn-sm btn-block">Редактировать</a>
-                    </td>
-                    <td>
-                        <a href="/neworder/?d={{ dogovor.id }}" class="btn btn-secondary btn-sm btn-block">Создать наряд</a>
-                    </td>
-                </tr>
             </tbody>
         </table>
     </div>
+    <a href="update/" class="btn btn-secondary btn-sm btn-block">Редактировать</a>
 
-    <div class="table-responsive mt-4">
+    <div class="table-responsive mt-3">
         <table class="table table-sm table-striped">
             <tbody>
                 <tr>
@@ -173,15 +166,18 @@
             {% endif %}
             </tbody>
         </table>
+        <a href="newpay/" class="btn btn-secondary btn-sm btn-block mb-2">Добавить оплату</a>
+    </div>
 
-            <div class="table-responsive mt-4">
-                <table class="table table-sm table-striped">
-                    <tbody>
-                <tr>
-                    <td colspan="6" class="text-center">
-                        <b>ОПЛАТЫ ПО ДОГОВОРУ</b>
-                    </td>
-                </tr>
+
+    <div class="table-responsive mt-3">
+        <table class="table table-sm table-striped border">
+            <tbody>
+            <tr>
+                <td colspan="7" class="text-center">
+                    <b>НАРЯДЫ</b>
+                </td>
+            </tr>
             {% if orders %}
                 {% for item in orders %}
                 <tr>
@@ -195,33 +191,29 @@
                         {{ item.job }}
                     </td>
                     <td>
-                        {{ item.amount }}
+                        {{ item.worker.name }}
+                    </td>
+                    <td>
+                        {% if item.amount %} <i>{{ item.amount }}</i> {% endif %}
                     </td>
                     <td>
                         {% if item.comment %} <i>{{ item.comment }}</i> {% endif %}
                     </td>
-<!--                    <td>-->
-<!--                        <a href="/updatepay/{{ item.id }}" style="text-decoration: none;">-->
-<!--                            <img src="{% static 'images/edit.png' %}" width="18px">-->
-<!--                        </a>-->
-<!--                        <a href="#" style="text-decoration: none;" onclick="delete_payment({{ item.id }});">-->
-<!--                            <img src="{% static 'images/del.png' %}" width="18px">-->
-<!--                        </a>-->
-<!--                    </td>-->
-                </tr>
-            {% endfor %}
-            {% else %}
-                <tr>
-                    <td colspan="5" class="text-center">
-                        <b>Оплат по договору не производилось</b>
+                    <td>
+                        <a href="/order/{{ item.id }}" style="text-decoration: none;">
+                            <img src="{% static 'images/edit.png' %}" width="18px">
+                        </a>
+                        <a href="#" style="text-decoration: none;" onclick="orderDel({{ item.id }});">
+                            <img src="{% static 'images/del.png' %}" width="18px">
+                        </a>
                     </td>
                 </tr>
+                {% endfor %}
             {% endif %}
-
             </tbody>
         </table>
-        <a href="newpay/" class="btn btn-secondary btn-sm btn-block mb-2">Добавить оплату</a>
     </div>
+    <a href="/neworder/?d={{ dogovor.id }}" class="btn btn-secondary btn-sm btn-block mb-2">Создать наряд</a>
 </main>
 {% endblock %}
 
