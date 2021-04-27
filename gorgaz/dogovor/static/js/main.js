@@ -8,8 +8,14 @@ $(document).ready(function () {
             e.preventDefault();
             let dog_id = e.target.getAttribute("data-id");
             document.location.href = `/dogovor/${dog_id}`;
+            });
+//        tr_dogovor.addEventListener('contextmenu', function (e) {
+//            e.preventDefault();
+//            let dog_id = e.target.getAttribute("data-id");
+//            $(this).closest('tr').remove();
+//            });
         });
-    });
+
 
     Array.from(order).forEach(function (tr_order) {
         tr_order.addEventListener('click', function (e) {
@@ -140,4 +146,8 @@ function onDiscount() {
     let sum = document.getElementById("id_sum").value;
     $('#id_discount').val(Math.ceil(sum*0.2));
     $('#id_amount').val(sum-Math.ceil(sum*0.2));
+}
+
+function delRow() {
+    alert('...');
 }

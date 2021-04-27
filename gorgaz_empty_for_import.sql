@@ -1,4 +1,4 @@
--- --------------------------------------------------------
+﻿-- --------------------------------------------------------
 -- Хост:                         127.0.0.1
 -- Версия сервера:               5.7.29 - MySQL Community Server (GPL)
 -- Операционная система:         Win64
@@ -13,8 +13,8 @@
 
 
 -- Дамп структуры базы данных arzgaz_imp
-CREATE DATABASE IF NOT EXISTS `arzgaz_imp` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci */;
-USE `arzgaz_imp`;
+/*CREATE DATABASE IF NOT EXISTS `arzgaz_imp` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci */;
+USE `arzgaz_imp`; */
 
 -- Дамп структуры для таблица arzgaz_imp.auth_group
 CREATE TABLE IF NOT EXISTS `auth_group` (
