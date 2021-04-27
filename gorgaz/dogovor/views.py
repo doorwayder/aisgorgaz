@@ -708,7 +708,43 @@ def notification_export_excel(request):
         work_book.save(response)
         return response
 
-def dogovor_doc(request, dogovor_id):
+def dogovor_doc1(request, dogovor_id):
+    dogovor = get_object_or_404(Dogovor, pk=dogovor_id)
+    doc = DocxTemplate('dogovor/static/doc/template.docx')
+
+    context = {
+        'number': dogovor.number,
+        'date': dogovor.date.strftime("%d.%m.%Y"),
+        'name': dogovor.name,
+        'address': dogovor.get_full_address2(),
+        'phone': dogovor.get_full_phone(),
+    }
+    doc.render(context)
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+    response['Content-Disposition'] = 'attachment;filename=dogovor.docx'
+    doc.save(response)
+    return response
+
+
+def dogovor_doc2(request, dogovor_id):
+    dogovor = get_object_or_404(Dogovor, pk=dogovor_id)
+    doc = DocxTemplate('dogovor/static/doc/template.docx')
+
+    context = {
+        'number': dogovor.number,
+        'date': dogovor.date.strftime("%d.%m.%Y"),
+        'name': dogovor.name,
+        'address': dogovor.get_full_address2(),
+        'phone': dogovor.get_full_phone(),
+    }
+    doc.render(context)
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+    response['Content-Disposition'] = 'attachment;filename=dogovor.docx'
+    doc.save(response)
+    return response
+
+
+def dogovor_doc3(request, dogovor_id):
     dogovor = get_object_or_404(Dogovor, pk=dogovor_id)
     doc = DocxTemplate('dogovor/static/doc/template.docx')
 

@@ -15,8 +15,14 @@
                         {% else %}
                         (расторгнут)
                         {% endif %}
-                        <a href="/doc/{{ dogovor.id }}" style="text-decoration: none;">
-                            <img src="{% static 'images/word.png' %}" width="20px">
+                        <a href="/doc1/{{ dogovor.id }}" style="text-decoration: none;">
+                            <img src="{% static 'images/word_k.png' %}" width="20px" class="ml-1">
+                        </a>
+                        <a href="/doc2/{{ dogovor.id }}" style="text-decoration: none;">
+                            <img src="{% static 'images/word_h.png' %}" width="20px" class="ml-1">
+                        </a>
+                        <a href="/doc3/{{ dogovor.id }}" style="text-decoration: none;">
+                            <img src="{% static 'images/word_adv.png' %}" width="20px" class="ml-1">
                         </a>
                     </td>
                     <td>
