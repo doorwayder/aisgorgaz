@@ -26,6 +26,7 @@ class Dogovor(models.Model):
     active = models.BooleanField(default=True, verbose_name='Действующий')   # Действует / Расторгнут
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
     create_time = models.DateTimeField(auto_now=True, null=True, verbose_name='Время обновления договора')
+    terminate_date = models.DateField(null=True, blank=True, verbose_name='Дата расторжения договора')
 
     def __str__(self):
         return self.name

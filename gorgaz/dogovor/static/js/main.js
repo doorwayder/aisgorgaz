@@ -9,11 +9,6 @@ $(document).ready(function () {
             let dog_id = e.target.getAttribute("data-id");
             document.location.href = `/dogovor/${dog_id}`;
             });
-//        tr_dogovor.addEventListener('contextmenu', function (e) {
-//            e.preventDefault();
-//            let dog_id = e.target.getAttribute("data-id");
-//            $(this).closest('tr').remove();
-//            });
         });
 
 
@@ -76,8 +71,16 @@ function fiz_change() {
 }
 
 function active_change() {
-    if (document.getElementById("id_active").checked) $("#active_label").text("Действующий");
-    else $("#active_label").text("Расторгнут");
+    if (document.getElementById("id_active").checked) {
+        $("#active_label").text("Действующий");
+        $("#id_terminate_div").toggleClass("invisible");
+    }
+    else {
+        $("#active_label").text("Расторгнут");
+        $("#id_terminate_div").toggleClass("invisible");
+        let today = new Date().toISOString().substr(0, 10);
+        $("#id_terminate_date").val(today);
+    }
 }
 
 

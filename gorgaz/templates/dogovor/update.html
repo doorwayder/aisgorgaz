@@ -130,6 +130,9 @@
                          <label id="active_label" for="id_active" class="form-check-label">{% if form.active.value %} Действующий {% else %} Расторгнут {% endif %}</label>
                     </div>
                 </div>
+                <div id="id_terminate_div" class="col-3 {% if form.active.value %} invisible{% endif %}">
+                    <input type="date" name="terminate_date" id="id_terminate_date" value="{{ form.terminate_date.value|date:'Y-m-d' }}" class="form-control">
+                </div>
             </div>
 
             <div class="row">
