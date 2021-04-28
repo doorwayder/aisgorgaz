@@ -88,6 +88,10 @@ body {
   background: #eeeeee;
 }
 
+.plantr:hover {
+  background: #eeeeee;
+}
+
 .dogtable {
   margin-bottom: 0rem !important;
 }

@@ -802,7 +802,10 @@ def dogovor_doc5(request, dogovor_id):
 
 
 def plan(request):
-    data = {}
+    plans = Plan.objects.filter(user_id=request.user)
+    data = {
+        'plans': plans,
+    }
     return render(request, 'dogovor/plan.html', data)
 
 
@@ -812,4 +815,16 @@ def add_plan(request):
         for item in dogovors:
             dogovor = Dogovor.objects.get(id=item)
             Plan.objects.create(dogovor_id=dogovor, user_id=request.user)
+    return redirect('plan')
+
+
+def del_plan(request, plan_id):
+    instance = get_object_or_404(Plan, pk=plan_id)
+    instance.delete()
+    return redirect('plan')
+
+
+def del_all_plans(request):
+    plans = Plan.objects.filter(user_id=request.user)
+    plans.delete()
     return redirect('plan')

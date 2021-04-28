@@ -1,0 +1,84 @@
+{% extends 'dogovor/base.html' %}
+{% load static %}
+
+{% block content %}
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 flex-fill">
+    {% if plans %}
+    <div class="table-responsive mt-4">
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th>№ договора</th>
+                    <th>Ф.И.О.</th>
+                    <th>Адрес</th>
+                    <th>Действует до</th>
+                    <th>Контакты</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for item in plans %}
+            <tr class="plantr" data-id="{{ item.id }}">
+
+                <td data-id="{{ item.id }}">
+                    {{ item.dogovor_id.number }} от {{ item.dogovor_id.date | date:"d.m.Y"}}
+                </td>
+                <td data-id="{{ item.id }}">{{ item.dogovor_id.name | truncatechars:50}}</td>
+                <td data-id="{{ item.id }}">{{ item.dogovor_id.get_full_address2 }}</td>
+                <td data-id="{{ item.id }}">
+                    {% if item.dogovor_id.end_date %}{{ item.dogovor_id.end_date }}{% else %}-{% endif %}
+                </td>
+                <td data-id="{{ item.id }}">{{ item.dogovor_id.get_full_phone }}</td>
+                <td data-id="{{ item.id }}">
+                    <a style="text-decoration: none;" href="/delplan/{{ item.pk }}"><img src="{% static 'images/del.png' %}" width="15px"></a>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <a class="btn btn-secondary btn-sm btn-block mb-3" href="{% url 'del_all_plans' %}">Очистить</a>
+    {% endif %}
+</main>
+{% endblock %}
+
+{% block print_plan %}
+<table class="printtable">
+            <thead>
+                <tr>
+                    <td>№ договора</td>
+                    <td>Ф.И.О.</td>
+                    <td>Адрес</td>
+                    <td>Оборудование</td>
+                    <td>Действует до</td>
+                    <td>Контакты</td>
+                    <td>Сумма</td>
+                    <td>Скидка</td>
+                    <td>Итого</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </thead>
+            <tbody>
+            {% for item in plans %}
+            <tr>
+                <td>
+                    {{ item.dogovor_id.number }} от {{ item.dogovor_id.date | date:"d.m.Y"}}
+                </td>
+                <td>{{ item.dogovor_id.name | truncatechars:50}}</td>
+                <td>{{ item.dogovor_id.get_full_address2 }}</td>
+                <td>{{ item.dogovor_id.equip }}</td>
+                <td>{% if item.dogovor_id.end_date %}{{ item.dogovor_id.end_date }}{% else %}-{% endif %}</td>
+                <td>{{ item.dogovor_id.get_full_phone }}</td>
+                <td>{{ item.dogovor_id.sum }}</td>
+                <td>{{ item.dogovor_id.discount }}</td>
+                <td>{{ item.dogovor_id.amount }}</td>
+                <td>________</td>
+                <td>________</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+{% endblock %}
+
+{% block jsblock %}<script src="{% static 'js/main.js' %}"></script> {% endblock %}

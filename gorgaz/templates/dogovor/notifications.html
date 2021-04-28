@@ -47,7 +47,7 @@
         </ul>
     </div>
 
-    <div class="m-3 text-center border rounded">
+    <div class="m-3 text-center rounded">
 <!--        <a class="doglink" href="#" onclick="document.getElementById('exportForm').submit(); return false;">{{ notifications | length }} уведомлений [скачать]</a>-->
         <form action="{% url 'notification_export' %}" method="post" id="exportForm">
             {% csrf_token %}{% for item in notifications %}
