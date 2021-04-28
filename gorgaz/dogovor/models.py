@@ -161,3 +161,13 @@ class Order(models.Model):
     class Meta:
         verbose_name = 'Наряд'
         verbose_name_plural = 'Наряды'
+
+
+class Plan(models.Model):
+    dogovor_id = models.ForeignKey(Dogovor, on_delete=models.CASCADE)
+    user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
+
+    class Meta:
+        unique_together = ['dogovor_id', 'user_id']
+        verbose_name = 'План'
+        verbose_name_plural = 'Планы'

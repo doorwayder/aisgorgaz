@@ -44,12 +44,12 @@
             </tbody>
         </table>
     </div>
-        <form action="{% url 'addnotifications' %}" method="post">
+        <form action="{% url 'addplan' %}" method="post">
             {% csrf_token %}
             {% for item in dogovors %}
                 <input type="hidden" name="dogovor_id[]" value="{{ item.id }}">
             {% endfor %}
-<!--            <button type="submit" class="btn btn-secondary btn-sm btn-block mb-3">Добавить в список уведомлений</button>-->
+            <button type="submit" class="btn btn-secondary btn-sm btn-block mb-3">В план</button>
         </form>
 
     {% else %}

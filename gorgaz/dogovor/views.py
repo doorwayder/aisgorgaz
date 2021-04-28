@@ -6,7 +6,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.paginator import Paginator
-from .models import Dogovor, Payment, Notification, Worker, Order
+from .models import Dogovor, Payment, Notification, Worker, Order, Plan
 from .forms import DogovorForm, PaymentForm, OrderForm
 from datetime import datetime, timedelta, date
 import xlwt
@@ -789,26 +789,6 @@ def dogovor_doc4(request, dogovor_id):
 
 def dogovor_doc5(request, dogovor_id):
     dogovor = get_object_or_404(Dogovor, pk=dogovor_id)
-    # doc = xlrd.open_workbook('dogovor/static/doc/template6.xls', on_demand=True, formatting_info=True)
-    # work_book = copy(doc)
-    # response = HttpResponse(content_type='application/vnd.ms-excel')
-    # response['Content-Disposition'] = 'attachment;filename=kvit.xls'
-    # work_sheet = work_book.get_sheet('Реестр начислений')
-    # borders = xlwt.Borders()
-    # borders.left = xlwt.Borders.THIN
-    # borders.right = xlwt.Borders.THIN
-    # borders.top = xlwt.Borders.THIN
-    # borders.bottom = xlwt.Borders.THIN
-    # style_data_row = xlwt.XFStyle()
-    # style_data_row.num_format_str = 'DD.MM.YYYY'
-    # style_data_row.borders = borders
-    #fio = 'ФИО: ' + dogovor.name + '; Адрес: ' + dogovor.get_full_address2() + 'Назначение: Оплата за АДО и тех. обслуж-е'
-    #sum = 'Сумма: ' + str(dogovor.amount) + ' руб. 00 коп.'
-
-    # work_sheet.write(6, 0, dogovor.name)
-    # work_sheet.write(6, 1, dogovor.get_full_address2())
-    # work_sheet.write(6, 3, dogovor.amount)
-    # work_book.save(response)
     wb = openpyxl.load_workbook(filename='dogovor/static/doc/template6.xlsm', read_only=False, keep_vba=True)
     sheet = wb['Реестр начислений']
     sheet['A7'] = dogovor.name
@@ -824,3 +804,12 @@ def dogovor_doc5(request, dogovor_id):
 def plan(request):
     data = {}
     return render(request, 'dogovor/plan.html', data)
+
+
+def add_plan(request):
+    if request.method == 'POST':
+        dogovors = request.POST.getlist('dogovor_id[]')
+        for item in dogovors:
+            dogovor = Dogovor.objects.get(id=item)
+            Plan.objects.create(dogovor_id=dogovor, user_id=request.user)
+    return redirect('plan')

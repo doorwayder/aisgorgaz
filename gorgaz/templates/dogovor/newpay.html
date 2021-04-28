@@ -23,6 +23,7 @@
                         <select name="pay_place" id="id_pay_place" class="form-control">
                             <option value="в офисе" selected>в офисе</option>
                             <option value="квитанция">квитанция</option>
+                            <option value="мастер">мастер</option>
                             <optgroup label="----------"></optgroup>
                             {% for item in workers %}
                                 <option value="{{ item.name }}">{{ item.name }}</option>
