@@ -718,6 +718,7 @@ def dogovor_doc1(request, dogovor_id):
         'name': dogovor.name,
         'address': dogovor.get_full_address2(),
         'phone': dogovor.get_full_phone(),
+        'sum': dogovor.amount,
     }
     doc.render(context)
     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
@@ -736,6 +737,7 @@ def dogovor_doc2(request, dogovor_id):
         'name': dogovor.name,
         'address': dogovor.get_full_address2(),
         'phone': dogovor.get_full_phone(),
+        'sum': dogovor.amount,
     }
     doc.render(context)
     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
@@ -754,6 +756,7 @@ def dogovor_doc3(request, dogovor_id):
         'name': dogovor.name,
         'address': dogovor.get_full_address2(),
         'phone': dogovor.get_full_phone(),
+        'sum': dogovor.amount,
     }
     doc.render(context)
     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
@@ -772,6 +775,26 @@ def dogovor_doc4(request, dogovor_id):
         'name': dogovor.name,
         'address': dogovor.get_full_address2(),
         'phone': dogovor.get_full_phone(),
+        'sum': dogovor.amount,
+    }
+    doc.render(context)
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+    response['Content-Disposition'] = 'attachment;filename=dop.docx'
+    doc.save(response)
+    return response
+
+
+def dogovor_doc5(request, dogovor_id):
+    dogovor = get_object_or_404(Dogovor, pk=dogovor_id)
+    doc = DocxTemplate('dogovor/static/doc/template4.docx')
+
+    context = {
+        'number': dogovor.number,
+        'date': dogovor.date.strftime("%d.%m.%Y"),
+        'name': dogovor.name,
+        'address': dogovor.get_full_address2(),
+        'phone': dogovor.get_full_phone(),
+        'sum': dogovor.amount,
     }
     doc.render(context)
     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
