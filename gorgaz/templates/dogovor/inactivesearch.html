@@ -1,0 +1,30 @@
+{% extends 'dogovor/base.html' %}
+{% load static %}
+{% block content %}
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 flex-fill">
+
+    <form action="{% url 'inactivesearch' %}" method="post">
+    {% csrf_token %}
+        <div class="form-group row mt-3">
+            <div class="col-2">
+                <input type="date" class="form-control" name="start" id="id_start" required>
+            </div>
+            <div class="col-2">
+                <input type="date" class="form-control" name="end" id="id_end" required>
+            </div>
+                <span class="input-group-btn">
+                    <button type="submit" class="btn btn-secondary">Поиск</button>
+                </span>
+        </div>
+    </form>
+
+    {% include 'inc/_dogovors.html' %}
+
+</main>
+{% endblock %}
+
+{% block print %}
+    {% include 'inc/_dogovors_print.html' %}
+{% endblock %}
+
+{% block jsblock %}<script src="{% static 'js/main.js' %}"></script> {% endblock %}

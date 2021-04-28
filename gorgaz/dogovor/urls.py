@@ -19,6 +19,7 @@ urlpatterns = [
     path('order/<int:order_id>/', views.order_update, name='order'),
     path('delorder/<int:order_id>/', views.order_delete, name='delorder'),
     path('inactive/', views.dogovor_inactive, name='inactive'),
+    path('inactivesearch/', views.dogovor_inactive_search, name='inactivesearch'),
     path('expired/', views.dogovor_expired, name='expired'),
     path('datepayments/', views.payments_by_date, name='datepayments'),
     path('namepayments/', views.payments_by_name, name='namepayments'),

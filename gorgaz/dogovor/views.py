@@ -121,8 +121,28 @@ def dogovor_inactive(request):
         'dogovors': page_obj,
         'count': count,
         'query': 'Расторгнутые',
+        'type': 1,
     }
     return render(request, 'dogovor/inactive.html', data)
+
+
+def dogovor_inactive_search(request):
+    if request.method == 'POST':
+        start_date = request.POST['start']
+        end_date = request.POST['end']
+        dogovors_data = Dogovor.objects.filter(active=False)
+        dogovors_data = dogovors_data.filter(terminate_date__range=(start_date, end_date))
+        count = dogovors_data.count()
+    else:
+        count = 0
+        dogovors_data = []
+    data = {
+        'title': 'Расторгнутые договора',
+        'dogovors': dogovors_data,
+        'count': count,
+        'query': 'Расторгнутые по дате',
+    }
+    return render(request, 'dogovor/inactivesearch.html', data)
 
 
 def dogovor_expired(request):
