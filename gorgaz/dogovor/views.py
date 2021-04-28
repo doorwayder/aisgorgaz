@@ -10,6 +10,9 @@ from .models import Dogovor, Payment, Notification, Worker, Order
 from .forms import DogovorForm, PaymentForm, OrderForm
 from datetime import datetime, timedelta, date
 import xlwt
+import xlrd
+from xlutils.copy import copy
+import openpyxl
 from docxtpl import DocxTemplate
 from PIL import Image, ImageDraw, ImageFont
 from io import BytesIO
@@ -786,20 +789,35 @@ def dogovor_doc4(request, dogovor_id):
 
 def dogovor_doc5(request, dogovor_id):
     dogovor = get_object_or_404(Dogovor, pk=dogovor_id)
-    doc = DocxTemplate('dogovor/static/doc/template4.docx')
+    # doc = xlrd.open_workbook('dogovor/static/doc/template6.xls', on_demand=True, formatting_info=True)
+    # work_book = copy(doc)
+    # response = HttpResponse(content_type='application/vnd.ms-excel')
+    # response['Content-Disposition'] = 'attachment;filename=kvit.xls'
+    # work_sheet = work_book.get_sheet('Реестр начислений')
+    # borders = xlwt.Borders()
+    # borders.left = xlwt.Borders.THIN
+    # borders.right = xlwt.Borders.THIN
+    # borders.top = xlwt.Borders.THIN
+    # borders.bottom = xlwt.Borders.THIN
+    # style_data_row = xlwt.XFStyle()
+    # style_data_row.num_format_str = 'DD.MM.YYYY'
+    # style_data_row.borders = borders
+    #fio = 'ФИО: ' + dogovor.name + '; Адрес: ' + dogovor.get_full_address2() + 'Назначение: Оплата за АДО и тех. обслуж-е'
+    #sum = 'Сумма: ' + str(dogovor.amount) + ' руб. 00 коп.'
 
-    context = {
-        'number': dogovor.number,
-        'date': dogovor.date.strftime("%d.%m.%Y"),
-        'name': dogovor.name,
-        'address': dogovor.get_full_address2(),
-        'phone': dogovor.get_full_phone(),
-        'sum': dogovor.amount,
-    }
-    doc.render(context)
-    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
-    response['Content-Disposition'] = 'attachment;filename=kvit.docx'
-    doc.save(response)
+    # work_sheet.write(6, 0, dogovor.name)
+    # work_sheet.write(6, 1, dogovor.get_full_address2())
+    # work_sheet.write(6, 3, dogovor.amount)
+    # work_book.save(response)
+    wb = openpyxl.load_workbook(filename='dogovor/static/doc/template6.xlsm', read_only=False, keep_vba=True)
+    sheet = wb['Реестр начислений']
+    sheet['A7'] = dogovor.name
+    sheet['B7'] = dogovor.get_full_address2()
+    sheet['D7'] = dogovor.amount
+    response = HttpResponse(content_type='application/vnd.ms-excel')
+    response['Content-Disposition'] = 'attachment;filename=kvit.xls'
+    response = HttpResponse(content=openpyxl.writer.excel.save_virtual_workbook(wb))
+    response['Content-Disposition'] = 'attachment; filename=kvit.xlsm'
     return response
 
 
