@@ -209,7 +209,8 @@ def dogovor_search(request):
         # dogovor_data = Dogovor.objects.filter(Q(name__contains=query) | Q(number__contains=query) |
         #                                       Q(tel1__contains=query) | Q(tel2__contains=query) |
         #                                       Q(tel3__contains=query)).order_by('-date')
-        dogovor_data = Dogovor.objects.filter(number__contains=query).order_by('number')
+        #
+        dogovor_data = Dogovor.objects.filter(number=query)
     else:
         dogovor_data = []
         query = ''
@@ -830,3 +831,19 @@ def del_all_plans(request):
     plans = Plan.objects.filter(user_id=request.user)
     plans.delete()
     return redirect('plan')
+
+
+def create_orders(request):
+    if request.method == 'POST':
+        plans = request.POST.getlist('plan_id[]')
+        job = request.POST['job']
+        dt = request.POST['date']
+        wrk = request.POST['worker']
+        for item in plans:
+            pl = Plan.objects.get(id=item)
+            wr = Worker.objects.get(id=wrk)
+            Order.objects.create(dogovor_id=pl.dogovor_id, name=pl.dogovor_id.name,
+                                 address=pl.dogovor_id.get_full_address2(), tel=pl.dogovor_id.get_full_phone(),
+                                 job=job, date=dt, worker=wr, created_by=request.user)
+
+    return redirect('orders')

@@ -4,44 +4,28 @@
 {% block content %}
 
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 flex-fill">
-
-
-            <form action="{% url 'addplan' %}" method="post">
+            <form action="{% url 'createorders' %}" method="post">
                 {% csrf_token %}
-                        {% for item in plans %}
-                        <input type="hidden" name="plan_id[]" value="{{ item.id }}">
-                        {% endfor %}
+                {% for item in plans %}
+                <input type="hidden" name="plan_id[]" value="{{ item.id }}">
+                {% endfor %}
                 <div class="row mt-2">
-                    <div class="col-5">
-                        <div class="form-group">
-                            <input type="text" class="form-control col-4" name="job" autocomplete="off" maxlength="100" id="id_name" placeholder="Работы" required>
-                        </div>
+                    <div class="col-4">
+                        <input type="text" class="form-control" name="job" autocomplete="off" maxlength="100" id="id_name" placeholder="Работы" required>
                     </div>
                     <div class="col-3">
-                        <div class="form-group">
-                            <select class="form-control col-2" name="worker" id="id_worker">
-                                <option value="">Исполнитель</option>
-                                {% for item in workers %}
-                                <option value="{{ item.name }}">{{ item.name }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                    </div>
+                        <select class="form-control" name="worker" id="id_worker" required>
+                            {% for item in workers %}
+                            <option value="{{ item.id }}">{{ item.name }}</option>
+                            {% endfor %}
+                        </select></div>
                     <div class="col-3">
-                        <div class="form-group">
-                            <input type="date" class="form-control col-3" name="date" id="id_date" required>
-                        </div>
-                    </div>
+                        <input type="date" class="form-control" name="date" id="id_date" required></div>
                     <div class="col-2">
-                        <div class="form-group">
-                            <button class="btn btn-secondary btn-sm mb-1 from-control" type="submit">Создать наряд</button>
-                        </div>
+                        <button class="btn btn-secondary btn mb-1 from-control" type="submit">Создать наряд</button>
                     </div>
                 </div>
             </form>
-
-
-
     {% if plans %}
     <div class="table-responsive mt-1">
         <table class="table table-sm">

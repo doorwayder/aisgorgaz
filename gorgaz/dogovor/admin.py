@@ -39,7 +39,7 @@ class NotificationAdmin(admin.ModelAdmin):
 
 
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'address', 'job', 'date', )
+    list_display = ('id', 'name', 'address', 'job', 'date', 'created_by', 'create_time', )
     list_display_links = ('id', 'name', 'address')
     list_filter = ('date',)
 
