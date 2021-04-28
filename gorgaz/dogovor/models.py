@@ -151,7 +151,7 @@ class Order(models.Model):
     amount = models.IntegerField(blank=True,  null=True, verbose_name='Итого')
     comment = models.CharField(max_length=500, blank=True, null=True, verbose_name='Примечание')
     worker = models.ForeignKey(Worker, blank=True, null=True, on_delete=models.PROTECT)
-    completed = models.BooleanField(verbose_name='Выполнен')
+    completed = models.BooleanField(verbose_name='Выполнен', default=False)
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
     create_time = models.DateTimeField(auto_now=True, null=True, verbose_name='Время обновления наряда')
 

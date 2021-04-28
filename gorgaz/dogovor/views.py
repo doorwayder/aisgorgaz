@@ -802,9 +802,11 @@ def dogovor_doc5(request, dogovor_id):
 
 
 def plan(request):
+    workers = Worker.objects.all()
     plans = Plan.objects.filter(user_id=request.user)
     data = {
         'plans': plans,
+        'workers': workers,
     }
     return render(request, 'dogovor/plan.html', data)
 
