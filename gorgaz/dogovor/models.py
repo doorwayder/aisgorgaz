@@ -36,7 +36,7 @@ class Dogovor(models.Model):
         else:
             end = datetime.now().date() + timedelta(days=EXPIRED_DAYS)
 
-            if self.end_date <= end and self.end_date >= datetime.today().date():
+            if self.end_date <= end and self.end_date > datetime.today().date():
                 return True
             else:
                 return False
@@ -45,7 +45,7 @@ class Dogovor(models.Model):
         if self.end_date is None:
             return False
         else:
-            if self.end_date < datetime.now().date():
+            if self.end_date <= datetime.now().date():
                 return True
             else:
                 return False

@@ -123,7 +123,7 @@ def dogovor_inactive(request):
 
 
 def dogovor_expired(request):
-    dogovor_data = Dogovor.objects.filter(Q(end_date__lt=datetime.now().date()) & Q(active=True)).order_by('-end_date')
+    dogovor_data = Dogovor.objects.filter(Q(end_date__lt=datetime.now().date()) & Q(active=True)).order_by('address_city', 'address_street', 'address_house', 'address_kv')
     count = dogovor_data.count()
     paginator = Paginator(dogovor_data, 50)
     page_number = request.GET.get('page')
@@ -710,7 +710,7 @@ def notification_export_excel(request):
 
 def dogovor_doc1(request, dogovor_id):
     dogovor = get_object_or_404(Dogovor, pk=dogovor_id)
-    doc = DocxTemplate('dogovor/static/doc/template.docx')
+    doc = DocxTemplate('dogovor/static/doc/template1.docx')
 
     context = {
         'number': dogovor.number,
@@ -728,7 +728,7 @@ def dogovor_doc1(request, dogovor_id):
 
 def dogovor_doc2(request, dogovor_id):
     dogovor = get_object_or_404(Dogovor, pk=dogovor_id)
-    doc = DocxTemplate('dogovor/static/doc/template.docx')
+    doc = DocxTemplate('dogovor/static/doc/template2.docx')
 
     context = {
         'number': dogovor.number,
@@ -746,7 +746,7 @@ def dogovor_doc2(request, dogovor_id):
 
 def dogovor_doc3(request, dogovor_id):
     dogovor = get_object_or_404(Dogovor, pk=dogovor_id)
-    doc = DocxTemplate('dogovor/static/doc/template.docx')
+    doc = DocxTemplate('dogovor/static/doc/template3.docx')
 
     context = {
         'number': dogovor.number,
@@ -757,7 +757,25 @@ def dogovor_doc3(request, dogovor_id):
     }
     doc.render(context)
     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
-    response['Content-Disposition'] = 'attachment;filename=dogovor.docx'
+    response['Content-Disposition'] = 'attachment;filename=dop.docx'
+    doc.save(response)
+    return response
+
+
+def dogovor_doc4(request, dogovor_id):
+    dogovor = get_object_or_404(Dogovor, pk=dogovor_id)
+    doc = DocxTemplate('dogovor/static/doc/template4.docx')
+
+    context = {
+        'number': dogovor.number,
+        'date': dogovor.date.strftime("%d.%m.%Y"),
+        'name': dogovor.name,
+        'address': dogovor.get_full_address2(),
+        'phone': dogovor.get_full_phone(),
+    }
+    doc.render(context)
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+    response['Content-Disposition'] = 'attachment;filename=kvit.docx'
     doc.save(response)
     return response
 
