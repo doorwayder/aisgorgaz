@@ -19,7 +19,10 @@
             <tbody>
             {% if payments %}
                 {% for item in payments %}
-                <tr class="dogtr {% if not item.pay_type %}darkbg{% endif %}" data-id="{{ item.dogovor_id.id }}">
+                <tr class="dogtr
+                    {% if not item.pay_type %}darkbg{% endif %}
+                    {% if item.dolg %}redbg{% endif %}"
+                    data-id="{{ item.dogovor_id.id }}">
                     <td data-id="{{ item.dogovor_id.id }}">{{ item.date }}</td>
                     <td data-id="{{ item.dogovor_id.id }}">{{ item.dogovor_id.number }}</td>
                     <td data-id="{{ item.dogovor_id.id }}">{{ item.dogovor_id.name }}</td>

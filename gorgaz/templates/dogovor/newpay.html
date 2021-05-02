@@ -37,10 +37,16 @@
                 <div class="col-5">
                     <input type="number" name="amount" class='form-control' value="{{ dogovor.amount }}" required id="id_amount" placeholder="Сумма к оплате" required>
                 </div>
-                <div class="col-5">
+                <div class="col-2">
                     <div class="form-check mt-2">
                          <input id="id_pay_type" name="pay_type" checked="checked" type="checkbox" class="form-check-input" onchange="pay_type_change();">
                          <label id="pay_type_label" for="id_pay_type" class="form-check-label">Наличные</label>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="form-check mt-2">
+                         <input id="id_dolg" name="dolg" {% if form.dolg.value %} checked {% endif %} type="checkbox" class="form-check-input">
+                         <label id="dolg_label" for="id_dolg" class="form-check-label">Долг</label>
                     </div>
                 </div>
             </div>

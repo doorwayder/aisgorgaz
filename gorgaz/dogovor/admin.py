@@ -17,9 +17,9 @@ class DogovorAdmin(admin.ModelAdmin):
 
 
 class PaymentAdmin(admin.ModelAdmin):
-    list_display = ('date', 'get_name', 'pay_type', 'amount', 'pay_place', 'comment', )
+    list_display = ('date', 'get_name', 'pay_type', 'amount', 'pay_place', 'comment', 'dolg', )
     list_display_links = ('date', 'pay_type', 'amount', 'pay_place', 'comment', )
-    list_filter = ('date', 'pay_type', 'pay_place', )
+    list_filter = ('date', 'pay_type', 'pay_place', 'dolg',)
     search_fields = ['date']
 
     def get_name(self, obj):

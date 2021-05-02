@@ -97,6 +97,7 @@ class Payment(models.Model):
     amount = models.IntegerField(blank=False, verbose_name='Сумма')
     pay_place = models.CharField(max_length=50, blank=True, verbose_name='Место оплаты', default='В офисе')
     comment = models.CharField(max_length=500, blank=True, verbose_name='Примечание', null=True)
+    dolg = models.BooleanField(blank=False, null=False, default=False, verbose_name='Долг')
 
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
     create_time = models.DateTimeField(auto_now=True, null=True, verbose_name='Время обновления платежа')

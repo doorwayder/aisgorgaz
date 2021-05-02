@@ -141,7 +141,7 @@
                 </tr>
                 {% if payments %}
                 {% for item in payments %}
-                <tr>
+                <tr class="{% if item.dolg %}redtext{% endif %}">
                     <td data-toggle="tooltip" title="Создано: {{ item.created_by }} [{{ item.create_time }}]">
                         <b>{{ item.date }}</b>
                     </td>

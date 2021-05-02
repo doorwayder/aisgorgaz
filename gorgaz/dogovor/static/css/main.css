@@ -112,6 +112,11 @@ th {
   background: #ffeeee;
 }
 
+.redtext {
+  color: #ff0000;
+}
+
+
 .yellowbg {
   background: #fffddf;
 }
@@ -126,6 +131,10 @@ th {
 
 .strike {
   text-decoration: line-through;
+}
+
+.urlico {
+  font-weight: bold;
 }
 
 .ui-tooltip {
