@@ -146,11 +146,20 @@ function orderPrint(order) {
 }
 
 function onDiscount() {
-    let sum = document.getElementById("id_sum").value;
+    let sum = Number(document.getElementById("id_sum").value);
     $('#id_discount').val(Math.ceil(sum*0.2));
     $('#id_amount').val(sum-Math.ceil(sum*0.2));
 }
 
-function delRow() {
-    alert('...');
+function calcAmount() {
+    let amount = Number(document.getElementById("id_amount").value);
+    let discount = Number(document.getElementById("id_discount").value);
+    let new_discount = Math.ceil(amount*0.25);
+    if (discount != 0) {
+        $('#id_discount').val(new_discount);
+        $('#id_sum').val(amount+Math.ceil(amount*0.25));
+    }
+    else {
+        $('#id_sum').val(amount);
+    }
 }

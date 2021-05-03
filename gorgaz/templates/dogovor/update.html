@@ -114,7 +114,7 @@
                 </div>
                 <div class="col-2">
                     <div class="form-group">
-                        <input type="number" name="amount" id="id_amount" value="{{ form.amount.value }}" class="form-control" placeholder="Итоговая сумма">
+                        <input type="number" name="amount" id="id_amount" value="{{ form.amount.value }}" class="form-control" placeholder="Итоговая сумма" oninput="calcAmount();">
                     </div>
                 </div>
             </div>

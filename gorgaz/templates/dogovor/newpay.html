@@ -14,7 +14,7 @@
                     <div class="form-group row">
                         <label for="id_date" class="col-3 col-form-label">Дата оплаты:</label>
                         <div class="col-9">
-                            <input type="date" name="date" id="id_date" class="form-control" required>
+                            <input type="date" name="date" id="id_date" class="form-control" value="" required>
                         </div>
                     </div>
                 </div>
@@ -75,4 +75,8 @@
 
 {% block jsblock %}
 <script src="{% static 'js/main.js' %}"></script>
+<script>
+let today = new Date().toISOString().substr(0, 10);
+$("#id_date").val(today);
+</script>
 {% endblock %}
