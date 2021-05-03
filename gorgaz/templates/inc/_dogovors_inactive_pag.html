@@ -1,0 +1,55 @@
+{% if dogovors %}
+    {% if query or city or street or name %}
+    <div class="mt-3">
+        <b>Найдено:</b> {{ count }} дог.
+        {% if type == 1 %}<a class="btn btn-secondary btn-sm" href="/inactivesearch/">Поиск по дате</a>{% endif %}
+    </div>
+    {% endif %}
+
+    <div class="table-responsive mt-4">
+        <table class="table table-sm dogtable">
+            <thead>
+                <tr>
+                    <th>№ договора</th>
+                    <th>Ф.И.О.</th>
+                    <th>Адрес</th>
+                    <th>Контакты</th>
+                    <th>Расторгнут</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for item in dogovors %}
+            <tr class="dogtr
+            {% if item.active and item.is_expiring %}yellowbg{% endif %}
+            {% if item.active and item.is_expired %}redbg{% endif %}" data-id="{{ item.id }}">
+                <td data-id="{{ item.id }}">{{ item.number }} от {{ item.date | date:"d.m.Y"}}</td>
+                <td data-id="{{ item.id }}">{{ item.name | truncatechars:50}}</td>
+                <td data-id="{{ item.id }}">{{ item.address_city }}, {{ item.address_street }},
+                    д. {{ item.address_house }}{% if item.address_kv %}, кв. {{ item.address_kv }}{% endif %}</td>
+                <td data-id="{{ item.id }}">{% if item.tel1 %}{{ item.tel1 }}{% endif %}{% if item.tel2 %}  {{ item.tel2 }}{% endif %}{% if item.tel3 %}  {{ item.tel3 }}{% endif %}</td>
+                <td>{% if item.terminate_date %}{{ item.terminate_date }}{% else %}-{% endif %}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <div class="paginator text-center border rounded p-1">
+            <div class="step-links">
+                {% if dogovors.has_previous %}
+                    <a type="button" href="?page=1" class="btn btn-sm btn-outline-secondary">1</a>
+                    <a type="button" href="?page={{ dogovors.previous_page_number }}" class="btn btn-sm btn-outline-secondary"><</a>
+                    {% endif %}
+                    <span class="current">
+                        Страница <b>{{ dogovors.number }}</b> из <b>{{ dogovors.paginator.num_pages }}</b>
+                    </span>
+                    {% if dogovors.has_next %}
+                    <a type="button" href="?page={{ dogovors.next_page_number }}" class="btn btn-sm btn-outline-secondary">></a>
+                    <a type="button" href="?page={{ dogovors.paginator.num_pages }}" class="btn btn-sm btn-outline-secondary">{{ dogovors.paginator.num_pages }}</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% else %}
+        {% if query or city or street %}
+            Не найдено ни одного договора
+        {% endif %}
+{% endif %}

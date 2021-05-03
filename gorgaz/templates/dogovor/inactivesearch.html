@@ -18,13 +18,13 @@
         </div>
     </form>
 
-    {% include 'inc/_dogovors.html' %}
+    {% include 'inc/_dogovors_inactive.html' %}
 
 </main>
 {% endblock %}
 
 {% block print %}
-    {% include 'inc/_dogovors_print.html' %}
+    {% include 'inc/_dogovors_inactive_print.html' %}
 {% endblock %}
 
 {% block jsblock %}<script src="{% static 'js/main.js' %}"></script> {% endblock %}

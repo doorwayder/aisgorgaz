@@ -130,7 +130,7 @@ def dogovor_inactive_search(request):
     if request.method == 'POST':
         start_date = request.POST['start']
         end_date = request.POST['end']
-        dogovors_data = Dogovor.objects.filter(active=False)
+        dogovors_data = Dogovor.objects.filter(active=False).order_by('-terminate_date', '-date')
         dogovors_data = dogovors_data.filter(terminate_date__range=(start_date, end_date))
         count = dogovors_data.count()
     else:

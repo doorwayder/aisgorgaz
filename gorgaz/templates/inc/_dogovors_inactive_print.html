@@ -1,0 +1,25 @@
+        <table class="printtable">
+            <thead>
+                <tr>
+                    <td>№ договора</td>
+                    <td>Ф.И.О.</td>
+                    <td>Адрес</td>
+                    <td>Контакты</td>
+                    <td>Расторгнут</td>
+                </tr>
+            </thead>
+            <tbody>
+            {% for item in dogovors %}
+            <tr>
+                <td>
+                    {{ item.number }} от {{ item.date | date:"d.m.Y"}}
+                </td>
+                <td>{{ item.name | truncatechars:50}}</td>
+                <td>{{ item.address_city }}, {{ item.address_street }},
+                    д. {{ item.address_house }}{% if item.address_kv %}, кв. {{ item.address_kv }}{% endif %}</td>
+                <td>{% if item.tel1 %}{{ item.tel1 }}{% endif %}{% if item.tel2 %}  {{ item.tel2 }}{% endif %}{% if item.tel3 %}  {{ item.tel3 }}{% endif %}</td>
+                <td>{% if item.terminate_date %}{{ item.terminate_date }}{% else %}-{% endif %}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
