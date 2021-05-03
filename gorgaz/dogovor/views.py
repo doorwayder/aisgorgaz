@@ -271,6 +271,7 @@ def dogovor_search_address(request):
 
     """
     exp = 1
+    ul = 1
     end1 = datetime.now().date()
     end2 = datetime.now().date() + timedelta(days=EXPIRED_DAYS)
     address_city = Dogovor.objects.values('address_city').distinct().order_by('address_city')
