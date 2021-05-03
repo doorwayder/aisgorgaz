@@ -281,6 +281,7 @@ def dogovor_search_address(request):
         house = request.POST['address_house']
         kv = request.POST['address_kv']
         exp = int(request.POST.get('exp'))
+        ul = int(request.POST.get('ul'))
         error_message = ''
         if city and street:
             dogovor_data = Dogovor.objects.filter(Q(address_city=city) & Q(address_street=street) & Q(active=True)).order_by('address_street', 'address_house', 'address_kv')
@@ -292,6 +293,10 @@ def dogovor_search_address(request):
                 dogovor_data = dogovor_data.filter(end_date__lte=end1)
             if exp == 2:
                 dogovor_data = dogovor_data.filter(end_date__lte=end2)
+            if ul == 1:
+                dogovor_data = dogovor_data.filter(fiz=True)
+            if ul == 2:
+                dogovor_data = dogovor_data.filter(fiz=False)
         elif city:
             dogovor_data = Dogovor.objects.filter(Q(address_city=city) & Q(active=True)).order_by('address_street', 'address_house', 'address_kv')
             if house:
@@ -302,6 +307,10 @@ def dogovor_search_address(request):
                 dogovor_data = dogovor_data.filter(end_date__lte=end1)
             if exp == 2:
                 dogovor_data = dogovor_data.filter(end_date__lte=end2)
+            if ul == 1:
+                dogovor_data = dogovor_data.filter(fiz=True)
+            if ul == 2:
+                dogovor_data = dogovor_data.filter(fiz=False)
         elif street:
             dogovor_data = []
             error_message = 'Выберите населенный пункт'
@@ -326,6 +335,7 @@ def dogovor_search_address(request):
         'dogovors': dogovor_data,
         'message': error_message,
         'exp': exp,
+        'ul': ul,
     }
     return render(request, 'dogovor/search_address.html', data)
 

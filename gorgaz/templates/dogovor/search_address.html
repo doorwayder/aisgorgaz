@@ -29,7 +29,6 @@
             <button type="submit" class="btn btn-secondary ml-1">Поиск</button>
         </div>
 
-
         <div class="form-check-inline">
             <input class="form-check-input" type="radio" name="exp" id="Radios1" value="1" {% if exp == 1 %} checked {% endif %}>
             <label class="form-check-label" for="Radios1">
@@ -48,10 +47,28 @@
                 Все
             </label>
         </div>
-<!--        <div class="ml-4">-->
-<!--            <input id="id_expiring" name="expiring" checked="checked" type="checkbox" class="form-check-input">-->
-<!--            <label id="expiring_label" for="id_expiring" class="form-check-label">Срок договора истекает</label>-->
-<!--        </div>-->
+
+        |
+
+        <div class="form-check-inline ml-3">
+            <input class="form-check-input" type="radio" name="ul" id="Radios4" value="1" {% if ul == 1 %} checked {% endif %}>
+            <label class="form-check-label" for="Radios4">
+                Физлица
+            </label>
+        </div>
+        <div class="form-check-inline">
+            <input class="form-check-input" type="radio" name="ul" id="Radios5" value="2" {% if ul == 2 %} checked {% endif %}>
+            <label class="form-check-label" for="Radios5">
+                Юрлица
+            </label>
+        </div>
+        <div class="form-check-inline">
+            <input class="form-check-input" type="radio" name="ul" id="Radios6" value="3" {% if ul == 3 %} checked {% endif %}>
+            <label class="form-check-label" for="Radios6">
+                Все
+            </label>
+        </div>
+
     </form>
 
     {% include 'inc/_dogovors.html' %}
