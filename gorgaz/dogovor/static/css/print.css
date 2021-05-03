@@ -3,4 +3,7 @@
     size: auto !important;
     flex-direction: row;
   }
+  .more {
+     page-break-after: always;
+    }
 }

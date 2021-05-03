@@ -19,11 +19,9 @@
 <header>
      <nav class="navbar navbar-dark bg-dark d-print-none">
          <a class="navbar-brand" href="/">АРЗАМАСГОРГАЗ</a>
-         {% if user.groups.all.0.name == 'orderplan' %}
-         <a class="navbar-brand ml-1" href="{% url 'plansystem' %}" target="_blank">
+         <a class="navbar-brand ml-1" href="{% url 'main' %}">
              <img src="{% static 'images/card.png' %}" width="25px">
          </a>
-         {% endif %}
          <a class="navbar-brand ml-auto" href="{% static '/doc/manual.pdf' %}" target="_blank">
              <img src="{% static 'images/manual.png' %}" width="25px">
          </a>
@@ -42,8 +40,8 @@
     <div class="container-fluid d-print-none">
         <div class="row flex-fill">
             {% if user.is_authenticated %}
-                {% include 'inc/_nav.html' %}
-                {% block content %}{% endblock %}
+                {% include 'inc/_calendar.html' %}
+                {% include 'inc/_plansystem.html' %}
             {% else %}
                 {% include 'inc/_login.html' %}
             {% endif %}
@@ -67,6 +65,43 @@
     <script src="{% static '/js/popper.min.js' %}"></script>
     <script src="{% static '/js/bootstrap.min.js' %}"></script>
     <script src="{% static '/js/jquery-ui.js' %}"></script>
-    {% block jsblock %}{% endblock %}
+    <script src="{% static 'js/main.js' %}"></script>
+    {% block jsblock %}
+        <script>
+
+        $(function(){
+        $.datepicker.setDefaults(
+                {
+                closeText: 'Закрыть',
+                currentText: 'Сегодня',
+                monthNames: ['Январь','Февраль','Март','Апрель','Май','Июнь',
+                    'Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'],
+                monthNamesShort: ['Янв','Фев','Мар','Апр','Май','Июн',
+                    'Июл','Авг','Сен','Окт','Ноя','Дек'],
+                dayNames: ['воскресенье','понедельник','вторник','среда','четверг','пятница','суббота'],
+                dayNamesShort: ['вск','пнд','втр','срд','чтв','птн','сбт'],
+                dayNamesMin: ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'],
+                weekHeader: '',
+                dateFormat: 'yy-mm-dd',
+                firstDay: 1,
+                isRTL: false,
+                showMonthAfterYear: true,
+                yearSuffix: '',
+                });
+
+            $("#datepicker").datepicker({
+            changeMonth: true,
+            changeYear: true,
+            onSelect: function(date){
+                $('#datepicker_value').val(date);
+                $('#dateform').submit();
+                }
+            }
+       	)
+        $("#datepicker").datepicker("setDate", $('#datepicker_value').val());
+        });
+
+        </script>
+    {% endblock %}
 </body>
 </html>

@@ -1,0 +1,22 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" href="{% static '/images/favicon.png' %}">
+    <title>Печать нарядов</title>
+</head>
+<body>
+{% for item in contents %}
+    <div class="more">
+        <img src="data:image/png;base64,{{ item }}" width="700px">
+    </div>
+{% endfor %}
+<script src="{% static '/js/jquery-3.6.0.js' %}"></script>
+<script>
+    $(document).ready(function () {
+        window.print();
+    });
+</script>
+</body>
+</html>

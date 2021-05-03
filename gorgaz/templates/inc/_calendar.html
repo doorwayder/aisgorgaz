@@ -1,0 +1,22 @@
+<nav class="d-md-block bg-light sidebar d-print-none p-2">
+    <div class="position-sticky pt-3">
+        <form action="{% url 'plansystem' %}" method="post" id="dateform">
+            {% csrf_token %}
+            <div id="datepicker"></div>
+            <input type="hidden" id="datepicker_value" name="datepicker_value" value="{{ date }}">
+        </form>
+        <div class="mt-2 ml-2">
+            <b>{% if count %}Количество: {{ count }}{% endif %}</b>
+
+            <form action="{% url 'printallorders' %}" method="post">
+                {% csrf_token %}
+                {% for item in orders %}
+                    <input type="hidden" name="order_id[]" value="{{ item.id }}">
+                {% endfor %}
+                {% if orders %}
+                    <button type="submit" class="btn btn-secondary btn-sm btn-block p-0 mt-1">ПЕЧАТЬ</button>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+</nav>

@@ -1,0 +1,30 @@
+{% load static %}
+{% block content %}
+<main class="ms-sm-auto px-md-4 p-2">
+    <div class="container">
+        <div class="row">
+
+            {% for item in orders %}
+            <div class="card text-center m-2" style="width: 15rem;">
+                <div class="card-header ordertd p-1" data-id="{{ item.id }}">
+                    <b data-id="{{ item.id }}">{{ item.job }}</b>
+                </div>
+                <div class="card-body ordertd p-1" data-id="{{ item.id }}">
+                    <p class="card-text" data-id="{{ item.id }}">
+                        <i class="small" data-id="{{ item.id }}" style="font-weight: bold">{{ item.name }}</i>
+                        <br>
+                        {{ item.address }}
+                        <br>
+                        <i class="small" data-id="{{ item.id }}">{{ item.tel }}</i>
+                    </p>
+                </div>
+                <div class="card-footer text-muted p-1" data-id="{{ item.id }}">
+                    {% if item.worker %}{{ item.worker }}{% else %}-{% endif %}
+                    <a href="#" onclick="orderPrint({{ item.id }});"><img class="ml-2" src="{% static 'images/print.png' %}" width="15px"></a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</main>
+{% endblock %}

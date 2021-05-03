@@ -468,7 +468,7 @@ def order_update(request, order_id):
         form = OrderForm(request.POST, instance=order)
         if form.is_valid():
             form.save()
-            return redirect('orders')
+            return redirect('plansystem')
     form = OrderForm(instance=order)
     data = {
         'form': form,
@@ -530,7 +530,6 @@ def order_print(request, order_id):
         blank.text((65, 382), str(job), font=fnt2, fill=255)
     else:
         blank.text((65, 382), '-', font=fnt2, fill=255)
-
 
     output = BytesIO()
     im.save(output, "PNG")
@@ -819,19 +818,6 @@ def dogovor_doc4(request, dogovor_id):
     return response
 
 
-# def dogovor_doc5(request, dogovor_id):
-#     dogovor = get_object_or_404(Dogovor, pk=dogovor_id)
-#     wb = openpyxl.load_workbook(filename='dogovor/static/doc/template6.xlsm', read_only=False, keep_vba=True)
-#     sheet = wb['Реестр начислений']
-#     sheet['A7'] = dogovor.name
-#     sheet['B7'] = dogovor.get_full_address2()
-#     sheet['D7'] = dogovor.amount
-#     response = HttpResponse(content_type='application/vnd.ms-excel')
-#     response['Content-Disposition'] = 'attachment;filename=kvit.xls'
-#     response = HttpResponse(content=openpyxl.writer.excel.save_virtual_workbook(wb))
-#     response['Content-Disposition'] = 'attachment; filename=kvit.xlsm'
-#     return response
-
 def dogovor_doc5(request, dogovor_id):
     dogovor = get_object_or_404(Dogovor, pk=dogovor_id)
     doc = DocxTemplate('dogovor/static/doc/template5.docx')
@@ -891,5 +877,62 @@ def create_orders(request):
             Order.objects.create(dogovor_id=pl.dogovor_id, name=pl.dogovor_id.name,
                                  address=pl.dogovor_id.get_full_address2(), tel=pl.dogovor_id.get_full_phone(),
                                  job=job, date=dt, worker=wr, created_by=request.user)
-
     return redirect('orders')
+
+
+def plan_system(request):
+    if request.method == 'POST':
+        dt = request.POST['datepicker_value']
+        orders_data = Order.objects.filter(completed=False).order_by('worker__name')
+        orders_data = orders_data.filter(date=dt)
+        cnt = orders_data.count()
+    else:
+        dt = datetime.today().date().strftime("%Y-%m-%d")
+        orders_data = Order.objects.filter(completed=False).order_by('worker__name')
+        orders_data = orders_data.filter(date=dt)
+        cnt = 0
+    data = {
+        'orders': orders_data,
+        'date': dt,
+        'count': cnt,
+    }
+    return render(request, 'dogovor/plansystem.html', data)
+
+
+def order_printall(request):
+    contents_data = []
+    if request.method == 'POST':
+        orders_data = request.POST.getlist('order_id[]')
+        for item in orders_data:
+            order = Order.objects.get(id=item)
+            im = Image.open("static/images/order.png")
+            blank = ImageDraw.Draw(im)
+            fnt1 = ImageFont.truetype("static/font/arial.ttf", 16)
+            fnt2 = ImageFont.truetype("static/font/arial.ttf", 20)
+            blank.text((240, 33), str(order.pk), font=fnt1, fill=255)
+            blank.text((170, 68), str(order.name), font=fnt2, fill=255)
+            blank.text((130, 92), str(order.address), font=fnt2, fill=255)
+            blank.text((150, 152), str(order.tel), font=fnt2, fill=255)
+            if order.worker:
+                blank.text((200, 234), str(order.worker), font=fnt2, fill=255)
+            else:
+                blank.text((200, 234), '-', font=fnt2, fill=255)
+            blank.text((730, 118), str(order.date.strftime("%d.%m.%Y")), font=fnt2, fill=255)
+            job = order.job
+            job = job.replace(',', '\n')
+            job = job.replace(';', '\n')
+            if order.job:
+                blank.text((65, 382), str(job), font=fnt2, fill=255)
+            else:
+                blank.text((65, 382), '-', font=fnt2, fill=255)
+            output = BytesIO()
+            im.save(output, "PNG")
+            image = output.getvalue()
+            contents = base64.b64encode(image).decode()
+            contents_data.append(contents)
+            output.close()
+    data = {
+        'orders': orders_data,
+        'contents': contents_data,
+    }
+    return render(request, 'dogovor/printallorders.html', data)
