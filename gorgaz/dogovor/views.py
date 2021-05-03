@@ -936,3 +936,19 @@ def order_printall(request):
         'contents': contents_data,
     }
     return render(request, 'dogovor/printallorders.html', data)
+
+
+def order_search(request):
+    if request.method == 'POST':
+        query = request.POST['query'].strip()
+        order_data = Order.objects.filter(pk=query)
+    else:
+        order_data = []
+        query = ''
+
+    data = {
+        'title': 'Результат поиска',
+        'orders': order_data,
+        'query': query,
+    }
+    return render(request, 'dogovor/searchorders.html', data)

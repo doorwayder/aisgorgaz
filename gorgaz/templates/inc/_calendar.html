@@ -1,6 +1,7 @@
 <nav class="d-md-block bg-light sidebar d-print-none p-2">
     <div class="position-sticky pt-3">
         <a href="/neworder/" class="btn btn-secondary btn-sm btn-block mb-2" target="_blank">Создать наряд</a>
+        <a href="/searchorder/" class="btn btn-secondary btn-sm btn-block mb-2" target="_blank">Поиск</a>
         <form action="{% url 'plansystem' %}" method="post" id="dateform">
             {% csrf_token %}
             <div id="datepicker"></div>
