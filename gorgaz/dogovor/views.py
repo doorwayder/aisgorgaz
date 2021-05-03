@@ -110,7 +110,7 @@ def cities_stats(request):
 
 
 def dogovor_inactive(request):
-    dogovor_data = Dogovor.objects.filter(active=False).order_by('-date')
+    dogovor_data = Dogovor.objects.filter(active=False).order_by('-terminate_date', '-date')
     count = dogovor_data.count()
     paginator = Paginator(dogovor_data, 50)
     page_number = request.GET.get('page')
@@ -808,17 +808,32 @@ def dogovor_doc4(request, dogovor_id):
     return response
 
 
+# def dogovor_doc5(request, dogovor_id):
+#     dogovor = get_object_or_404(Dogovor, pk=dogovor_id)
+#     wb = openpyxl.load_workbook(filename='dogovor/static/doc/template6.xlsm', read_only=False, keep_vba=True)
+#     sheet = wb['Реестр начислений']
+#     sheet['A7'] = dogovor.name
+#     sheet['B7'] = dogovor.get_full_address2()
+#     sheet['D7'] = dogovor.amount
+#     response = HttpResponse(content_type='application/vnd.ms-excel')
+#     response['Content-Disposition'] = 'attachment;filename=kvit.xls'
+#     response = HttpResponse(content=openpyxl.writer.excel.save_virtual_workbook(wb))
+#     response['Content-Disposition'] = 'attachment; filename=kvit.xlsm'
+#     return response
+
 def dogovor_doc5(request, dogovor_id):
     dogovor = get_object_or_404(Dogovor, pk=dogovor_id)
-    wb = openpyxl.load_workbook(filename='dogovor/static/doc/template6.xlsm', read_only=False, keep_vba=True)
-    sheet = wb['Реестр начислений']
-    sheet['A7'] = dogovor.name
-    sheet['B7'] = dogovor.get_full_address2()
-    sheet['D7'] = dogovor.amount
-    response = HttpResponse(content_type='application/vnd.ms-excel')
-    response['Content-Disposition'] = 'attachment;filename=kvit.xls'
-    response = HttpResponse(content=openpyxl.writer.excel.save_virtual_workbook(wb))
-    response['Content-Disposition'] = 'attachment; filename=kvit.xlsm'
+    doc = DocxTemplate('dogovor/static/doc/template5.docx')
+
+    context = {
+        'name': dogovor.name,
+        'address': dogovor.get_full_address2(),
+        'sum': dogovor.amount,
+    }
+    doc.render(context)
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+    response['Content-Disposition'] = 'attachment;filename=kvit.docx'
+    doc.save(response)
     return response
 
 

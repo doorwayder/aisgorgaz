@@ -126,6 +126,12 @@
                     <td>
                     </td>
                 </tr>
+                {% if not dogovor.active %}
+                <tr>
+                    <td><b>Дата расторжения</b></td>
+                    <td><b>{% if dogovor.terminate_date %} {{ dogovor.terminate_date }} {% else %} - {% endif %}</b></td>
+                </tr>
+                {% endif %}
             </tbody>
         </table>
     </div>
