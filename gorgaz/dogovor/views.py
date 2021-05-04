@@ -490,7 +490,7 @@ def order_add(request):
         form = OrderForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('orders')
+            return redirect('plansystem')
     else:
         form = OrderForm()
     data = {
@@ -505,7 +505,7 @@ def order_add(request):
 def order_delete(request, order_id):
     instance = get_object_or_404(Order, pk=order_id)
     instance.delete()
-    return redirect('orders')
+    return redirect('plansystem')
 
 
 def order_print(request, order_id):
@@ -527,9 +527,9 @@ def order_print(request, order_id):
     job = job.replace(',', '\n')
     job = job.replace(';', '\n')
     if order.job:
-        blank.text((65, 382), str(job), font=fnt2, fill=255)
+        blank.text((55, 192), str(job), font=fnt2, fill=255)
     else:
-        blank.text((65, 382), '-', font=fnt2, fill=255)
+        blank.text((55, 192), '-', font=fnt2, fill=255)
 
     output = BytesIO()
     im.save(output, "PNG")
@@ -818,19 +818,32 @@ def dogovor_doc4(request, dogovor_id):
     return response
 
 
+# def dogovor_doc5(request, dogovor_id):
+#     dogovor = get_object_or_404(Dogovor, pk=dogovor_id)
+#     doc = DocxTemplate('dogovor/static/doc/template5.docx')
+#
+#     context = {
+#         'name': dogovor.name,
+#         'address': dogovor.get_full_address2(),
+#         'sum': dogovor.amount,
+#     }
+#     doc.render(context)
+#     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+#     response['Content-Disposition'] = 'attachment;filename=kvit.docx'
+#     doc.save(response)
+#     return response
+
 def dogovor_doc5(request, dogovor_id):
     dogovor = get_object_or_404(Dogovor, pk=dogovor_id)
-    doc = DocxTemplate('dogovor/static/doc/template5.docx')
-
-    context = {
-        'name': dogovor.name,
-        'address': dogovor.get_full_address2(),
-        'sum': dogovor.amount,
-    }
-    doc.render(context)
-    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
-    response['Content-Disposition'] = 'attachment;filename=kvit.docx'
-    doc.save(response)
+    wb = openpyxl.load_workbook(filename='dogovor/static/doc/template6.xlsm', read_only=False, keep_vba=True)
+    sheet = wb['Реестр начислений']
+    sheet['A4'] = dogovor.name
+    sheet['B4'] = dogovor.get_full_address2()
+    sheet['D4'] = dogovor.amount
+    response = HttpResponse(content_type='application/vnd.ms-excel')
+    response['Content-Disposition'] = 'attachment;filename=kvit.xls'
+    response = HttpResponse(content=openpyxl.writer.excel.save_virtual_workbook(wb))
+    response['Content-Disposition'] = 'attachment; filename=kvit.xlsm'
     return response
 
 
@@ -877,7 +890,7 @@ def create_orders(request):
             Order.objects.create(dogovor_id=pl.dogovor_id, name=pl.dogovor_id.name,
                                  address=pl.dogovor_id.get_full_address2(), tel=pl.dogovor_id.get_full_phone(),
                                  job=job, date=dt, worker=wr, created_by=request.user)
-    return redirect('orders')
+    return redirect('plansystem')
 
 
 def plan_system(request):
@@ -922,9 +935,9 @@ def order_printall(request):
             job = job.replace(',', '\n')
             job = job.replace(';', '\n')
             if order.job:
-                blank.text((65, 382), str(job), font=fnt2, fill=255)
+                blank.text((55, 192), str(job), font=fnt2, fill=255)
             else:
-                blank.text((65, 382), '-', font=fnt2, fill=255)
+                blank.text((55, 192), '-', font=fnt2, fill=255)
             output = BytesIO()
             im.save(output, "PNG")
             image = output.getvalue()
@@ -956,6 +969,7 @@ def order_search(request):
 
 def payments_dolg(request):
     payments_data = Payment.objects.filter(dolg=True).order_by('-date')
+    payments_data = payments_data.filter(dogovor_id__active=True)
     data = {
         'payments': payments_data,
     }
