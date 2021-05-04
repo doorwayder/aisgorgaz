@@ -20,7 +20,7 @@
      <nav class="navbar navbar-dark bg-dark d-print-none">
          <a class="navbar-brand" href="/">АРЗАМАСГОРГАЗ</a>
          {% if user.groups.all.0.name == 'orderplan' %}
-         <a class="navbar-brand ml-1" href="{% url 'plansystem' %}" target="_blank">
+         <a class="navbar-brand ml-1" href="{% url 'plansystem' %}">
              <img src="{% static 'images/card.png' %}" width="25px">
          </a>
          {% endif %}

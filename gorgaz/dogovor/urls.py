@@ -27,6 +27,7 @@ urlpatterns = [
     path('datepayments/', views.payments_by_date, name='datepayments'),
     path('namepayments/', views.payments_by_name, name='namepayments'),
     path('numpayments/', views.payments_by_number, name='numpayments'),
+    path('dolg/', views.payments_dolg, name='dolg'),
     path('city-autocomplete/', views.city_autocomplete, name='city-autocomplete'),
     path('street-autocomplete/', views.street_autocomplete, name='street-autocomplete'),
     path('name-autocomplete/', views.name_autocomplete, name='name-autocomplete'),

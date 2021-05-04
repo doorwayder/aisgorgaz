@@ -952,3 +952,11 @@ def order_search(request):
         'query': query,
     }
     return render(request, 'dogovor/searchorders.html', data)
+
+
+def payments_dolg(request):
+    payments_data = Payment.objects.filter(dolg=True).order_by('-date')
+    data = {
+        'payments': payments_data,
+    }
+    return render(request, 'dogovor/dolg.html', data)
