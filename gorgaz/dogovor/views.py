@@ -383,10 +383,10 @@ def dogovor_newpay(request, dogovor_id):
         if form.is_valid():
             Payment.objects.create(**form.cleaned_data)
             if qs.end_date is not None:
-                qs.end_date = date(qs.end_date.year + 1, qs.end_date.month, qs.end_date.day)
+                qs.end_date = qs.end_date + timedelta(days=365)
                 qs.save()
             else:
-                qs.end_date = date(qs.date.year + 1, qs.date.month, qs.date.day)
+                qs.end_date = qs.date + timedelta(days=365)
                 qs.save()
             return redirect('dogovor', dogovor_id=dogovor_id)
         else:
@@ -951,6 +951,7 @@ def plan_system(request):
     data = {
         'orders': orders_data,
         'date': dt,
+        'data': datetime.strptime(dt, "%Y-%m-%d").date(),
         'count': cnt,
     }
     return render(request, 'dogovor/plansystem.html', data)
