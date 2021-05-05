@@ -868,15 +868,15 @@ def dogovor_doc6(request, dogovor_id):
     blank.text((360, 532), str4, font=fnt1, fill=255)
 
     qr = qrcode.QRCode(version=1, error_correction=qrcode.constants.ERROR_CORRECT_L, box_size=2, border=1, )
-    data = 'ST00011|Name=ООО "Арзамасгоргаз"|PersonalAcc=40702810517500000015|BankName=ФИЛИАЛ "ЦЕНТРАЛЬНЫЙ" БАНКА ВТБ (ПАО) Г. МОСКВА|BIC=044525411|CorrespAcc=30101810145250000411|PayeelNN=5243011758|LastName='
+    data = 'ST00012|Name=ООО "Арзамасгоргаз"|PersonalAcc=40702810517500000015|BankName=ФИЛИАЛ "ЦЕНТРАЛЬНЫЙ" БАНКА ВТБ (ПАО) Г. МОСКВА|BIC=044525411|CorrespAcc=30101810145250000411|PayeelNN=5243011758|LastName='
     data = data + dog.name
     data = data + '|Purpose=Оплата за АДО и тех. обслуж-е|РауегАddress='
     data = data + dog.get_full_address2()
     data = data + '|Sum='
-    data = data + str(dog.amount)
+    data = data + str(dog.amount*100)
     data = data + '|SomeNewReq=100'
 
-    data = data.encode('cp1251')
+    #data = data.encode('cp1251')
 
     qr.add_data(data)
     qr.make(fit=True)
