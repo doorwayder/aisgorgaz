@@ -16,6 +16,7 @@ import openpyxl
 from docxtpl import DocxTemplate
 from PIL import Image, ImageDraw, ImageFont
 from io import BytesIO
+import qrcode
 import base64
 import os
 from .param import *
@@ -841,10 +842,64 @@ def dogovor_doc5(request, dogovor_id):
     sheet['B4'] = dogovor.get_full_address2()
     sheet['D4'] = dogovor.amount
     response = HttpResponse(content_type='application/vnd.ms-excel')
-    #response['Content-Disposition'] = 'attachment; filename=kvit.xlsm'
     response = HttpResponse(content=openpyxl.writer.excel.save_virtual_workbook(wb))
     response['Content-Disposition'] = 'attachment; filename=kvit.xlsm'
     return response
+
+
+def dogovor_doc6(request, dogovor_id):
+    dog = get_object_or_404(Dogovor, pk=dogovor_id)
+    im = Image.open("dogovor/static/images/kvit_template.png")
+    blank = ImageDraw.Draw(im)
+    fnt1 = ImageFont.truetype("dogovor/static/font/arial.ttf", 16)
+    fnt2 = ImageFont.truetype("dogovor/static/font/arial.ttf", 14)
+    str1 = 'Ф.И.О: ' + dog.name
+    str2 = 'Адрес: ' + dog.get_full_address2() + ';'
+    str3 = 'Назначение: Оплата за АДО и тех. обслуж-е'
+    str4 = 'Сумма: ' + str(dog.amount) + ' руб. 00 коп.'
+    blank.text((200, 160), str1, font=fnt2, fill=255)
+    blank.text((200, 176), str2, font=fnt2, fill=255)
+    blank.text((200, 192), str3, font=fnt2, fill=255)
+    blank.text((360, 225), str4, font=fnt1, fill=255)
+
+    blank.text((200, 466), str1, font=fnt2, fill=255)
+    blank.text((200, 482), str2, font=fnt2, fill=255)
+    blank.text((200, 498), str3, font=fnt2, fill=255)
+    blank.text((360, 532), str4, font=fnt1, fill=255)
+
+    qr = qrcode.QRCode(version=1, error_correction=qrcode.constants.ERROR_CORRECT_L, box_size=2, border=1, )
+    data = 'ST00011|Name=ООО "Арзамасгоргаз"|PersonalAcc=40702810517500000015|BankName=ФИЛИАЛ "ЦЕНТРАЛЬНЫЙ" БАНКА ВТБ (ПАО) Г. МОСКВА|BIC=044525411|CorrespAcc=30101810145250000411|PayeelNN=5243011758|LastName='
+    data = data + dog.name
+    data = data + '|Purpose=Оплата за АДО и тех. обслуж-е|РауегАddress='
+    data = data + dog.get_full_address2()
+    data = data + '|Sum='
+    data = data + str(dog.amount)
+    data = data + '|SomeNewReq=100'
+
+    data = data.encode('cp1251')
+
+    qr.add_data(data)
+    qr.make(fit=True)
+
+
+    img = qr.make_image(fill_color="black", back_color="white")
+
+
+
+
+    im.paste(img, (15, 400), img)
+
+
+    output = BytesIO()
+    im.save(output, "PNG")
+    image = output.getvalue()
+    contents = base64.b64encode(image).decode()
+    output.close()
+    data = {
+        'order': dog,
+        'contents': contents,
+    }
+    return render(request, 'dogovor/printorder.html', data)
 
 
 def plan(request):

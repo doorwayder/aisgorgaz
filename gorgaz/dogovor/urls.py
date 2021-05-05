@@ -38,6 +38,7 @@ urlpatterns = [
     path('doc3/<int:dogovor_id>/', views.dogovor_doc3, name='doc3'),
     path('doc4/<int:dogovor_id>/', views.dogovor_doc4, name='doc4'),
     path('doc5/<int:dogovor_id>/', views.dogovor_doc5, name='doc5'),
+    path('doc6/<int:dogovor_id>/', views.dogovor_doc6, name='doc6'),
     path('add/', views.dogovor_add, name='add'),
     path('dogovor/<int:dogovor_id>/newpay/', views.dogovor_newpay, name='newpay'),
     path('updatepay/<int:payment_id>/', views.dogovor_updatepay, name='updatepay'),
