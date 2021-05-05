@@ -875,21 +875,10 @@ def dogovor_doc6(request, dogovor_id):
     data = data + '|Sum='
     data = data + str(dog.amount*100)
     data = data + '|SomeNewReq=100'
-
-    #data = data.encode('cp1251')
-
     qr.add_data(data)
     qr.make(fit=True)
-
-
     img = qr.make_image(fill_color="black", back_color="white")
-
-
-
-
     im.paste(img, (15, 400), img)
-
-
     output = BytesIO()
     im.save(output, "PNG")
     image = output.getvalue()
@@ -1029,3 +1018,10 @@ def payments_dolg(request):
         'payments': payments_data,
     }
     return render(request, 'dogovor/dolg.html', data)
+
+
+def backups(request):
+    path = 'static/backups/'
+    bak_list = os.listdir(path)
+    print(bak_list)
+    return render(request, 'dogovor/backups.html', {'backups': bak_list})

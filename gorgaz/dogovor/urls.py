@@ -52,4 +52,5 @@ urlpatterns = [
     path('updatenotify2/', views.update_notify2, name='updatenotify2'),
     path('login/', views.user_login, name='login'),
     path('logout/', views.user_logout, name='logout'),
+    path('backups/', views.backups, name='backups'),
 ]

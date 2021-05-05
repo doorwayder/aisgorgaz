@@ -1,0 +1,62 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="shortcut icon" href="{% static '/images/favicon.png' %}">
+    <link rel="stylesheet" href="{% static '/css/main.css' %}">
+    <link rel="stylesheet" href="{% static '/css/print.css' %}">
+    <link rel="stylesheet" href="{% static '/css/bootstrap.min.css' %}">
+    <link href="{% static '/css/bootstrap-select.min.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static '/css/jquery-ui.css' %}">
+    {% block css %}{% endblock %}
+    <title>{% block title %}Резервные копии{% endblock %}</title>
+</head>
+
+<body>
+<header>
+     <nav class="navbar navbar-dark bg-dark d-print-none">
+         <a class="navbar-brand" href="/">АРЗАМАСГОРГАЗ</a>
+         <a class="navbar-brand ml-1" href="{% url 'main' %}">
+             <img src="{% static 'images/card.png' %}" width="25px">
+         </a>
+         <a class="navbar-brand ml-auto" href="{% static '/doc/manual.pdf' %}" target="_blank">
+             <img src="{% static 'images/manual.png' %}" width="25px">
+         </a>
+         <ul class="navbar-nav mr-3">
+             <li class="nav-item">
+                 {% if user.is_authenticated %}
+                    <a class="nav-link" href="{% url 'logout' %}">Выйти ({{ user.username }})</a>
+                    {% else %}
+                    <a class="nav-link" href="{% url 'login' %}">Вход</a>
+                    {% endif %}
+             </li>
+         </ul>
+     </nav>
+</header>
+
+    <div class="container-fluid d-print-none">
+        <div class="row flex-fill">
+            {% if user.is_authenticated %}
+                {% for item in backups %}
+                {{ forloop.counter }}<a href="static/backups/{{ item }}">{{ item }}</a>-------
+                {% endfor %}
+            {% else %}
+                {% include 'inc/_login.html' %}
+            {% endif %}
+        </div>
+    </div>
+
+<footer class="footer bg-dark d-print-none">
+    <div class="mainfooter">
+        <span class="text-muted">АИС Учета договоров "АРЗАМАСГОРГАЗ" © 2021</span>
+    </div>
+</footer>
+    <script src="{% static '/js/jquery-3.6.0.js' %}"></script>
+    <script src="{% static '/js/popper.min.js' %}"></script>
+    <script src="{% static '/js/bootstrap.min.js' %}"></script>
+    <script src="{% static '/js/jquery-ui.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>
