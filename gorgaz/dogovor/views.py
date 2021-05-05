@@ -841,7 +841,7 @@ def dogovor_doc5(request, dogovor_id):
     sheet['B4'] = dogovor.get_full_address2()
     sheet['D4'] = dogovor.amount
     response = HttpResponse(content_type='application/vnd.ms-excel')
-    response['Content-Disposition'] = 'attachment;filename=kvit.xls'
+    #response['Content-Disposition'] = 'attachment; filename=kvit.xlsm'
     response = HttpResponse(content=openpyxl.writer.excel.save_virtual_workbook(wb))
     response['Content-Disposition'] = 'attachment; filename=kvit.xlsm'
     return response
