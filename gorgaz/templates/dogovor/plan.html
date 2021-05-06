@@ -45,7 +45,6 @@
             <tbody>
             {% for item in plans %}
             <tr class="plantr" data-id="{{ item.id }}">
-
                 <td data-id="{{ item.id }}">
                     <a style="text-decoration: none;" href="/dogovor/{{ item.dogovor_id.id }}" target="_blank"><img src="{% static 'images/kvit.png' %}" width="15px"></a>
                     {{ item.dogovor_id.number }} от {{ item.dogovor_id.date | date:"d.m.Y"}}

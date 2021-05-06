@@ -1,18 +1,27 @@
 {% load static %}
 {% block content %}
 <main class="ms-sm-auto px-md-1 p-1 col-10 ml-2 bt-2">
-    <b>{{ data }}</b><br>
+    <div class="text-center col-11"><b>{{ data }}</b></div>
+    <div class="paginator text-center border rounded p-1 col-11">
+        <div class="step-links">
+            {% for page in orders.paginator.page_range %}
+                <a type="button" href="?page={{ page }}" class="btn btn-sm {% if orders.number == page %}btn-secondary{% else %}btn-outline-secondary{% endif %}">{{ page }}</a>
+            {% endfor %}
+        </div>
+    </div>
+
         <table class="plantable">
             <tbody>
             <tr>
             {% for item in orders %}
-                <td>
-                    {{ item.name }}<br><hr>
-                    {{ item.address }}<br><hr>
-                    <b>{{ item.job }}</b><br><hr>
-
+                <td width="13%">
+                    <a href="/order/{{ item.id }}" class="btn btn-secondary btn-sm btn-block p-0 m-0">Наряд № {{ item.id }}</a><hr class="m-0">
+                    {{ item.name }} <a href="#" onclick="orderPrint({{ item.id }});"><img class="ml-2" src="{% static 'images/print.png' %}" width="10px"></a><br><hr class="m-0">
+                    {{ item.address }}<br><hr class="m-0">
+                    {{ item.tel }}<br><hr class="m-0">
+                    <b>{{ item.job }}</b><br><hr class="m-0">
+                    <a href="#" class="btn btn-secondary btn-sm btn-block p-0 m-0">{% if item.worker %}{{ item.worker.name }}{% else %}-{% endif %}</a>
                 </td>
-
                 {% if not forloop.last and forloop.counter|divisibleby:"7" %}
                 </tr>
                 <tr>

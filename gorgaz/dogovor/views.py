@@ -292,9 +292,9 @@ def dogovor_search_address(request):
             if kv:
                 dogovor_data = dogovor_data.filter(address_kv=kv)
             if exp == 1:
-                dogovor_data = dogovor_data.filter(end_date__lte=end1)
+                dogovor_data = dogovor_data.filter(Q(end_date__lte=end1) | Q(end_date=None))
             if exp == 2:
-                dogovor_data = dogovor_data.filter(end_date__lte=end2)
+                dogovor_data = dogovor_data.filter(Q(end_date__lte=end2) | Q(end_date=None))
             if ul == 1:
                 dogovor_data = dogovor_data.filter(fiz=True)
             if ul == 2:
@@ -306,9 +306,9 @@ def dogovor_search_address(request):
             if kv:
                 dogovor_data = dogovor_data.filter(address_kv=kv)
             if exp == 1:
-                dogovor_data = dogovor_data.filter(end_date__lte=end1)
+                dogovor_data = dogovor_data.filter(Q(end_date__lte=end1) | Q(end_date=None))
             if exp == 2:
-                dogovor_data = dogovor_data.filter(end_date__lte=end2)
+                dogovor_data = dogovor_data.filter(Q(end_date__lte=end2) | Q(end_date=None))
             if ul == 1:
                 dogovor_data = dogovor_data.filter(fiz=True)
             if ul == 2:
@@ -470,6 +470,7 @@ def order_update(request, order_id):
         if form.is_valid():
             form.save()
             return redirect('plansystem')
+
     form = OrderForm(instance=order)
     data = {
         'form': form,
@@ -937,26 +938,6 @@ def create_orders(request):
     return redirect('plansystem')
 
 
-def plan_system(request):
-    if request.method == 'POST':
-        dt = request.POST['datepicker_value']
-        orders_data = Order.objects.filter(completed=False).order_by('worker__name')
-        orders_data = orders_data.filter(date=dt)
-        cnt = orders_data.count()
-    else:
-        dt = datetime.today().date().strftime("%Y-%m-%d")
-        orders_data = Order.objects.filter(completed=False).order_by('worker__name')
-        orders_data = orders_data.filter(date=dt)
-        cnt = 0
-    data = {
-        'orders': orders_data,
-        'date': dt,
-        'data': datetime.strptime(dt, "%Y-%m-%d").date(),
-        'count': cnt,
-    }
-    return render(request, 'dogovor/plansystem.html', data)
-
-
 def order_printall(request):
     contents_data = []
     if request.method == 'POST':
@@ -1026,3 +1007,28 @@ def backups(request):
     bak_list = os.listdir(path)
     print(bak_list)
     return render(request, 'dogovor/backups.html', {'backups': bak_list})
+
+
+def plan_system(request):
+    if request.method == 'POST':
+        dt = request.POST['datepicker_value']
+        orders_data = Order.objects.filter(completed=False).order_by('id', 'worker__name')
+        orders_data = orders_data.filter(date=dt)
+        cnt = orders_data.count()
+    else:
+        dt = datetime.today().date().strftime("%Y-%m-%d")
+        orders_data = Order.objects.filter(completed=False).order_by('id', 'worker__name')
+        orders_data = orders_data.filter(date=dt)
+        cnt = orders_data.count()
+
+    paginator = Paginator(orders_data, 35)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    data = {
+        'orders': page_obj,
+        'date': dt,
+        'data': datetime.strptime(dt, "%Y-%m-%d").date(),
+        'count': cnt,
+    }
+    return render(request, 'dogovor/plansystem.html', data)
