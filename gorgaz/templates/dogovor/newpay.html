@@ -20,7 +20,7 @@
                 </div>
                 <div class="col-5">
                     <div class="form-group">
-                        <select name="pay_place" id="id_pay_place" class="form-control">
+                        <select name="pay_place" id="id_pay_place" class="form-control selectpicker" data-live-search="true">
                             <option value="в офисе" selected>в офисе</option>
                             <option value="квитанция">квитанция</option>
                             <option value="мастер">мастер</option>
@@ -79,4 +79,5 @@
 let today = new Date().toISOString().substr(0, 10);
 $("#id_date").val(today);
 </script>
+<script src="{% static 'js/bootstrap-select.min.js' %}"></script>
 {% endblock %}

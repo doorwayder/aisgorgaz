@@ -377,7 +377,7 @@ def name_autocomplete(request):
 
 def dogovor_newpay(request, dogovor_id):
     qs = Dogovor.objects.get(pk=dogovor_id)
-    workers = Worker.objects.all()
+    workers = Worker.objects.all().order_by('name')
     if request.method == 'POST':
         form = PaymentForm(request.POST)
         if form.is_valid():
@@ -405,7 +405,7 @@ def dogovor_newpay(request, dogovor_id):
 def dogovor_updatepay(request, payment_id):
     payment = get_object_or_404(Payment, pk=payment_id)
     dogovor = payment.dogovor_id
-    workers = Worker.objects.all()
+    workers = Worker.objects.all().order_by('name')
     if request.method == 'POST':
         form = PaymentForm(request.POST, instance=payment)
         if form.is_valid():

@@ -20,7 +20,7 @@
                 </div>
                 <div class="col-5">
                     <div class="form-group">
-                        <select name="pay_place" id="id_pay_place" class="form-control">
+                        <select name="pay_place" id="id_pay_place" class="form-control selectpicker" data-live-search="true">
                             <option value="в офисе" {% ifequal form.pay_place.value 'в офисе' %} selected {% endifequal %}>в офисе</option>
                             <option value="квитанция" {% ifequal form.pay_place.value 'квитанция' %} selected {% endifequal %}>квитанция</option>
                             <option value="мастер" {% ifequal form.pay_place.value 'мастер' %} selected {% endifequal %}>мастер</option>
@@ -76,4 +76,5 @@
 
 {% block jsblock %}
 <script src="{% static 'js/main.js' %}"></script>
+<script src="{% static 'js/bootstrap-select.min.js' %}"></script>
 {% endblock %}
