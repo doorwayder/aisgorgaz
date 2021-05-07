@@ -5,8 +5,9 @@
     <div class="paginator text-center border rounded p-1 col-11">
         <div class="step-links">
             {% for page in orders.paginator.page_range %}
-                <a type="button" href="?page={{ page }}" class="btn btn-sm {% if orders.number == page %}btn-secondary{% else %}btn-outline-secondary{% endif %}">{{ page }}</a>
+                <a type="button" href="?datepicker_value={{ date }}&page={{ page }}" class="btn btn-sm {% if orders.number == page %}btn-secondary{% else %}btn-outline-secondary{% endif %}">{{ page }}</a>
             {% endfor %}
+            <button type="button" class="btn btn-sm btn-outline-secondary">Количество: {{ orders|length }}</button>
         </div>
     </div>
 

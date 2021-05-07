@@ -2,8 +2,7 @@
     <div class="position-sticky pt-3">
         <a href="/neworder/" class="btn btn-secondary btn-sm btn-block mb-2" target="_blank">Создать наряд</a>
         <a href="/searchorder/" class="btn btn-secondary btn-sm btn-block mb-2" target="_blank">Поиск</a>
-        <form action="{% url 'plansystem' %}" method="post" id="dateform">
-            {% csrf_token %}
+        <form action="{% url 'plansystem' %}" method="get" id="dateform">
             <div id="datepicker"></div>
             <input type="hidden" id="datepicker_value" name="datepicker_value" value="{{ date }}">
         </form>
@@ -16,7 +15,7 @@
                     <input type="hidden" name="order_id[]" value="{{ item.id }}">
                 {% endfor %}
                 {% if orders %}
-                    <button type="submit" class="btn btn-secondary btn-sm btn-block mt-1">ПЕЧАТЬ</button>
+                    <button type="submit" class="btn btn-secondary btn-sm btn-block mt-1" formtarget="_blank">ПЕЧАТЬ</button>
                 {% endif %}
             </form>
         </div>

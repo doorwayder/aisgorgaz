@@ -1,0 +1,328 @@
+{% load static %}
+{% block content %}
+<main class="ms-sm-auto px-md-1 p-1 col-10 ml-2 bt-2">
+    <div class="text-center col-11"><b>{{ data }}</b></div>
+    <div class="paginator text-center border rounded p-1 col-11">
+        <div class="step-links">
+                <a type="button" href="?datepicker_value={{ date }}&page=1" class="btn btn-sm {% if orders.number == 1 %}btn-secondary{% else %}btn-outline-secondary{% endif %}">1</a>
+                <a type="button" href="?datepicker_value={{ date }}&page=2" class="btn btn-sm {% if orders.number == 2 %}btn-secondary{% else %}btn-outline-secondary{% endif %}">2</a>
+                <a type="button" href="?datepicker_value={{ date }}&page=3" class="btn btn-sm {% if orders.number == 3 %}btn-secondary{% else %}btn-outline-secondary{% endif %}">3</a>
+            <button type="button" class="btn btn-sm btn-outline-secondary">Количество: {{ orders|length }}</button>
+        </div>
+    </div>
+
+        <table class="plantable">
+            <tbody>
+            <tr>
+                <td width="250em" height="130em">
+                    <a href="/order/{{ orders.0.id }}" class="btn btn-secondary btn-sm btn-block p-0 m-0">Наряд № {{ orders.0.id }}</a><hr class="m-0">
+                    {{ orders.0.name }} <a href="#" onclick="orderPrint({{ orders.0.id }});"><img class="ml-2" src="{% static 'images/print.png' %}" width="10px"></a><br><hr class="m-0">
+                    {{ orders.0.address }}<br><hr class="m-0">
+                    {{ orders.0.tel }}<br><hr class="m-0">
+                    <b>{{ orders.0.job }}</b><br><hr class="m-0">
+                    <a href="#" class="btn btn-secondary btn-sm btn-block p-0 m-0">{% if orders.0.worker %}{{ orders.0.worker.name }}{% else %}-{% endif %}</a>
+                </td>
+
+                <td width="250em" height="130em">
+                    <a href="/order/{{ orders.1.id }}" class="btn btn-secondary btn-sm btn-block p-0 m-0">Наряд № {{ orders.1.id }}</a><hr class="m-0">
+                    {{ orders.1.name }} <a href="#" onclick="orderPrint({{ orders.1.id }});"><img class="ml-2" src="{% static 'images/print.png' %}" width="10px"></a><br><hr class="m-0">
+                    {{ orders.1.address }}<br><hr class="m-0">
+                    {{ orders.1.tel }}<br><hr class="m-0">
+                    <b>{{ orders.1.job }}</b><br><hr class="m-0">
+                    <a href="#" class="btn btn-secondary btn-sm btn-block p-0 m-0">{% if orders.1.worker %}{{ orders.1.worker.name }}{% else %}-{% endif %}</a>
+                </td>
+                <td width="250em" height="130em">
+                    <a href="/order/{{ orders.2.id }}" class="btn btn-secondary btn-sm btn-block p-0 m-0">Наряд № {{ orders.2.id }}</a><hr class="m-0">
+                    {{ orders.2.name }} <a href="#" onclick="orderPrint({{ orders.2.id }});"><img class="ml-2" src="{% static 'images/print.png' %}" width="10px"></a><br><hr class="m-0">
+                    {{ orders.2.address }}<br><hr class="m-0">
+                    {{ orders.2.tel }}<br><hr class="m-0">
+                    <b>{{ orders.2.job }}</b><br><hr class="m-0">
+                    <a href="#" class="btn btn-secondary btn-sm btn-block p-0 m-0">{% if orders.2.worker %}{{ orders.2.worker.name }}{% else %}-{% endif %}</a>
+                </td>
+                <td width="250em" height="130em">
+                    <a href="/order/{{ orders.3.id }}" class="btn btn-secondary btn-sm btn-block p-0 m-0">Наряд № {{ orders.3.id }}</a><hr class="m-0">
+                    {{ orders.3.name }} <a href="#" onclick="orderPrint({{ orders.3.id }});"><img class="ml-2" src="{% static 'images/print.png' %}" width="10px"></a><br><hr class="m-0">
+                    {{ orders.3.address }}<br><hr class="m-0">
+                    {{ orders.3.tel }}<br><hr class="m-0">
+                    <b>{{ orders.3.job }}</b><br><hr class="m-0">
+                    <a href="#" class="btn btn-secondary btn-sm btn-block p-0 m-0">{% if orders.3.worker %}{{ orders.3.worker.name }}{% else %}-{% endif %}</a>
+                </td>
+                <td width="250em" height="130em">
+                    <a href="/order/{{ orders.4.id }}" class="btn btn-secondary btn-sm btn-block p-0 m-0">Наряд № {{ orders.4.id }}</a><hr class="m-0">
+                    {{ orders.4.name }} <a href="#" onclick="orderPrint({{ orders.4.id }});"><img class="ml-2" src="{% static 'images/print.png' %}" width="10px"></a><br><hr class="m-0">
+                    {{ orders.4.address }}<br><hr class="m-0">
+                    {{ orders.4.tel }}<br><hr class="m-0">
+                    <b>{{ orders.4.job }}</b><br><hr class="m-0">
+                    <a href="#" class="btn btn-secondary btn-sm btn-block p-0 m-0">{% if orders.4.worker %}{{ orders.4.worker.name }}{% else %}-{% endif %}</a>
+                </td>
+                <td width="250em" height="130em">
+                    <a href="/order/{{ orders.5.id }}" class="btn btn-secondary btn-sm btn-block p-0 m-0">Наряд № {{ orders.5.id }}</a><hr class="m-0">
+                    {{ orders.5.name }} <a href="#" onclick="orderPrint({{ orders.5.id }});"><img class="ml-2" src="{% static 'images/print.png' %}" width="10px"></a><br><hr class="m-0">
+                    {{ orders.5.address }}<br><hr class="m-0">
+                    {{ orders.5.tel }}<br><hr class="m-0">
+                    <b>{{ orders.5.job }}</b><br><hr class="m-0">
+                    <a href="#" class="btn btn-secondary btn-sm btn-block p-0 m-0">{% if orders.5.worker %}{{ orders.5.worker.name }}{% else %}-{% endif %}</a>
+                </td>
+                <td width="250em" height="130em">
+                    <a href="/order/{{ orders.6.id }}" class="btn btn-secondary btn-sm btn-block p-0 m-0">Наряд № {{ orders.6.id }}</a><hr class="m-0">
+                    {{ orders.6.name }} <a href="#" onclick="orderPrint({{ orders.6.id }});"><img class="ml-2" src="{% static 'images/print.png' %}" width="10px"></a><br><hr class="m-0">
+                    {{ orders.6.address }}<br><hr class="m-0">
+                    {{ orders.6.tel }}<br><hr class="m-0">
+                    <b>{{ orders.6.job }}</b><br><hr class="m-0">
+                    <a href="#" class="btn btn-secondary btn-sm btn-block p-0 m-0">{% if orders.6.worker %}{{ orders.6.worker.name }}{% else %}-{% endif %}</a>
+                </td>
+            </tr>
+
+
+
+            <tr>
+                <td width="250em" height="130em">
+                    <a href="/order/{{ orders.7.id }}" class="btn btn-secondary btn-sm btn-block p-0 m-0">Наряд № {{ orders.7.id }}</a><hr class="m-0">
+                    {{ orders.7.name }} <a href="#" onclick="orderPrint({{ orders.7.id }});"><img class="ml-2" src="{% static 'images/print.png' %}" width="10px"></a><br><hr class="m-0">
+                    {{ orders.7.address }}<br><hr class="m-0">
+                    {{ orders.7.tel }}<br><hr class="m-0">
+                    <b>{{ orders.7.job }}</b><br><hr class="m-0">
+                    <a href="#" class="btn btn-secondary btn-sm btn-block p-0 m-0">{% if orders.7.worker %}{{ orders.7.worker.name }}{% else %}-{% endif %}</a>
+                </td>
+
+                <td width="250em" height="130em">
+                    <a href="/order/{{ orders.8.id }}" class="btn btn-secondary btn-sm btn-block p-0 m-0">Наряд № {{ orders.8.id }}</a><hr class="m-0">
+                    {{ orders.8.name }} <a href="#" onclick="orderPrint({{ orders.8.id }});"><img class="ml-2" src="{% static 'images/print.png' %}" width="10px"></a><br><hr class="m-0">
+                    {{ orders.8.address }}<br><hr class="m-0">
+                    {{ orders.8.tel }}<br><hr class="m-0">
+                    <b>{{ orders.8.job }}</b><br><hr class="m-0">
+                    <a href="#" class="btn btn-secondary btn-sm btn-block p-0 m-0">{% if orders.8.worker %}{{ orders.8.worker.name }}{% else %}-{% endif %}</a>
+                </td>
+                <td width="250em" height="130em">
+                    <a href="/order/{{ orders.9.id }}" class="btn btn-secondary btn-sm btn-block p-0 m-0">Наряд № {{ orders.9.id }}</a><hr class="m-0">
+                    {{ orders.9.name }} <a href="#" onclick="orderPrint({{ orders.9.id }});"><img class="ml-2" src="{% static 'images/print.png' %}" width="10px"></a><br><hr class="m-0">
+                    {{ orders.9.address }}<br><hr class="m-0">
+                    {{ orders.9.tel }}<br><hr class="m-0">
+                    <b>{{ orders.9.job }}</b><br><hr class="m-0">
+                    <a href="#" class="btn btn-secondary btn-sm btn-block p-0 m-0">{% if orders.9.worker %}{{ orders.9.worker.name }}{% else %}-{% endif %}</a>
+                </td>
+                <td width="250em" height="130em">
+                    <a href="/order/{{ orders.10.id }}" class="btn btn-secondary btn-sm btn-block p-0 m-0">Наряд № {{ orders.10.id }}</a><hr class="m-0">
+                    {{ orders.10.name }} <a href="#" onclick="orderPrint({{ orders.10.id }});"><img class="ml-2" src="{% static 'images/print.png' %}" width="10px"></a><br><hr class="m-0">
+                    {{ orders.10.address }}<br><hr class="m-0">
+                    {{ orders.10.tel }}<br><hr class="m-0">
+                    <b>{{ orders.10.job }}</b><br><hr class="m-0">
+                    <a href="#" class="btn btn-secondary btn-sm btn-block p-0 m-0">{% if orders.10.worker %}{{ orders.10.worker.name }}{% else %}-{% endif %}</a>
+                </td>
+                <td width="250em" height="130em">
+                    <a href="/order/{{ orders.11.id }}" class="btn btn-secondary btn-sm btn-block p-0 m-0">Наряд № {{ orders.11.id }}</a><hr class="m-0">
+                    {{ orders.11.name }} <a href="#" onclick="orderPrint({{ orders.11.id }});"><img class="ml-2" src="{% static 'images/print.png' %}" width="10px"></a><br><hr class="m-0">
+                    {{ orders.11.address }}<br><hr class="m-0">
+                    {{ orders.11.tel }}<br><hr class="m-0">
+                    <b>{{ orders.11.job }}</b><br><hr class="m-0">
+                    <a href="#" class="btn btn-secondary btn-sm btn-block p-0 m-0">{% if orders.11.worker %}{{ orders.11.worker.name }}{% else %}-{% endif %}</a>
+                </td>
+                <td width="250em" height="130em">
+                    <a href="/order/{{ orders.12.id }}" class="btn btn-secondary btn-sm btn-block p-0 m-0">Наряд № {{ orders.12.id }}</a><hr class="m-0">
+                    {{ orders.12.name }} <a href="#" onclick="orderPrint({{ orders.12.id }});"><img class="ml-2" src="{% static 'images/print.png' %}" width="10px"></a><br><hr class="m-0">
+                    {{ orders.12.address }}<br><hr class="m-0">
+                    {{ orders.12.tel }}<br><hr class="m-0">
+                    <b>{{ orders.12.job }}</b><br><hr class="m-0">
+                    <a href="#" class="btn btn-secondary btn-sm btn-block p-0 m-0">{% if orders.12.worker %}{{ orders.12.worker.name }}{% else %}-{% endif %}</a>
+                </td>
+                <td width="250em" height="130em">
+                    <a href="/order/{{ orders.13.id }}" class="btn btn-secondary btn-sm btn-block p-0 m-0">Наряд № {{ orders.13.id }}</a><hr class="m-0">
+                    {{ orders.13.name }} <a href="#" onclick="orderPrint({{ orders.13.id }});"><img class="ml-2" src="{% static 'images/print.png' %}" width="10px"></a><br><hr class="m-0">
+                    {{ orders.13.address }}<br><hr class="m-0">
+                    {{ orders.13.tel }}<br><hr class="m-0">
+                    <b>{{ orders.13.job }}</b><br><hr class="m-0">
+                    <a href="#" class="btn btn-secondary btn-sm btn-block p-0 m-0">{% if orders.13.worker %}{{ orders.13.worker.name }}{% else %}-{% endif %}</a>
+                </td>
+            </tr>
+            
+            <tr>
+                <td width="250em" height="130em">
+                    <a href="/order/{{ orders.14.id }}" class="btn btn-secondary btn-sm btn-block p-0 m-0">Наряд № {{ orders.14.id }}</a><hr class="m-0">
+                    {{ orders.14.name }} <a href="#" onclick="orderPrint({{ orders.14.id }});"><img class="ml-2" src="{% static 'images/print.png' %}" width="10px"></a><br><hr class="m-0">
+                    {{ orders.14.address }}<br><hr class="m-0">
+                    {{ orders.14.tel }}<br><hr class="m-0">
+                    <b>{{ orders.14.job }}</b><br><hr class="m-0">
+                    <a href="#" class="btn btn-secondary btn-sm btn-block p-0 m-0">{% if orders.14.worker %}{{ orders.14.worker.name }}{% else %}-{% endif %}</a>
+                </td>
+
+                <td width="250em" height="130em">
+                    <a href="/order/{{ orders.15.id }}" class="btn btn-secondary btn-sm btn-block p-0 m-0">Наряд № {{ orders.15.id }}</a><hr class="m-0">
+                    {{ orders.15.name }} <a href="#" onclick="orderPrint({{ orders.15.id }});"><img class="ml-2" src="{% static 'images/print.png' %}" width="10px"></a><br><hr class="m-0">
+                    {{ orders.15.address }}<br><hr class="m-0">
+                    {{ orders.15.tel }}<br><hr class="m-0">
+                    <b>{{ orders.15.job }}</b><br><hr class="m-0">
+                    <a href="#" class="btn btn-secondary btn-sm btn-block p-0 m-0">{% if orders.15.worker %}{{ orders.15.worker.name }}{% else %}-{% endif %}</a>
+                </td>
+                <td width="250em" height="130em">
+                    <a href="/order/{{ orders.16.id }}" class="btn btn-secondary btn-sm btn-block p-0 m-0">Наряд № {{ orders.16.id }}</a><hr class="m-0">
+                    {{ orders.16.name }} <a href="#" onclick="orderPrint({{ orders.16.id }});"><img class="ml-2" src="{% static 'images/print.png' %}" width="10px"></a><br><hr class="m-0">
+                    {{ orders.16.address }}<br><hr class="m-0">
+                    {{ orders.16.tel }}<br><hr class="m-0">
+                    <b>{{ orders.16.job }}</b><br><hr class="m-0">
+                    <a href="#" class="btn btn-secondary btn-sm btn-block p-0 m-0">{% if orders.16.worker %}{{ orders.16.worker.name }}{% else %}-{% endif %}</a>
+                </td>
+                <td width="250em" height="130em">
+                    <a href="/order/{{ orders.17.id }}" class="btn btn-secondary btn-sm btn-block p-0 m-0">Наряд № {{ orders.17.id }}</a><hr class="m-0">
+                    {{ orders.17.name }} <a href="#" onclick="orderPrint({{ orders.17.id }});"><img class="ml-2" src="{% static 'images/print.png' %}" width="10px"></a><br><hr class="m-0">
+                    {{ orders.17.address }}<br><hr class="m-0">
+                    {{ orders.17.tel }}<br><hr class="m-0">
+                    <b>{{ orders.17.job }}</b><br><hr class="m-0">
+                    <a href="#" class="btn btn-secondary btn-sm btn-block p-0 m-0">{% if orders.17.worker %}{{ orders.17.worker.name }}{% else %}-{% endif %}</a>
+                </td>
+                <td width="250em" height="130em">
+                    <a href="/order/{{ orders.18.id }}" class="btn btn-secondary btn-sm btn-block p-0 m-0">Наряд № {{ orders.18.id }}</a><hr class="m-0">
+                    {{ orders.18.name }} <a href="#" onclick="orderPrint({{ orders.18.id }});"><img class="ml-2" src="{% static 'images/print.png' %}" width="10px"></a><br><hr class="m-0">
+                    {{ orders.18.address }}<br><hr class="m-0">
+                    {{ orders.18.tel }}<br><hr class="m-0">
+                    <b>{{ orders.18.job }}</b><br><hr class="m-0">
+                    <a href="#" class="btn btn-secondary btn-sm btn-block p-0 m-0">{% if orders.18.worker %}{{ orders.18.worker.name }}{% else %}-{% endif %}</a>
+                </td>
+                <td width="250em" height="130em">
+                    <a href="/order/{{ orders.19.id }}" class="btn btn-secondary btn-sm btn-block p-0 m-0">Наряд № {{ orders.19.id }}</a><hr class="m-0">
+                    {{ orders.19.name }} <a href="#" onclick="orderPrint({{ orders.19.id }});"><img class="ml-2" src="{% static 'images/print.png' %}" width="10px"></a><br><hr class="m-0">
+                    {{ orders.19.address }}<br><hr class="m-0">
+                    {{ orders.19.tel }}<br><hr class="m-0">
+                    <b>{{ orders.19.job }}</b><br><hr class="m-0">
+                    <a href="#" class="btn btn-secondary btn-sm btn-block p-0 m-0">{% if orders.19.worker %}{{ orders.19.worker.name }}{% else %}-{% endif %}</a>
+                </td>
+                <td width="250em" height="130em">
+                    <a href="/order/{{ orders.20.id }}" class="btn btn-secondary btn-sm btn-block p-0 m-0">Наряд № {{ orders.20.id }}</a><hr class="m-0">
+                    {{ orders.20.name }} <a href="#" onclick="orderPrint({{ orders.20.id }});"><img class="ml-2" src="{% static 'images/print.png' %}" width="10px"></a><br><hr class="m-0">
+                    {{ orders.20.address }}<br><hr class="m-0">
+                    {{ orders.20.tel }}<br><hr class="m-0">
+                    <b>{{ orders.20.job }}</b><br><hr class="m-0">
+                    <a href="#" class="btn btn-secondary btn-sm btn-block p-0 m-0">{% if orders.20.worker %}{{ orders.20.worker.name }}{% else %}-{% endif %}</a>
+                </td>
+            </tr>
+            
+            
+            <tr>
+                <td width="250em" height="130em">
+                    <a href="/order/{{ orders.21.id }}" class="btn btn-secondary btn-sm btn-block p-0 m-0">Наряд № {{ orders.21.id }}</a><hr class="m-0">
+                    {{ orders.21.name }} <a href="#" onclick="orderPrint({{ orders.21.id }});"><img class="ml-2" src="{% static 'images/print.png' %}" width="10px"></a><br><hr class="m-0">
+                    {{ orders.21.address }}<br><hr class="m-0">
+                    {{ orders.21.tel }}<br><hr class="m-0">
+                    <b>{{ orders.21.job }}</b><br><hr class="m-0">
+                    <a href="#" class="btn btn-secondary btn-sm btn-block p-0 m-0">{% if orders.21.worker %}{{ orders.21.worker.name }}{% else %}-{% endif %}</a>
+                </td>
+
+                <td width="250em" height="130em">
+                    <a href="/order/{{ orders.22.id }}" class="btn btn-secondary btn-sm btn-block p-0 m-0">Наряд № {{ orders.22.id }}</a><hr class="m-0">
+                    {{ orders.22.name }} <a href="#" onclick="orderPrint({{ orders.22.id }});"><img class="ml-2" src="{% static 'images/print.png' %}" width="10px"></a><br><hr class="m-0">
+                    {{ orders.22.address }}<br><hr class="m-0">
+                    {{ orders.22.tel }}<br><hr class="m-0">
+                    <b>{{ orders.22.job }}</b><br><hr class="m-0">
+                    <a href="#" class="btn btn-secondary btn-sm btn-block p-0 m-0">{% if orders.22.worker %}{{ orders.22.worker.name }}{% else %}-{% endif %}</a>
+                </td>
+                <td width="250em" height="130em">
+                    <a href="/order/{{ orders.23.id }}" class="btn btn-secondary btn-sm btn-block p-0 m-0">Наряд № {{ orders.23.id }}</a><hr class="m-0">
+                    {{ orders.23.name }} <a href="#" onclick="orderPrint({{ orders.23.id }});"><img class="ml-2" src="{% static 'images/print.png' %}" width="10px"></a><br><hr class="m-0">
+                    {{ orders.23.address }}<br><hr class="m-0">
+                    {{ orders.23.tel }}<br><hr class="m-0">
+                    <b>{{ orders.23.job }}</b><br><hr class="m-0">
+                    <a href="#" class="btn btn-secondary btn-sm btn-block p-0 m-0">{% if orders.23.worker %}{{ orders.23.worker.name }}{% else %}-{% endif %}</a>
+                </td>
+                <td width="250em" height="130em">
+                    <a href="/order/{{ orders.24.id }}" class="btn btn-secondary btn-sm btn-block p-0 m-0">Наряд № {{ orders.24.id }}</a><hr class="m-0">
+                    {{ orders.24.name }} <a href="#" onclick="orderPrint({{ orders.24.id }});"><img class="ml-2" src="{% static 'images/print.png' %}" width="10px"></a><br><hr class="m-0">
+                    {{ orders.24.address }}<br><hr class="m-0">
+                    {{ orders.24.tel }}<br><hr class="m-0">
+                    <b>{{ orders.24.job }}</b><br><hr class="m-0">
+                    <a href="#" class="btn btn-secondary btn-sm btn-block p-0 m-0">{% if orders.24.worker %}{{ orders.24.worker.name }}{% else %}-{% endif %}</a>
+                </td>
+                <td width="250em" height="130em">
+                    <a href="/order/{{ orders.25.id }}" class="btn btn-secondary btn-sm btn-block p-0 m-0">Наряд № {{ orders.25.id }}</a><hr class="m-0">
+                    {{ orders.25.name }} <a href="#" onclick="orderPrint({{ orders.25.id }});"><img class="ml-2" src="{% static 'images/print.png' %}" width="10px"></a><br><hr class="m-0">
+                    {{ orders.25.address }}<br><hr class="m-0">
+                    {{ orders.25.tel }}<br><hr class="m-0">
+                    <b>{{ orders.25.job }}</b><br><hr class="m-0">
+                    <a href="#" class="btn btn-secondary btn-sm btn-block p-0 m-0">{% if orders.25.worker %}{{ orders.25.worker.name }}{% else %}-{% endif %}</a>
+                </td>
+                <td width="250em" height="130em">
+                    <a href="/order/{{ orders.26.id }}" class="btn btn-secondary btn-sm btn-block p-0 m-0">Наряд № {{ orders.26.id }}</a><hr class="m-0">
+                    {{ orders.26.name }} <a href="#" onclick="orderPrint({{ orders.26.id }});"><img class="ml-2" src="{% static 'images/print.png' %}" width="10px"></a><br><hr class="m-0">
+                    {{ orders.26.address }}<br><hr class="m-0">
+                    {{ orders.26.tel }}<br><hr class="m-0">
+                    <b>{{ orders.26.job }}</b><br><hr class="m-0">
+                    <a href="#" class="btn btn-secondary btn-sm btn-block p-0 m-0">{% if orders.26.worker %}{{ orders.26.worker.name }}{% else %}-{% endif %}</a>
+                </td>
+                <td width="250em" height="130em">
+                    <a href="/order/{{ orders.27.id }}" class="btn btn-secondary btn-sm btn-block p-0 m-0">Наряд № {{ orders.27.id }}</a><hr class="m-0">
+                    {{ orders.27.name }} <a href="#" onclick="orderPrint({{ orders.27.id }});"><img class="ml-2" src="{% static 'images/print.png' %}" width="10px"></a><br><hr class="m-0">
+                    {{ orders.27.address }}<br><hr class="m-0">
+                    {{ orders.27.tel }}<br><hr class="m-0">
+                    <b>{{ orders.27.job }}</b><br><hr class="m-0">
+                    <a href="#" class="btn btn-secondary btn-sm btn-block p-0 m-0">{% if orders.27.worker %}{{ orders.27.worker.name }}{% else %}-{% endif %}</a>
+                </td>
+            </tr>
+            
+            <tr>
+                <td width="250em" height="130em">
+                    <a href="/order/{{ orders.28.id }}" class="btn btn-secondary btn-sm btn-block p-0 m-0">Наряд № {{ orders.28.id }}</a><hr class="m-0">
+                    {{ orders.28.name }} <a href="#" onclick="orderPrint({{ orders.28.id }});"><img class="ml-2" src="{% static 'images/print.png' %}" width="10px"></a><br><hr class="m-0">
+                    {{ orders.28.address }}<br><hr class="m-0">
+                    {{ orders.28.tel }}<br><hr class="m-0">
+                    <b>{{ orders.28.job }}</b><br><hr class="m-0">
+                    <a href="#" class="btn btn-secondary btn-sm btn-block p-0 m-0">{% if orders.28.worker %}{{ orders.28.worker.name }}{% else %}-{% endif %}</a>
+                </td>
+                <td width="250em" height="130em">
+                    <a href="/order/{{ orders.29.id }}" class="btn btn-secondary btn-sm btn-block p-0 m-0">Наряд № {{ orders.29.id }}</a><hr class="m-0">
+                    {{ orders.29.name }} <a href="#" onclick="orderPrint({{ orders.29.id }});"><img class="ml-2" src="{% static 'images/print.png' %}" width="10px"></a><br><hr class="m-0">
+                    {{ orders.29.address }}<br><hr class="m-0">
+                    {{ orders.29.tel }}<br><hr class="m-0">
+                    <b>{{ orders.29.job }}</b><br><hr class="m-0">
+                    <a href="#" class="btn btn-secondary btn-sm btn-block p-0 m-0">{% if orders.29.worker %}{{ orders.29.worker.name }}{% else %}-{% endif %}</a>
+                </td>
+                <td width="250em" height="130em">
+                    <a href="/order/{{ orders.30.id }}" class="btn btn-secondary btn-sm btn-block p-0 m-0">Наряд № {{ orders.30.id }}</a><hr class="m-0">
+                    {{ orders.30.name }} <a href="#" onclick="orderPrint({{ orders.30.id }});"><img class="ml-2" src="{% static 'images/print.png' %}" width="10px"></a><br><hr class="m-0">
+                    {{ orders.30.address }}<br><hr class="m-0">
+                    {{ orders.30.tel }}<br><hr class="m-0">
+                    <b>{{ orders.30.job }}</b><br><hr class="m-0">
+                    <a href="#" class="btn btn-secondary btn-sm btn-block p-0 m-0">{% if orders.30.worker %}{{ orders.30.worker.name }}{% else %}-{% endif %}</a>
+                </td>
+                <td width="250em" height="130em">
+                    <a href="/order/{{ orders.31.id }}" class="btn btn-secondary btn-sm btn-block p-0 m-0">Наряд № {{ orders.31.id }}</a><hr class="m-0">
+                    {{ orders.31.name }} <a href="#" onclick="orderPrint({{ orders.31.id }});"><img class="ml-2" src="{% static 'images/print.png' %}" width="10px"></a><br><hr class="m-0">
+                    {{ orders.31.address }}<br><hr class="m-0">
+                    {{ orders.31.tel }}<br><hr class="m-0">
+                    <b>{{ orders.31.job }}</b><br><hr class="m-0">
+                    <a href="#" class="btn btn-secondary btn-sm btn-block p-0 m-0">{% if orders.31.worker %}{{ orders.31.worker.name }}{% else %}-{% endif %}</a>
+                </td>
+                <td width="250em" height="130em">
+                    <a href="/order/{{ orders.32.id }}" class="btn btn-secondary btn-sm btn-block p-0 m-0">Наряд № {{ orders.32.id }}</a><hr class="m-0">
+                    {{ orders.32.name }} <a href="#" onclick="orderPrint({{ orders.32.id }});"><img class="ml-2" src="{% static 'images/print.png' %}" width="10px"></a><br><hr class="m-0">
+                    {{ orders.32.address }}<br><hr class="m-0">
+                    {{ orders.32.tel }}<br><hr class="m-0">
+                    <b>{{ orders.32.job }}</b><br><hr class="m-0">
+                    <a href="#" class="btn btn-secondary btn-sm btn-block p-0 m-0">{% if orders.32.worker %}{{ orders.32.worker.name }}{% else %}-{% endif %}</a>
+                </td>
+                <td width="250em" height="130em">
+                    <a href="/order/{{ orders.33.id }}" class="btn btn-secondary btn-sm btn-block p-0 m-0">Наряд № {{ orders.33.id }}</a><hr class="m-0">
+                    {{ orders.33.name }} <a href="#" onclick="orderPrint({{ orders.33.id }});"><img class="ml-2" src="{% static 'images/print.png' %}" width="10px"></a><br><hr class="m-0">
+                    {{ orders.33.address }}<br><hr class="m-0">
+                    {{ orders.33.tel }}<br><hr class="m-0">
+                    <b>{{ orders.33.job }}</b><br><hr class="m-0">
+                    <a href="#" class="btn btn-secondary btn-sm btn-block p-0 m-0">{% if orders.33.worker %}{{ orders.33.worker.name }}{% else %}-{% endif %}</a>
+                </td>
+                <td width="250em" height="130em">
+                    <a href="/order/{{ orders.34.id }}" class="btn btn-secondary btn-sm btn-block p-0 m-0">Наряд № {{ orders.34.id }}</a><hr class="m-0">
+                    {{ orders.34.name }} <a href="#" onclick="orderPrint({{ orders.34.id }});"><img class="ml-2" src="{% static 'images/print.png' %}" width="10px"></a><br><hr class="m-0">
+                    {{ orders.34.address }}<br><hr class="m-0">
+                    {{ orders.34.tel }}<br><hr class="m-0">
+                    <b>{{ orders.34.job }}</b><br><hr class="m-0">
+                    <a href="#" class="btn btn-secondary btn-sm btn-block p-0 m-0">{% if orders.34.worker %}{{ orders.34.worker.name }}{% else %}-{% endif %}</a>
+                </td>
+            </tr>
+            
+            
+            
+            
+            
+            
+
+            </tbody>
+        </table>
+</main>
+{% endblock %}
+
