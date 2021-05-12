@@ -688,7 +688,7 @@ def dogovor_export_excel(request):
             work_sheet.write(row, 0, dogovor.name, style_data_row)
             work_sheet.write(row, 1, dog, style_data_row)
             work_sheet.write(row, 2, dogovor.end_date, style_data_row)
-            work_sheet.write(row, 3, dogovor.tel1, style_data_row)
+            work_sheet.write(row, 3, dogovor.get_full_phone(), style_data_row)
             work_sheet.write(row, 4, dogovor.address_city, style_data_row)
             work_sheet.write(row, 5, dogovor.address_street, style_data_row)
             work_sheet.write(row, 6, dogovor.address_house, style_data_row)
