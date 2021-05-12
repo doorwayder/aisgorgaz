@@ -154,8 +154,11 @@ class Order(models.Model):
     comment = models.CharField(max_length=500, blank=True, null=True, verbose_name='Примечание')
     worker = models.ForeignKey(Worker, blank=True, null=True, on_delete=models.PROTECT)
     completed = models.BooleanField(verbose_name='Выполнен', default=False)
+
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
     create_time = models.DateTimeField(auto_now=True, null=True, verbose_name='Время обновления наряда')
+    page = models.IntegerField(blank=False,  null=False, default=1, verbose_name='Страница')
+    counter = models.BooleanField(verbose_name='Счетчик', default=False)
 
     def __str__(self):
         return str(self.pk) + ' - ' + self.name

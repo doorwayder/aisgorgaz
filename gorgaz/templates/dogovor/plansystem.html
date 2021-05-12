@@ -41,7 +41,11 @@
         <div class="row flex-fill">
             {% if user.is_authenticated %}
                 {% include 'inc/_calendar.html' %}
-                {% include 'inc/_plansystem1.html' %}
+                {% if page == 1 %}
+                    {% include 'inc/_plansystem1.html' %}
+                {% else %}
+                    {% include 'inc/_plansystem2.html' %}
+                {% endif %}
             {% else %}
                 {% include 'inc/_login.html' %}
             {% endif %}

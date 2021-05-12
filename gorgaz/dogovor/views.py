@@ -1024,24 +1024,25 @@ def backups(request):
 
 def plan_system(request):
     dt = request.GET.get('datepicker_value')
-    page_number = request.GET.get('page')
+    page_number = int(request.GET.get('page'))
     if dt:
         orders_data = Order.objects.filter(completed=False).order_by('id', 'worker__name')
         orders_data = orders_data.filter(date=dt)
+        orders_data_counter = orders_data.filter(counter=True)
+        orders_data = orders_data.filter(Q(page=page_number) & Q(counter=False))
         cnt = orders_data.count()
     else:
         dt = datetime.today().date().strftime("%Y-%m-%d")
         orders_data = Order.objects.filter(completed=False).order_by('id', 'worker__name')
-        orders_data = orders_data.filter(date=dt)
+        orders_data_counter = orders_data.filter(counter=True)
+        orders_data = orders_data.filter(Q(page=page_number) & Q(counter=False))
         cnt = orders_data.count()
 
-    paginator = Paginator(orders_data, 35)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-
     data = {
-        'orders': page_obj,
+        'orders': orders_data,
+        'orders_counter': orders_data_counter,
         'date': dt,
+        'page': page_number,
         'data': datetime.strptime(dt, "%Y-%m-%d").date(),
         'count': cnt,
     }
