@@ -671,8 +671,17 @@ def dogovor_export_excel(request):
     style_data_row.borders = borders
 
     if request.method == 'POST':
-        row = 0
+        row = 1
         dogovors = request.POST.getlist('dogovor_id[]')
+        work_sheet.write(0, 0, 'ФИО', style_data_row)
+        work_sheet.write(0, 1, 'Договор', style_data_row)
+        work_sheet.write(0, 2, 'Действует до', style_data_row)
+        work_sheet.write(0, 3, 'Телефон', style_data_row)
+        work_sheet.write(0, 4, 'Населенный пункт', style_data_row)
+        work_sheet.write(0, 5, 'Улица', style_data_row)
+        work_sheet.write(0, 6, 'Дом', style_data_row)
+        work_sheet.write(0, 7, 'Квартира', style_data_row)
+        work_sheet.write(0, 8, 'Оборудование', style_data_row)
         for item in dogovors:
             dogovor = Dogovor.objects.get(id=item)
             dog = str(dogovor.number) + ' от ' + dogovor.date.strftime("%d.%m.%Y")
@@ -684,6 +693,7 @@ def dogovor_export_excel(request):
             work_sheet.write(row, 5, dogovor.address_street, style_data_row)
             work_sheet.write(row, 6, dogovor.address_house, style_data_row)
             work_sheet.write(row, 7, dogovor.address_kv, style_data_row)
+            work_sheet.write(row, 8, dogovor.equip, style_data_row)
             row = row + 1
         work_sheet.col(0).width = 15000
         work_sheet.col(1).width = 6000
@@ -691,6 +701,7 @@ def dogovor_export_excel(request):
         work_sheet.col(3).width = 4000
         work_sheet.col(4).width = 5000
         work_sheet.col(5).width = 7000
+        work_sheet.col(8).width = 15000
 
         work_book.save(response)
         return response
