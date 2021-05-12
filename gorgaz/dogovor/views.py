@@ -382,12 +382,14 @@ def dogovor_newpay(request, dogovor_id):
         form = PaymentForm(request.POST)
         if form.is_valid():
             Payment.objects.create(**form.cleaned_data)
-            if qs.end_date is not None:
-                qs.end_date = qs.end_date + timedelta(days=365)
-                qs.save()
-            else:
-                qs.end_date = qs.date + timedelta(days=365)
-                qs.save()
+            qs.end_date = form.cleaned_data['date'] + timedelta(days=365)
+            qs.save()
+            # if qs.end_date is not None:
+            #     qs.end_date = qs.end_date + timedelta(days=365)
+            #     qs.save()
+            # else:
+            #     qs.end_date = qs.date + timedelta(days=365)
+            #     qs.save()
             return redirect('dogovor', dogovor_id=dogovor_id)
         else:
             print('invalid form')

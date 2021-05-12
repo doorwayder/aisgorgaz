@@ -40,7 +40,7 @@
         <div class="row flex-fill">
             {% if user.is_authenticated %}
                 {% for item in backups %}
-                {{ forloop.counter }}<a href="static/backups/{{ item }}">{{ item }}</a>-------
+                    {{ forloop.counter }}<a href="/static/backups/{{ item }}">{{ item }}</a>-------
                 {% endfor %}
             {% else %}
                 {% include 'inc/_login.html' %}
