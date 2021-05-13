@@ -146,6 +146,62 @@ def dogovor_inactive_search(request):
     return render(request, 'dogovor/inactivesearch.html', data)
 
 
+def dogovor_inactive_search_address(request):
+    address_city = Dogovor.objects.values('address_city').distinct().order_by('address_city')
+    address_street = Dogovor.objects.values('address_street').distinct().order_by('address_street')
+
+    if request.method == 'POST':
+        city = request.POST['address_city']
+        street = request.POST['address_street']
+        house = request.POST['address_house']
+        kv = request.POST['address_kv']
+
+        if city and street:
+            dogovor_data = Dogovor.objects.filter(Q(address_city=city) & Q(address_street=street) & Q(active=False)).order_by('address_street', 'address_house', 'address_kv')
+            if house:
+                dogovor_data = dogovor_data.filter(address_house=house)
+            if kv:
+                dogovor_data = dogovor_data.filter(address_kv=kv)
+
+        elif city:
+            dogovor_data = Dogovor.objects.filter(Q(address_city=city) & Q(active=False)).order_by('address_street', 'address_house', 'address_kv')
+            if house:
+                dogovor_data = dogovor_data.filter(address_house=house)
+            if kv:
+                dogovor_data = dogovor_data.filter(address_kv=kv)
+
+        elif street:
+            dogovor_data = []
+            error_message = 'Выберите населенный пункт'
+        else:
+            dogovor_data = []
+            error_message = 'Задайте параметры поиска'
+    else:
+        dogovor_data = []
+        city = ''
+        street = ''
+        house =''
+        kv = ''
+
+    if dogovor_data:
+        count = dogovor_data.count()
+    else:
+        count = 0
+
+
+    data = {
+        'title': 'Расторгнутые договора',
+        'dogovors': dogovor_data,
+        'count': count,
+        'cities': address_city,
+        'streets': address_street,
+        'city': city,
+        'street': street,
+        'query': 'Расторгнутые по адресу',
+    }
+    return render(request, 'dogovor/inactivesearchaddress.html', data)
+
+
 def dogovor_expired(request):
     dogovor_data = Dogovor.objects.filter(Q(end_date__lt=datetime.now().date()) & Q(active=True)).order_by('address_city', 'address_street', 'address_house', 'address_kv')
     count = dogovor_data.count()
