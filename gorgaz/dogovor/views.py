@@ -1080,7 +1080,9 @@ def backups(request):
 
 def plan_system(request):
     dt = request.GET.get('datepicker_value')
-    page_number = int(request.GET.get('page'))
+    page_number = request.GET.get('page')
+    if page_number:
+        page_number = int(page_number)
     if dt:
         orders_data = Order.objects.filter(completed=False).order_by('id', 'worker__name')
         orders_data = orders_data.filter(date=dt)
