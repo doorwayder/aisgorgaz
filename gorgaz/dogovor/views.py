@@ -10,8 +10,6 @@ from .models import Dogovor, Payment, Notification, Worker, Order, Plan
 from .forms import DogovorForm, PaymentForm, OrderForm
 from datetime import datetime, timedelta, date
 import xlwt
-import xlrd
-from xlutils.copy import copy
 import openpyxl
 from docxtpl import DocxTemplate
 from PIL import Image, ImageDraw, ImageFont
@@ -41,7 +39,6 @@ def main(request):
     amount_year = payments_year.aggregate(Sum('amount'))['amount__sum']
 
     year = str(datetime.today().year)
-    #year = '2020'
 
     periods = [(year + '-01-01', year + '-01-31'),
                (year + '-02-01', year + '-02-28'),
@@ -180,7 +177,7 @@ def dogovor_inactive_search_address(request):
         dogovor_data = []
         city = ''
         street = ''
-        house =''
+        house = ''
         kv = ''
 
     if dogovor_data:
@@ -283,10 +280,6 @@ def dogovor_update(request, dogovor_id):
 def dogovor_search(request):
     if request.method == 'POST':
         query = request.POST['query'].strip()
-        # dogovor_data = Dogovor.objects.filter(Q(name__contains=query) | Q(number__contains=query) |
-        #                                       Q(tel1__contains=query) | Q(tel2__contains=query) |
-        #                                       Q(tel3__contains=query)).order_by('-date')
-        #
         dogovor_data = Dogovor.objects.filter(number=query)
     else:
         dogovor_data = []
@@ -440,12 +433,7 @@ def dogovor_newpay(request, dogovor_id):
             Payment.objects.create(**form.cleaned_data)
             qs.end_date = form.cleaned_data['date'] + timedelta(days=365)
             qs.save()
-            # if qs.end_date is not None:
-            #     qs.end_date = qs.end_date + timedelta(days=365)
-            #     qs.save()
-            # else:
-            #     qs.end_date = qs.date + timedelta(days=365)
-            #     qs.save()
+
             return redirect('dogovor', dogovor_id=dogovor_id)
         else:
             print('invalid form')
@@ -889,21 +877,6 @@ def dogovor_doc4(request, dogovor_id):
     return response
 
 
-# def dogovor_doc5(request, dogovor_id):
-#     dogovor = get_object_or_404(Dogovor, pk=dogovor_id)
-#     doc = DocxTemplate('dogovor/static/doc/template5.docx')
-#
-#     context = {
-#         'name': dogovor.name,
-#         'address': dogovor.get_full_address2(),
-#         'sum': dogovor.amount,
-#     }
-#     doc.render(context)
-#     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
-#     response['Content-Disposition'] = 'attachment;filename=kvit.docx'
-#     doc.save(response)
-#     return response
-
 def dogovor_doc5(request, dogovor_id):
     dogovor = get_object_or_404(Dogovor, pk=dogovor_id)
     wb = openpyxl.load_workbook(filename='dogovor/static/doc/template6.xlsm', read_only=False, keep_vba=True)
@@ -938,7 +911,7 @@ def dogovor_doc6(request, dogovor_id):
     blank.text((360, 532), str4, font=fnt1, fill=255)
 
     qr = qrcode.QRCode(version=1, error_correction=qrcode.constants.ERROR_CORRECT_L, box_size=2, border=1, )
-    data = 'ST00012|Name=ООО "Арзамасгоргаз"|PersonalAcc=40702810517500000015|BankName=ФИЛИАЛ "ЦЕНТРАЛЬНЫЙ" БАНКА ВТБ (ПАО) Г. МОСКВА|BIC=044525411|CorrespAcc=30101810145250000411|PayeelNN=5243011758|LastName='
+    data = 'ST00012|Name=ООО "Горгаз"|PersonalAcc=40342817958500000015|BankName=ФИЛИАЛ "ЦЕНТРАЛЬНЫЙ" БАНКА СБЕРБАНК (ПАО) Г. МОСКВА|BIC=044525411|CorrespAcc=30101925145250000411|PayeelNN=5543671758|LastName='
     data = data + dog.name
     data = data + '|Purpose=Оплата за АДО и тех. обслуж-е|РауегАddress='
     data = data + dog.get_full_address2()

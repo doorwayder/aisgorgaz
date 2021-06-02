@@ -173,6 +173,5 @@ class Plan(models.Model):
     user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
 
     class Meta:
-        #unique_together = ['dogovor_id', 'user_id']
         verbose_name = 'План'
         verbose_name_plural = 'Планы'
