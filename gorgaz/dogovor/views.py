@@ -77,7 +77,7 @@ def main(request):
         'payments': payments_year_count,
         'payments_count_month': payments_count_month,
         'payments_amount_month': payments_amount_month,
-        'amount': "{:,}".format(amount_year),
+        # 'amount': "{:,}".format(amount_year),
         'cities_active': cities_active,
         'cities_expiring': cities_expiring,
         'cities_expired': cities_expired,

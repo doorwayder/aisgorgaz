@@ -22,7 +22,7 @@ class Dogovor(models.Model):
     discount = models.IntegerField(blank=True, verbose_name='Скидка', default=0)
     amount = models.IntegerField(blank=True, verbose_name='Итого')
     comment = models.CharField(max_length=500, blank=True, verbose_name='Примечание')
-    id_old = models.IntegerField(null=True, verbose_name='Old Id')
+    id_old = models.IntegerField(null=True, verbose_name='Old Id', default=None)
     active = models.BooleanField(default=True, verbose_name='Действующий')   # Действует / Расторгнут
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
     create_time = models.DateTimeField(auto_now=True, null=True, verbose_name='Время обновления договора')
